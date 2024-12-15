@@ -4,6 +4,11 @@ set -o errexit
 
 corepack enable
 
+mkdir .yarn/release
+touch .yarnrc.yml
+echo "yarnPath: .yarn/releases/yarn-4.2.2.cjs" > .yarnrc.yml
+yarn set version 4.2.2
+
 bundle install
 bundle exec rake assets:precompile
 bundle exec rake assets:clean
