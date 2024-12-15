@@ -2,6 +2,8 @@
 # Exit on error
 set -o errexit
 
+echo "Current Dir: $(pwd)"
+
 # Enable Corepack to manage package managers
 corepack enable
 
