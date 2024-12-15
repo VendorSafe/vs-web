@@ -4,7 +4,7 @@ set -o errexit
 
 corepack enable
 
-mkdir .yarn/release
+#mkdir .yarn/release
 touch .yarnrc.yml
 echo "yarnPath: .yarn/releases/yarn-4.2.2.cjs" > .yarnrc.yml
 yarn set version 4.2.2
