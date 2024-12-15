@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
-# exit on error
+# Exit on error
 set -o errexit
 
+# Enable Corepack to manage package managers
 corepack enable
 
-#mkdir .yarn/release
-touch .yarnrc.yml
-#echo "yarnPath: .yarn/releases/yarn-4.2.2.cjs" > .yarnrc.yml
+# Create .yarn directory if it doesn't exist
+mkdir -p .yarn/releases
+
+# Set the Yarn version to 4.2.2 and create the necessary yarnPath file
 yarn set version 4.2.2
 
+# Verify that the correct version of Yarn is set
+echo "Using Yarn version: $(yarn --version)"
+
+# Install Ruby gems and precompile assets
 bundle install
 bundle exec rake assets:precompile
 bundle exec rake assets:clean
 
-# These are not combined because we want to reload all models after the migrations take place.
-# TODO Any way to read these from the `Procfile` where we have the same thing defined for Heroku?
+# Migrate and seed the database
 bundle exec rails db:migrate 
 bundle exec rails db:seed
