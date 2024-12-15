@@ -6,7 +6,7 @@ corepack enable
 
 #mkdir .yarn/release
 touch .yarnrc.yml
-echo "yarnPath: .yarn/releases/yarn-4.2.2.cjs" > .yarnrc.yml
+#echo "yarnPath: .yarn/releases/yarn-4.2.2.cjs" > .yarnrc.yml
 yarn set version 4.2.2
 
 bundle install
