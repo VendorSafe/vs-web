@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+####################################################
+# Vendor Safe Application
+####################################################
+
+export DISABLE_SPRING="TRUE"
+
+set -e  # Exit immediately if a command exits with a non-zero status
+
+start_time=$(date +%s)
+echo "start_time $(date -r ${start_time} +%Y-%m-%d\ %H:%M:%S)"
+current_time=$(date +%s)
+time_since_start=$(echo "scale=2; (${current_time} - ${start_time}) / 60" | bc)
+echo "Time since start: ${time_since_start} minutes"
+
+if [ "$REINIT" = "true" ]; then
+  brew services restart postgresql@14
+  git clean -fd && git reset --hard HEAD
+fi
+
+####################################################
+# Misc Resources
+####################################################
+bundle exec rails g super_scaffold Facility Team name:text_field other_attribute:text_field url:text_field --navbar="ti ti-blackboard" --sortable
+# bundle exec rails g super_scaffold Page Facility,Team name:text_field path:text_field
+bundle exec rails g super_scaffold:field Facility membership_id:super_select{class_name=Membership}
+
+####################################################
+#### TrainingSubscription
+####################################################
+# bundle exec rails g model TrainingSubscription team:references training_program:references configuration:json
+# bundle exec rails g super_scaffold TrainingSubscription Team TrainingProgram
+
+####################################################
+#### TrainingProgram
+####################################################
+# bundle exec rails g model TrainingProgram name:string description:text status:string slides:json published_at:datetime deleted_at:datetime
+bundle exec rails g super_scaffold TrainingProgram Team name:text_field description:trix_editor status:text_field slides:text_area published_at:date_and_time_field --navbar="ti-book"
+
+####################################################
+#### TrainingContent
+####################################################
+# bundle exec rails g model TrainingContent training_program:references title:string body:text content_type:string published_at:datetime deleted_at:datetime
+bundle exec rails g super_scaffold TrainingContent TrainingProgram,Team title:text_field body:trix_editor content_type:text_field published_at:date_and_time_field --navbar="ti-note" --sortable
+
+####################################################
+#### TrainingQuestion
+####################################################
+# bundle exec rails g model TrainingQuestion training_content:references title:string body:text good_answers:json bad_answers:json published_at:datetime deleted_at:datetime
+bundle exec rails g super_scaffold TrainingQuestion TrainingContent,TrainingProgram,Team title:text_field body:trix_editor good_answers:text_area bad_answers:text_area published_at:date_and_time_field --navbar="ti-question"
+
+####################################################
+#### TrainingMembership (DEPR?)
+####################################################
+bundle exec rails g super_scaffold:join_model TrainingMembership training_program_id{class_name=TrainingProgram} membership_id{class_name=Membership} subscribed_at:date_and_time_field configuration:text_area --navbar="ti-user"
+
+# FIXME: May want to adjust this or remove it. We can use the existing membership structure.
+# bundle exec rails g super_scaffold:field TrainingProgram membership_id:super_select{class_name=Membership}
+
+####################################################
+#### Allowed Memberships - All memberships? certain roles? can these invites expire? other filters?
+####################################################
+replace_valid_memberships() {
+  sed -i '' -e '/please review and implement/ s/.*/    team.memberships/' app/models/facility.rb
+  sed -i '' -e '/please review and implement/ s/.*/    team.memberships/' app/models/training_program.rb
+}
+replace_valid_memberships
+
+
+####################################################
+#### End time for benchmarking
+####################################################
+before_wait_time=$(date +%s)
+echo "before_wait_time $(date -r ${before_wait_time} +%Y-%m-%d\ %H:%M:%S)"
+time_since_before_wait=$(echo "scale=2; (${before_wait_time} - ${start_time}) / 60" | bc)
+echo "Time since start: ${time_since_before_wait} minutes"
+
+# # sleep 5 && wait
+
+#if [ "$REINIT" = "true" ]; then
+
+#   now=$(date +%s)
+#   time_since_start=$(echo "scale=2; (${now} - ${start_time}) / 60" | bc)
+#   echo "1 Time since before actions: ${time_since_start} minutes"
+#   # sleep 10 && wait
+#   # bundle exec rails runner "ActiveRecord::Base.clear_all_connections!"
+
+#   now=$(date +%s)
+#   time_since_start=$(echo "scale=2; (${now} - ${start_time}) / 60" | bc)
+#   echo "2 Time since before actions: ${time_since_start} minutes"
+
+  #bundle exec rails db:drop db:create db:migrate db:seed
+
+#   now=$(date +%s)
+#   time_since_start=$(echo "scale=2; (${now} - ${start_time}) / 60" | bc)
+#   echo "3 Time since before actions: ${time_since_start} minutes"
+#fi
+
+# bundle exec rails runner "ActiveRecord::Base.connection_pool.disconnect!"
+
+# ./bin/dev
+
+# finish_time=$(date +%s)
+# echo "finish_time $(date -r ${finish_time} +%Y-%m-%d\ %H:%M:%S)"
+# time_since_finish=$(echo "scale=2; (${finish_time} - ${start_time}) / 60" | bc)
+# echo "Time since before actions: ${time_since_finish} minutes"
