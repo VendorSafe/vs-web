@@ -66,6 +66,13 @@ Rails.application.routes.draw do
         namespace :integrations do
           # 🚅 super scaffolding will insert new integration installations above this line.
         end
+
+        resources :facilities, concerns: [:sortable]
+        resources :training_programs do
+          resources :training_contents, concerns: [:sortable] do
+            resources :training_questions
+          end
+        end
       end
     end
   end

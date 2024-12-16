@@ -1,0 +1,116 @@
+en:
+  facilities: &facilities
+    label: &label Facilities
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: ti ti ti-blackboard
+    buttons: &buttons
+      new: Add New Facility
+      create: Create Facility
+      edit: Edit Facility
+      update: Update Facility
+      destroy: Remove Facility
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{facility_name}? This will also remove any child resources and can't be undone.
+    facility:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Facility ID
+      team_id:
+        heading: Team ID
+      name:
+        _: &name Name
+        label: *name
+        heading: *name
+        api_title: *name
+        api_description: *name
+      other_attribute:
+        _: &other_attribute Other Attribute
+        label: *other_attribute
+        heading: *other_attribute
+        api_title: *other_attribute
+        api_description: *other_attribute
+      url:
+        _: &url Url
+        label: *url
+        heading: *url
+        api_title: *url
+        api_description: *url
+      membership_id: &membership
+        _: &membership_id Membership
+        label: *membership_id
+        heading: *membership_id
+        api_title: *membership_id
+        api_description: *membership_id
+        placeholder: None
+      membership: *membership
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Facilities"
+      index: "List Facilities"
+      create: "Add a New Facility"
+      member_actions: "Actions for an Individual Facility"
+      show: "Retrieve a Facility"
+      update: "Update a Facility"
+      destroy: "Delete a Facility"
+      fields: *fields
+    index:
+      section: "%{teams_possessive} Facilities"
+      contexts:
+        team:
+          header: Facilities
+          description: Below is a list of Facilities that have been added for %{team_name}.
+          description_empty: No Facilities have been added for %{team_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{facility_name}"
+      header: Facility Details
+      description: Below are the details we have for %{facility_name}.
+      manage_description: You'll also find options for updating these details or removing %{facility_name} from %{team_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Facility for %{team_name}"
+      header: New Facility Details
+      description: Please provide the details of the new Facility you'd like to add to %{team_name}.
+      form: *form
+    edit:
+      section: "%{facility_name}"
+      header: Edit Facility Details
+      description: You can update the details or settings for %{facility_name} below.
+      form: *form
+    notifications:
+      created: Facility was successfully created.
+      updated: Facility was successfully updated.
+      destroyed: Facility was successfully destroyed.
+  account:
+    facilities: *facilities
+  activerecord:
+    attributes:
+      facility:
+        name: *name
+        other_attribute: *other_attribute
+        url: *url
+        membership_id: *membership_id
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

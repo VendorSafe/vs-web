@@ -1,5 +1,9 @@
 default:
   models:
+    TrainingQuestion: read
+    TrainingContent: read
+    TrainingProgram: read
+    Facility: read
     Team: read
     Membership:
       - read
@@ -28,6 +32,10 @@ admin:
     - admin
     - editor
   models:
+    TrainingQuestion: manage
+    TrainingContent: manage
+    TrainingProgram: manage
+    Facility: manage
     Team: manage
     Membership: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage

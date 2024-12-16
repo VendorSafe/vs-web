@@ -1,0 +1,25 @@
+<% training_program = @training_program || @training_program %>
+<% context ||= training_program %>
+<% collection ||= :training_contents %>
+<% hide_actions ||= false %>
+<% hide_back ||= false %>
+
+<% with_attribute_settings object: training_content do %>
+  <tr data-id="<%= training_content.id %>">
+    <%= render "shared/tables/checkbox", object: training_content %>
+    <td><%= render 'shared/attributes/text', attribute: :title, url: [:account, training_content] %></td>
+    <%# 🚅 super scaffolding will insert new fields above this line. %>
+    <td><%= render 'shared/attributes/date_and_time', attribute: :created_at %></td>
+    <td class="buttons">
+      <% unless hide_actions %>
+        <% if can? :edit, training_content %>
+          <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, training_content], class: 'button-secondary button-smaller' %>
+        <% end %>
+        <% if can? :destroy, training_content %>
+          <%= button_to t('.buttons.shorthand.destroy'), [:account, training_content], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(training_content)) }, class: 'button-secondary button-smaller' %>
+        <% end %>
+        <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

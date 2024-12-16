@@ -22,6 +22,10 @@ components:
     <%= automatic_components_for Webhooks::Outgoing::Endpoint %>
     <%= automatic_components_for Webhooks::Outgoing::Event %>
     <%= automatic_components_for Scaffolding::CompletelyConcrete::TangibleThing unless scaffolding_things_disabled? %>
+    <%= automatic_components_for Facility %>
+    <%= automatic_components_for TrainingProgram %>
+    <%= automatic_components_for TrainingContent %>
+    <%= automatic_components_for TrainingQuestion %>
     <%# 🚅 super scaffolding will insert new components above this line. %>
   parameters:
     id:
@@ -56,4 +60,8 @@ paths:
   <%= automatic_paths_for Webhooks::Outgoing::Endpoint, Team %>
   <%= automatic_paths_for Webhooks::Outgoing::Event, Team, except: %i[create update delete] %>
   <%= automatic_paths_for Scaffolding::CompletelyConcrete::TangibleThing, Scaffolding::AbsolutelyAbstract::CreativeConcept unless scaffolding_things_disabled? %>
+  <%= automatic_paths_for Facility, Team %>
+  <%= automatic_paths_for TrainingProgram, Team %>
+  <%= automatic_paths_for TrainingContent, TrainingProgram %>
+  <%= automatic_paths_for TrainingQuestion, TrainingContent %>
   <%# 🚅 super scaffolding will insert new paths above this line. %>

@@ -7,4 +7,4 @@ BulletTrain::Themes::Light.color = :blue
 # BulletTrain::Themes::Light.navigation = :left
 #
 # The logo shown in the navbar. To tweak further, run `bin/resolve shared/menu/logo --eject`
-# BulletTrain::Themes::Light.show_logo_in_account = true
+BulletTrain::Themes::Light.show_logo_in_account = true

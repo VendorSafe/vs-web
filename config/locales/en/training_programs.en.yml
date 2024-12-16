@@ -1,0 +1,120 @@
+en:
+  training_programs: &training_programs
+    label: &label Training Programs
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: ti ti-book
+    buttons: &buttons
+      new: Add New Training Program
+      create: Create Training Program
+      edit: Edit Training Program
+      update: Update Training Program
+      destroy: Remove Training Program
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{training_program_name}? This will also remove any child resources and can't be undone.
+    training_program:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Training Program ID
+      team_id:
+        heading: Team ID
+      name:
+        _: &name Name
+        label: *name
+        heading: *name
+        api_title: *name
+        api_description: *name
+      description:
+        _: &description Description
+        label: *description
+        heading: *description
+        api_title: *description
+        api_description: *description
+      status:
+        _: &status Status
+        label: *status
+        heading: *status
+        api_title: *status
+        api_description: *status
+      slides:
+        _: &slides Slides
+        label: *slides
+        heading: *slides
+        api_title: *slides
+        api_description: *slides
+      published_at:
+        _: &published_at Published At
+        label: *published_at
+        heading: *published_at
+        api_title: *published_at
+        api_description: *published_at
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Training Programs"
+      index: "List Training Programs"
+      create: "Add a New Training Program"
+      member_actions: "Actions for an Individual Training Program"
+      show: "Retrieve a Training Program"
+      update: "Update a Training Program"
+      destroy: "Delete a Training Program"
+      fields: *fields
+    index:
+      section: "%{teams_possessive} Training Programs"
+      contexts:
+        team:
+          header: Training Programs
+          description: Below is a list of Training Programs that have been added for %{team_name}.
+          description_empty: No Training Programs have been added for %{team_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{training_program_name}"
+      header: Training Program Details
+      description: Below are the details we have for %{training_program_name}.
+      manage_description: You'll also find options for updating these details or removing %{training_program_name} from %{team_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Training Program for %{team_name}"
+      header: New Training Program Details
+      description: Please provide the details of the new Training Program you'd like to add to %{team_name}.
+      form: *form
+    edit:
+      section: "%{training_program_name}"
+      header: Edit Training Program Details
+      description: You can update the details or settings for %{training_program_name} below.
+      form: *form
+    notifications:
+      created: Training Program was successfully created.
+      updated: Training Program was successfully updated.
+      destroyed: Training Program was successfully destroyed.
+  account:
+    training_programs: *training_programs
+  activerecord:
+    attributes:
+      training_program:
+        name: *name
+        status: *status
+        slides: *slides
+        published_at: *published_at
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

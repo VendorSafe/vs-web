@@ -1,0 +1,8 @@
+<% training_content ||= @training_content %>
+<% training_program ||= @training_program || training_content&.training_program %>
+<%= render 'account/training_programs/breadcrumbs', training_program: training_program %>
+<%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, training_program, :training_contents] %>
+<% if training_content&.persisted? %>
+  <%= render 'account/shared/breadcrumb', label: training_content.label_string, url: [:account, training_content] %>
+<% end %>
+<%= render 'account/shared/breadcrumbs/actions', only_for: 'training_contents' %>

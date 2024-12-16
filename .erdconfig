@@ -1,0 +1,23 @@
+# .erdconfig
+exclude:
+  models:
+    - "ActiveStorage::VariantRecord"
+    - "ActiveStorage::Blob"
+    - "ActiveStorage::Attachment"
+    - "ActionMailbox::InboundEmail"
+    - "ActionText::RichText"
+    - "ActionText::EncryptedRichText"
+    - "Webhooks::Outgoing::Event"
+    - "Webhooks::Outgoing::Endpoint"
+    - "Webhooks::Outgoing::Delivery"
+    - "Webhooks::Outgoing::DeliveryAttempt"
+    - "Webhooks::Incoming::BulletTrainWebhook"
+    - "Oauth::StripeAccount"
+    - "Integrations::StripeInstallation"
+    - "Webhooks::Incoming::Oauth::StripeAccountWebhook"
+    - "Scaffolding::AbsolutelyAbstract::CreativeConcept"
+    - "Scaffolding::CompletelyConcrete::TangibleThing"
+    - "Scaffolding::CompletelyConcrete::TangibleThings::Assignment"
+    - "Address"
+ # tables:
+ #   -

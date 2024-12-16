@@ -1,0 +1,38 @@
+<%= render 'account/shared/page' do |page| %>
+  <% page.title t('.section') %>
+  <% page.body do %>
+    <%= cable_ready_updates_for @training_content do %>
+      <%= render 'account/shared/box', divider: true do |box| %>
+        <% box.title t('.header') %>
+        <% box.description do %>
+          <%= t('.description') %>
+          <%= t('.manage_description') if can? :manage, @training_content %>
+        <% end %>
+
+        <% box.body do %>
+          <% with_attribute_settings object: @training_content, strategy: :label do %>
+            <%= render 'shared/attributes/text', attribute: :title %>
+            <%= render 'shared/attributes/html', attribute: :body %>
+            <%= render 'shared/attributes/text', attribute: :content_type %>
+            <%= render 'shared/attributes/date_and_time', attribute: :published_at %>
+            <%# 🚅 super scaffolding will insert new fields above this line. %>
+          <% end %>
+        <% end %>
+
+        <% box.actions do %>
+          <%= link_to t('.buttons.edit'), [:edit, :account, @training_content], class: first_button_primary if can? :edit, @training_content %>
+          <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
+          <%= button_to t('.buttons.destroy'), [:account, @training_content], method: :delete, class: first_button_primary, data: { confirm: t('.buttons.confirmations.destroy', model_locales(@training_content)) } if can? :destroy, @training_content %>
+          <%= link_to t('global.buttons.back'), [:account, @training_program, :training_contents], class: first_button_primary %>
+        <% end %>
+
+        <% box.raw_footer do %>
+          <%# 🚅 super scaffolding will insert new action model index views above this line. %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= render 'account/training_questions/index', training_questions: @training_content.training_questions, hide_back: true %>
+    <%# 🚅 super scaffolding will insert new children above this line. %>
+  <% end %>
+<% end %>

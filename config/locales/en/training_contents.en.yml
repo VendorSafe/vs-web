@@ -1,0 +1,113 @@
+en:
+  training_contents: &training_contents
+    label: &label Training Contents
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-puzzle-piece
+    buttons: &buttons
+      new: Add New Training Content
+      create: Create Training Content
+      edit: Edit Training Content
+      update: Update Training Content
+      destroy: Remove Training Content
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{training_content_name}? This will also remove any child resources and can't be undone.
+    training_content:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Training Content ID
+      training_program_id:
+        heading: Training Program ID
+      title:
+        _: &title Title
+        label: *title
+        heading: *title
+        api_title: *title
+        api_description: *title
+      body:
+        _: &body Body
+        label: *body
+        heading: *body
+        api_title: *body
+        api_description: *body
+      content_type:
+        _: &content_type Content Type
+        label: *content_type
+        heading: *content_type
+        api_title: *content_type
+        api_description: *content_type
+      published_at:
+        _: &published_at Published At
+        label: *published_at
+        heading: *published_at
+        api_title: *published_at
+        api_description: *published_at
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Training Contents"
+      index: "List Training Contents"
+      create: "Add a New Training Content"
+      member_actions: "Actions for an Individual Training Content"
+      show: "Retrieve a Training Content"
+      update: "Update a Training Content"
+      destroy: "Delete a Training Content"
+      fields: *fields
+    index:
+      section: "%{training_programs_possessive} Training Contents"
+      contexts:
+        training_program:
+          header: Training Contents
+          description: Below is a list of Training Contents that have been added for %{training_program_name}.
+          description_empty: No Training Contents have been added for %{training_program_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{training_content_name}"
+      header: Training Content Details
+      description: Below are the details we have for %{training_content_name}.
+      manage_description: You'll also find options for updating these details or removing %{training_content_name} from %{training_program_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Training Content for %{training_program_name}"
+      header: New Training Content Details
+      description: Please provide the details of the new Training Content you'd like to add to %{training_program_name}.
+      form: *form
+    edit:
+      section: "%{training_content_name}"
+      header: Edit Training Content Details
+      description: You can update the details or settings for %{training_content_name} below.
+      form: *form
+    notifications:
+      created: Training Content was successfully created.
+      updated: Training Content was successfully updated.
+      destroyed: Training Content was successfully destroyed.
+  account:
+    training_contents: *training_contents
+  activerecord:
+    attributes:
+      training_content:
+        body: *body
+        content_type: *content_type
+        published_at: *published_at
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

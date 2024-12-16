@@ -4,6 +4,8 @@ class Membership < ApplicationRecord
 
   # 🚅 add belongs_to associations above.
 
+  has_many :training_memberships, dependent: :destroy
+  has_many :training_programs, through: :training_memberships
   # 🚅 add has_many associations above.
 
   # 🚅 add oauth providers above.

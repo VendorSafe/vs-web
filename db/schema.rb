@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_18_172307) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -82,6 +82,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_18_172307) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable"
+  end
+
+  create_table "facilities", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.integer "sort_order"
+    t.string "name"
+    t.string "other_attribute"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "membership_id"
+    t.index ["membership_id"], name: "index_facilities_on_membership_id"
+    t.index ["team_id"], name: "index_facilities_on_team_id"
   end
 
   create_table "integrations_stripe_installations", force: :cascade do |t|
@@ -236,6 +249,51 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_18_172307) do
     t.string "locale"
   end
 
+  create_table "training_contents", force: :cascade do |t|
+    t.bigint "training_program_id", null: false
+    t.integer "sort_order"
+    t.string "title"
+    t.text "body"
+    t.string "content_type"
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["training_program_id"], name: "index_training_contents_on_training_program_id"
+  end
+
+  create_table "training_memberships", force: :cascade do |t|
+    t.bigint "training_program_id", null: false
+    t.bigint "membership_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["membership_id"], name: "index_training_memberships_on_membership_id"
+    t.index ["training_program_id"], name: "index_training_memberships_on_training_program_id"
+  end
+
+  create_table "training_programs", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.string "name"
+    t.text "description"
+    t.string "status"
+    t.text "slides"
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_training_programs_on_team_id"
+  end
+
+  create_table "training_questions", force: :cascade do |t|
+    t.bigint "training_content_id", null: false
+    t.string "title"
+    t.text "body"
+    t.text "good_answers"
+    t.text "bad_answers"
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["training_content_id"], name: "index_training_questions_on_training_content_id"
+  end
+
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -344,6 +402,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_18_172307) do
   add_foreign_key "account_onboarding_invitation_lists", "teams"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "facilities", "memberships"
+  add_foreign_key "facilities", "teams"
   add_foreign_key "integrations_stripe_installations", "oauth_stripe_accounts"
   add_foreign_key "integrations_stripe_installations", "teams"
   add_foreign_key "invitations", "account_onboarding_invitation_lists", column: "invitation_list_id"
@@ -361,6 +421,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_18_172307) do
   add_foreign_key "scaffolding_completely_concrete_tangible_things", "scaffolding_absolutely_abstract_creative_concepts", column: "absolutely_abstract_creative_concept_id"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "memberships"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "scaffolding_completely_concrete_tangible_things", column: "tangible_thing_id"
+  add_foreign_key "training_contents", "training_programs"
+  add_foreign_key "training_memberships", "memberships"
+  add_foreign_key "training_memberships", "training_programs"
+  add_foreign_key "training_programs", "teams"
+  add_foreign_key "training_questions", "training_contents"
   add_foreign_key "users", "oauth_applications", column: "platform_agent_of_id"
   add_foreign_key "webhooks_outgoing_endpoints", "scaffolding_absolutely_abstract_creative_concepts"
   add_foreign_key "webhooks_outgoing_endpoints", "teams"

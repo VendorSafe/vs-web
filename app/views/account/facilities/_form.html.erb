@@ -1,0 +1,21 @@
+<% cancel_path ||= facility.persisted? ? [:account, facility] : [:account, @team, :facilities] %>
+
+<%= form_with model: facility, url: (facility.persisted? ? [:account, facility] : [:account, @team, :facilities]), local: true, class: 'form' do |form| %>
+  <%= render "shared/limits/form", form: form, cancel_path: cancel_path do %>
+    <%= render 'account/shared/forms/errors', form: form %>
+
+    <% with_field_settings form: form do %>
+      <%= render 'shared/fields/text_field', method: :name, options: {autofocus: true} %>
+      <%= render 'shared/fields/text_field', method: :other_attribute %>
+      <%= render 'shared/fields/text_field', method: :url %>
+      <%= render 'shared/fields/super_select', method: :membership_id, options: {}, html_options: {},
+        choices: @facility.valid_memberships.map { |membership| [membership.label_string, membership.id] } %>
+      <%# 🚅 super scaffolding will insert new fields above this line. %>
+    <% end %>
+
+    <div class="buttons">
+      <%= form.submit (form.object.persisted? ? t('.buttons.update') : t('.buttons.create')), class: "button" %>
+      <%= link_to t('global.buttons.cancel'), cancel_path, class: "button-secondary" %>
+    </div>
+  <% end %>
+<% end %>

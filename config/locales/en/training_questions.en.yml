@@ -1,0 +1,120 @@
+en:
+  training_questions: &training_questions
+    label: &label Training Questions
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-puzzle-piece
+    buttons: &buttons
+      new: Add New Training Question
+      create: Create Training Question
+      edit: Edit Training Question
+      update: Update Training Question
+      destroy: Remove Training Question
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{training_question_name}? This will also remove any child resources and can't be undone.
+    training_question:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Training Question ID
+      training_content_id:
+        heading: Training Content ID
+      title:
+        _: &title Title
+        label: *title
+        heading: *title
+        api_title: *title
+        api_description: *title
+      body:
+        _: &body Body
+        label: *body
+        heading: *body
+        api_title: *body
+        api_description: *body
+      good_answers:
+        _: &good_answers Good Answers
+        label: *good_answers
+        heading: *good_answers
+        api_title: *good_answers
+        api_description: *good_answers
+      bad_answers:
+        _: &bad_answers Bad Answers
+        label: *bad_answers
+        heading: *bad_answers
+        api_title: *bad_answers
+        api_description: *bad_answers
+      published_at:
+        _: &published_at Published At
+        label: *published_at
+        heading: *published_at
+        api_title: *published_at
+        api_description: *published_at
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Training Questions"
+      index: "List Training Questions"
+      create: "Add a New Training Question"
+      member_actions: "Actions for an Individual Training Question"
+      show: "Retrieve a Training Question"
+      update: "Update a Training Question"
+      destroy: "Delete a Training Question"
+      fields: *fields
+    index:
+      section: "%{training_contents_possessive} Training Questions"
+      contexts:
+        training_content:
+          header: Training Questions
+          description: Below is a list of Training Questions that have been added for %{training_content_name}.
+          description_empty: No Training Questions have been added for %{training_content_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{training_question_name}"
+      header: Training Question Details
+      description: Below are the details we have for %{training_question_name}.
+      manage_description: You'll also find options for updating these details or removing %{training_question_name} from %{training_content_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Training Question for %{training_content_name}"
+      header: New Training Question Details
+      description: Please provide the details of the new Training Question you'd like to add to %{training_content_name}.
+      form: *form
+    edit:
+      section: "%{training_question_name}"
+      header: Edit Training Question Details
+      description: You can update the details or settings for %{training_question_name} below.
+      form: *form
+    notifications:
+      created: Training Question was successfully created.
+      updated: Training Question was successfully updated.
+      destroyed: Training Question was successfully destroyed.
+  account:
+    training_questions: *training_questions
+  activerecord:
+    attributes:
+      training_question:
+        body: *body
+        good_answers: *good_answers
+        bad_answers: *bad_answers
+        published_at: *published_at
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at
