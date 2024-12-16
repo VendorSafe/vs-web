@@ -126,7 +126,7 @@ namespace :db do
 
       u = User.create!(
         email: user_email,
-        password: "password",
+        password: "TTSPW123!!!",
         # first_name: Faker::Name.first_name,
         # last_name: Faker::Name.last_name,
         first_name: "FirstName",

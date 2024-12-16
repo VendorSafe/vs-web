@@ -5,7 +5,7 @@ puts "🌱 Generating development environment seeds."
 
   user_admin = User.create!(
     email: "jcsarda+admin@gmail.com",
-    password: "password",
+    password: "TTSPW123!!!",
     first_name: "John",
     last_name: "Sarda",
     time_zone: ActiveSupport::TimeZone.all.first.name,
