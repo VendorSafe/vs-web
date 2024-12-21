@@ -3,6 +3,8 @@
 # Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = "1.0"
 
+# TODO: setup assets path for vs-assets
+# Rails.application.config.assets.paths << Rails.root.join("app", "assets", "vs-assets")
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
 
