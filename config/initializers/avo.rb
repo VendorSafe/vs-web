@@ -62,7 +62,7 @@ Avo.configure do |config|
   # config.full_width_index_view = false
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
-  # config.display_license_request_timeout_error = true
+  config.display_license_request_timeout_error = false
   # config.disabled_features = []
   # config.buttons_on_form_footers = true
   # config.field_wrapper_layout = true

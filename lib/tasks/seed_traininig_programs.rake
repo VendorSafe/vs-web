@@ -1,3 +1,6 @@
+# ignore rubocop for this file
+# rubocop:disable all
+
 # Define a namespace for database tasks
 namespace :db do
   # Task description for seeding sample training program data
@@ -7,8 +10,9 @@ namespace :db do
     # Log message indicating the start of seeding
     puts "🌱 Seeding sample training program data."
 
-    # Begin the seeding process
-    # begin
+    # Check permissions on objects
+    # puts "Debug 3: " + can? :manage, @training_program
+    # puts "Debug 4: " + can? :read, @training_program
 
       user_admin = create_user_and_team(
         "jcsarda+admin@gmail.com",
@@ -17,77 +21,35 @@ namespace :db do
         [Role.admin.id]
        )
 
-      mmoser_vendor_teams = [
+       # Seed Demo Users & Teams
+       [
+       # TODO: Seed Vendor Employee Team
         create_user_and_team(
           "jcsarda+mmoservendor1@gmail.com",
           "M. Moser - Vendor Team 1",
           "mmoser-vendor-1",
-          [Role.admin.id]
+          [Role.vendor.id]
         ),
+
+        # TODO: Seed Vendor Manager Team
         create_user_and_team(
           "jcsarda+mmoservendor2@gmail.com",
           "M. Moser - Vendor Team 2",
           "mmoser-vendor-2",
-          [Role.admin.id]
+          [Role.employee.id]
         ),
+
+        # TODO: Seed Vendor Admin Team
+        # Probably not necessary
         create_user_and_team(
           "jcsarda+mmoservendor3@gmail.com",
           "M. Moser - Vendor Team 3",
           "mmoser-vendor-3",
           [Role.admin.id]
         )
-      ]
-      # user_admin.memberships.create!(
-      #   user: user_admin,
-      #   team: user_admin.current_team,
-      #   # invitation_id: integer
-      #   # user_profile_photo_id: 1,
-      #   user_first_name: user_admin.first_name,
-      #   user_last_name: user_admin.last_name,
-      #   user_email: user_admin.email,
-      #   role_ids: ["admin"]
-      #   # platform_agent_of_id: nil
-      #   # platform_agent: false
-      #   # The `added_by` attribute is an optional foreign_key which points
-      #   # to another membership and is automatically populated when someone
-      #   # on a team invites another person.
-      #   #
-      #   # For now we can ignore this for the most part unless it becomes necessary.
-      #   #
-      #   # We do not give it a value in the factory because it will
-      #   # cause an infinite loop. If you want to populate this value for
-      #   # a Membership in your tests, you can do so by creating a Membership
-      #   # and passing it to an :invitation factory:
-      #   #
-      #   # # (Where `test_team`, `issuer_email`, and `receiver_email` are all custom values)
-      #   #
-      #   # invitation_issuer_membership = Membership.new(team: test_team, user_email: issuer_email)
-      #   # invitation_receiver_membership = Membership.new(team: test_team, user_email: receiver_email)
-      #   # create :invitation, team: test_team, from_membership: invitation_issuer_membership, email: receiver_email, membership: invitation_receiver_membership
-      #   #
-      #   # This will automatically populate the `added_by` attribute for `invitation_receiver_membership`.
-      #   # added_by_id:
-      # )
-      # debugger
-
-      # Invitation.create!(
-      #   team: team_admin,
-      #   from_membership: user_admin.memberships.first,
-      #   membership: team_membership,
-      #   email: "jcsarda+admin@gmail.com"
-      # )
-
-      # TODO: I may need to do this:
-      # invitation_issuer_membership = Membership.new(team: test_team, user_email: issuer_email)
-      # invitation_receiver_membership = Membership.new(team: test_team, user_email: receiver_email)
-      # create :invitation, team: test_team, from_membership: invitation_issuer_membership, email: receiver_email, membership: invitation_receiver_membership
-
-      # debugger
-
-      # Create a training program under the admin team
-      # user_admin.current_team.training_program = TrainingProgram.create!(
-      #   name: "Approach 1"
-      # )
+  ].each do |user|
+    seed_mmoser_training_program(user_admin.current_team)
+  end
 
       seed_training_programs 3, user_admin.current_team
 
@@ -96,8 +58,6 @@ namespace :db do
         name: "(DEMO) PacifiCorp Safety Training",
         team: user_admin.current_team
       )
-
-      seed_mmoser_training_program(user_admin.current_team)
 
     # rescue Exception => e
     #   puts "An error occurred while seeding the training programs: #{e.message} \n#{e.to_json} \n#{e.inspect}"
@@ -113,12 +73,7 @@ namespace :db do
 
   private
 
-  # user_admin = create_user_and_team(
-  #  "jcsarda+admin@gmail.com",
-  #  "Dev Team",
-  #  "dev",
-  #  [Role.admin.id]
-  # )
+  # Create a user and team with the specified role
   def create_user_and_team(user_email, team_name, team_slug, role_ids)
       # Create a team for administrators
       u = User.find_by(email: user_email)
@@ -166,6 +121,7 @@ namespace :db do
       u
   end
 
+  # Seed the M. Moser training program
   def seed_mmoser_training_program(team)
     training_program = TrainingProgram.create!(
       name: "M. Moser Worksite Safety Training",
@@ -242,7 +198,8 @@ namespace :db do
           end
         end
 
-        training_question = TrainingQuestion.create!(
+        # training_question = TrainingQuestion.create!(
+        TrainingQuestion.create!(
           title: question[:title],
           body: question[:body],
           training_content: training_content,
@@ -255,6 +212,7 @@ namespace :db do
     puts "🌱 Generated M. Moser Worksite Safety Training Program. \n #{training_program.inspect}"
   end
 
+  # Seed the training programs
   # TODO: Get the iframe or some other version of the video showing in the content.
   def seed_training_programs(count, team)
     count.times do |i|

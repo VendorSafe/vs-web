@@ -1,3 +1,19 @@
 {
-    "ruby.rubocop.useBundler": true
+    "github.copilot.advanced": {
+        "useLanguageServer": true
+
+    },
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+
+            "text": "Always consider the bullet train boilerplate's approach first.",
+            //"file": "copilot-instructions.md"
+        }
+    ],
+    "ruby.rubocop.onSave": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "always"
+    }
 }

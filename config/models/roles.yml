@@ -17,6 +17,36 @@ default:
       - read
       - create
       - destroy
+    # Add any models all users should be able to read
+
+vendor:
+  manageable_roles:
+    - vendor
+  models:
+    Scaffolding::CompletelyConcrete::TangibleThing: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcept:
+      - read
+      - update
+    # Add models that vendors should have access to
+    TrainingProgram: read
+
+employee:
+  manageable_roles:
+    - employee
+  models:
+    Scaffolding::CompletelyConcrete::TangibleThing: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcept:
+      - read
+      - update
+    # Add models that employees should have access to
+    TrainingProgram: read
+
+coordinator:
+  models:
+    Scaffolding::CompletelyConcrete::TangibleThing: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcept:
+      - read
+      - update
 
 editor:
   models:
@@ -28,9 +58,13 @@ editor:
 admin:
   includes:
     - editor
+    - vendor
+    - employee
   manageable_roles:
     - admin
     - editor
+    - vendor
+    - employee
   models:
     TrainingQuestion: manage
     TrainingContent: manage
@@ -39,4 +73,3 @@ admin:
     Team: manage
     Membership: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
-    Platform::Application: manage

@@ -9,7 +9,8 @@ class Ability
   def initialize(user)
     if user.present?
 
-      # permit is a Bullet Train created "magic" method. It parses all the roles in `config/roles.yml` and automatically inserts the appropriate `can` method calls here
+      # permit is a Bullet Train created "magic" method. It parses all the roles in `config/roles.yml` and automatically
+      # inserts the appropriate `can` method calls here
       permit user, through: :memberships, parent: :team
 
       # INDIVIDUAL USER PERMISSIONS.

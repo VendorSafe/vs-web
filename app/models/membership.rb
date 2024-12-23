@@ -1,5 +1,21 @@
+# frozen_string_literal: true
+
+# Manages roles and associations with training programs, ensuring proper
+# access control and participation in various training initiatives.
 class Membership < ApplicationRecord
   include Memberships::Base
+  include Roles::Support
+
+  # Restrict available roles if needed
+  # roles_only :admin, :vendor, :employee
+
+  ROLES = {
+    admin: 0,
+    editor: 1,
+    coordinator: 2,
+    employee: 3,
+    vendor: 4
+  }.freeze
   # 🚅 add concerns above.
 
   # 🚅 add belongs_to associations above.

@@ -2,7 +2,7 @@
 
    The $ThemeStylesheet path is evaluated via a postcss resolver, which finds the theme's
    main stylesheet within the theme's gem.
-   
+
    To control the order of the tailwindcss imports further, you can eject the theme's
    stylesheet locally using the following command, which will take precedence.
    > rake bullet_train:themes:light:eject_css
@@ -15,3 +15,105 @@
 /* If you need to customize your application's CSS, this is the place to do it. This helps
    avoid merge conflicts in the future when Rails or Bullet Train update their own CSS.
 */
+
+/*
+initializer 'theme.assets' do |app|
+#   # Custom theme colors
+#   app.config.theme_colors = {
+#     'theme-safety_education': {
+#       # Professional Blues (Primary)
+#       primary: {
+#         '50': '#F0F7FF',
+#         '100': '#E0EFFF',
+#         '200': '#B8DBFF',
+#         '300': '#8AC2FF',
+#         '400': '#5CA8FF',
+#         '500': '#2E8FFF',
+#         '600': '#0066E3',
+#         '700': '#004DB3',
+#         '800': '#003783',
+#         '900': '#002154'
+#       },
+#       # Educational Greens (Secondary)
+#       secondary: {
+#         '50': '#F0FDF4',
+#         '100': '#DCFCE7',
+#         '200': '#BBF7D0',
+#         '300': '#86EFAC',
+#         '400': '#4ADE80',
+#         '500': '#22C55E',
+#         '600': '#16A34A',
+#         '700': '#15803D',
+#         '800': '#166534',
+#         '900': '#14532D'
+#       }
+#     }
+#   }
+# end
+# # Primary colors - Professional blues for trust and reliability
+# # {
+# #   'theme-vendorsafe-theme': {
+# #     '--primary-50': '#F0F7FF',
+# #     '--primary-100': '#E0EFFF',
+# #     '--primary-200': '#B8DBFF',
+# #     '--primary-300': '#8AC2FF',
+# #     '--primary-400': '#5CA8FF',
+# #     '--primary-500': '#2E8FFF',
+# #     '--primary-600': '#0066E3',
+# #     '--primary-700': '#004DB3',
+# #     '--primary-800': '#003783',
+# #     '--primary-900': '#002154',
+
+# #     # Secondary colors - Supportive greens for growth and learning
+# #     '--secondary-50': '#F0FDF4',
+# #     '--secondary-100': '#DCFCE7',
+# #     '--secondary-200': '#BBF7D0',
+# #     '--secondary-300': '#86EFAC',
+# #     '--secondary-400': '#4ADE80',
+# #     '--secondary-500': '#22C55E',
+# #     '--secondary-600': '#16A34A',
+# #     '--secondary-700': '#15803D',
+# #     '--secondary-800': '#166534',
+# #     '--secondary-900': '#14532D',
+
+# #     # Accent colors - Warm grays for balance
+# #     '--tertiary-50': '#FAFAFA',
+# #     '--tertiary-100': '#F4F4F5',
+# #     '--tertiary-200': '#E4E4E7',
+# #     '--tertiary-300': '#D4D4D8',
+# #     '--tertiary-400': '#A1A1AA',
+# #     '--tertiary-500': '#71717A',
+# #     '--tertiary-600': '#52525B',
+# #     '--tertiary-700': '#3F3F46',
+# #     '--tertiary-800': '#27272A',
+# #     '--tertiary-900': '#18181B'
+# #   }
+# # } */
+
+/* Custom theme colors */
+/* .theme-vendorsafe {
+  --primary-50: #F0F7FF;
+  --primary-100: #E0EFFF;
+  --primary-200: #B8DBFF;
+  --primary-300: #8AC2FF;
+  --primary-400: #5CA8FF;
+  --primary-500: #2E8FFF;
+  --primary-600: #0066E3;
+  --primary-700: #004DB3;
+  --primary-800: #003783;
+  --primary-900: #002154;
+
+  --secondary-50: #F0FDF4;
+  --secondary-100: #DCFCE7;
+  --secondary-200: #BBF7D0;
+  --secondary-300: #86EFAC;
+  --secondary-400: #4ADE80;
+  --secondary-500: #22C55E;
+  --secondary-600: #16A34A;
+  --secondary-700: #15803D;
+  --secondary-800: #166534;
+  --secondary-900: #14532D;
+}
+ */
+
+

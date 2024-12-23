@@ -1,0 +1,9 @@
+
+[
+  {
+    "key": "ctrl+alt+cmd+/",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Run bin/dev",
+    "when": "editorTextFocus"
+  }
+]

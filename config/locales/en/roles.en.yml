@@ -1,0 +1,14 @@
+en:
+  roles:
+    admin: Administrator
+    editor: Editor
+    coordinator: Coordinator
+    employee: Employee
+    vendor: Vendor
+    labels:
+      default: Member
+      admin: Administrator
+      editor: Editor
+      coordinator: Coordinator
+      employee: Employee
+      vendor: Vendor
