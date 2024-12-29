@@ -1,3 +1,4 @@
+# "default:" roles apply to every user in the system.
 default:
   models:
     TrainingQuestion: read
@@ -19,16 +20,14 @@ default:
       - destroy
     # Add any models all users should be able to read
 
-vendor:
-  manageable_roles:
-    - vendor
-  models:
-    Scaffolding::CompletelyConcrete::TangibleThing: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcept:
-      - read
-      - update
-    # Add models that vendors should have access to
-    TrainingProgram: read
+# Under each role (like "employee", "vendor", etc.), "manageable_roles" lists
+# what roles they can assign to others.
+# The "models" define which actions (read, manage, update) the role can perform on each model.
+
+# For "employee":
+# - "manageable_roles: - employee" means employees can manage other employees' roles.
+# - "models: ... manage ... read ... update" means employees can create, update,
+#   or otherwise manage listed models if they have the correct permissions.
 
 employee:
   manageable_roles:
@@ -41,12 +40,16 @@ employee:
     # Add models that employees should have access to
     TrainingProgram: read
 
-coordinator:
+vendor:
+  manageable_roles:
+    - vendor
   models:
     Scaffolding::CompletelyConcrete::TangibleThing: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept:
       - read
       - update
+    # Add models that vendors should have access to
+    TrainingProgram: read
 
 editor:
   models:
@@ -54,6 +57,17 @@ editor:
     Scaffolding::AbsolutelyAbstract::CreativeConcept:
       - read
       - update
+
+coordinator:
+  models:
+    Scaffolding::CompletelyConcrete::TangibleThing: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcept:
+      - read
+      - update
+
+# "includes:" merges permissions from other roles into this one.
+# In "admin:", it includes "editor", "vendor", and "employee".
+# Essentially, "admin" inherits all privileges from those roles.
 
 admin:
   includes:
@@ -73,3 +87,8 @@ admin:
     Team: manage
     Membership: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
+
+# Bullet Train processes this file to build the authorization rules.
+# Whenever the application checks if a user can perform an action,
+# Bullet Train consults the appropriate role(s) defined here.
+# This happens at runtime when evaluating permissions in controllers, views, or policies.
