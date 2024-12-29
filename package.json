@@ -43,9 +43,5 @@
     "concat-bullet-train-readmes": "node scripts/concat-readmes.js",
     "bs": "browser-sync start --config browser-sync.config.js"
   },
-  "packageManager": "yarn@4.2.2",
-  "devDependencies": {
-    "browser-sync": "^3.0.3",
-    "genaiscript": "^1.86.4"
-  }
+  "packageManager": "yarn@4.2.2"
 }
