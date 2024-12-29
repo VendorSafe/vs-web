@@ -21,6 +21,7 @@
     "cable_ready": "^5.0.5",
     "dragula": "^3.7.3",
     "esbuild": "^0.24.0",
+    "flowbite": "^2.5.2",
     "glob": "^10.3.12",
     "jstz": "^2.1.1",
     "postcss": "^8.4.38",
@@ -36,10 +37,15 @@
   "scripts": {
     "heroku-postbuild": "echo 'This step prevents Heroku from trying to run `yarn build` before ruby and bundler are available. The asset pipeline will call it as part of asset precompilation.'",
     "build": "THEME=\"light\" node esbuild.config.js",
-    "build:css": "bin/link; THEME=\"light\" yarn build; yarn light:build:css; yarn light:build:mailer:css",
+    "build:css": "bin/link; THEME=\"light\" yarn build --reload; yarn light:build:css; yarn light:build:mailer:css",
     "light:build:css": "THEME=\"light\" NODE_PATH=./node_modules tailwindcss -c tailwind.config.js -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.light.css --postcss ./postcss.config.js",
-    "light:build:mailer:css": "THEME=\"light\" NODE_PATH=./node_modules tailwindcss -c $(bundle exec bin/theme tailwind-mailer-config light) -i $(bundle exec bin/theme tailwind-stylesheet light) -o ./app/assets/builds/application.mailer.light.css --postcss ./postcss.mailer.config.js",
-    "concat-bullet-train-readmes": "node scripts/concat-readmes.js"
+    "light:build:mailer:css": "THEME=\"light\" NODE_PATH=./node_modules tailwindcss -c /Users/sarda/.asdf/installs/ruby/3.3.6/lib/ruby/gems/3.3.0/gems/bullet_train-themes-light-1.12.0/tailwind.mailer.light.config.js -i /Users/sarda/Projects/vs-web/app/assets/stylesheets/light.tailwind.css -o ./app/assets/builds/application.mailer.light.css --postcss /Users/sarda/.asdf/installs/ruby/3.3.6/lib/ruby/gems/3.3.0/gems/bullet_train-themes-light-1.12.0/tailwind.mailer.light.config.js",
+    "concat-bullet-train-readmes": "node scripts/concat-readmes.js",
+    "bs": "browser-sync start --config browser-sync.config.js"
   },
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "yarn@4.2.2",
+  "devDependencies": {
+    "browser-sync": "^3.0.3",
+    "genaiscript": "^1.86.4"
+  }
 }

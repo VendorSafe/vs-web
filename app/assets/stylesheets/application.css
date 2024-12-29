@@ -9,89 +9,20 @@
 
    Read more: https://bullettrain.co/docs/stylesheets
 */
+
+/* app/assets/stylesheets/application.css */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;700&display=swap');
+
 @import "$ThemeStylesheet";
+@tailwind base;
 
 /* ✅ YOUR APPLICATION'S CSS */
 /* If you need to customize your application's CSS, this is the place to do it. This helps
    avoid merge conflicts in the future when Rails or Bullet Train update their own CSS.
 */
 
-/*
-initializer 'theme.assets' do |app|
-#   # Custom theme colors
-#   app.config.theme_colors = {
-#     'theme-safety_education': {
-#       # Professional Blues (Primary)
-#       primary: {
-#         '50': '#F0F7FF',
-#         '100': '#E0EFFF',
-#         '200': '#B8DBFF',
-#         '300': '#8AC2FF',
-#         '400': '#5CA8FF',
-#         '500': '#2E8FFF',
-#         '600': '#0066E3',
-#         '700': '#004DB3',
-#         '800': '#003783',
-#         '900': '#002154'
-#       },
-#       # Educational Greens (Secondary)
-#       secondary: {
-#         '50': '#F0FDF4',
-#         '100': '#DCFCE7',
-#         '200': '#BBF7D0',
-#         '300': '#86EFAC',
-#         '400': '#4ADE80',
-#         '500': '#22C55E',
-#         '600': '#16A34A',
-#         '700': '#15803D',
-#         '800': '#166534',
-#         '900': '#14532D'
-#       }
-#     }
-#   }
-# end
-# # Primary colors - Professional blues for trust and reliability
-# # {
-# #   'theme-vendorsafe-theme': {
-# #     '--primary-50': '#F0F7FF',
-# #     '--primary-100': '#E0EFFF',
-# #     '--primary-200': '#B8DBFF',
-# #     '--primary-300': '#8AC2FF',
-# #     '--primary-400': '#5CA8FF',
-# #     '--primary-500': '#2E8FFF',
-# #     '--primary-600': '#0066E3',
-# #     '--primary-700': '#004DB3',
-# #     '--primary-800': '#003783',
-# #     '--primary-900': '#002154',
-
-# #     # Secondary colors - Supportive greens for growth and learning
-# #     '--secondary-50': '#F0FDF4',
-# #     '--secondary-100': '#DCFCE7',
-# #     '--secondary-200': '#BBF7D0',
-# #     '--secondary-300': '#86EFAC',
-# #     '--secondary-400': '#4ADE80',
-# #     '--secondary-500': '#22C55E',
-# #     '--secondary-600': '#16A34A',
-# #     '--secondary-700': '#15803D',
-# #     '--secondary-800': '#166534',
-# #     '--secondary-900': '#14532D',
-
-# #     # Accent colors - Warm grays for balance
-# #     '--tertiary-50': '#FAFAFA',
-# #     '--tertiary-100': '#F4F4F5',
-# #     '--tertiary-200': '#E4E4E7',
-# #     '--tertiary-300': '#D4D4D8',
-# #     '--tertiary-400': '#A1A1AA',
-# #     '--tertiary-500': '#71717A',
-# #     '--tertiary-600': '#52525B',
-# #     '--tertiary-700': '#3F3F46',
-# #     '--tertiary-800': '#27272A',
-# #     '--tertiary-900': '#18181B'
-# #   }
-# # } */
-
 /* Custom theme colors */
-/* .theme-vendorsafe {
+.theme-vendorsafe {
   --primary-50: #F0F7FF;
   --primary-100: #E0EFFF;
   --primary-200: #B8DBFF;
@@ -113,7 +44,819 @@ initializer 'theme.assets' do |app|
   --secondary-700: #15803D;
   --secondary-800: #166534;
   --secondary-900: #14532D;
+
+  --danger-50: #FFF1F2;
+  --danger-100: #FFE4E6;
+  --danger-200: #FECDD3;
+  --danger-300: #FDA4AF;
+  --danger-400: #FB7185;
+  --danger-500: #F43F5E;
+  --danger-600: #E11D48;
+  --danger-700: #BE123C;
+  --danger-800: #9F1239;
+  --danger-900: #881337;
+
+  --warning-50: #FFFAEB;
+  --warning-100: #FEF3C7;
+  --warning-200: #FDE68A;
+  --warning-300: #FCD34D;
+  --warning-400: #FBBF24;
+  --warning-500: #F59E0B;
+  --warning-600: #D97706;
+  --warning-700: #B45309;
+  --warning-800: #92400E;
+  --warning-900: #78350F;
 }
- */
+
+/* Custom font sizes */
+body {
+  font-size: var(--font-base);
+}
+
+h1 {
+  font-size: var(--font-4xl);
+}
+
+h2 {
+  font-size: var(--font-3xl);
+}
+
+/* @layer components {
+  .text-2xs {
+    font-size: 0.625rem;
+  }
+} */
+
+/* ---------------------------------- */
+
+/* EdX Custom Theme */
+.theme-edx {
+   /* Primary Color Palette */
+   --primary-50: #F0F4F8;
+   --primary-100: #D9E8F5;
+   --primary-200: #B8D1EC;
+   --primary-300: #8AB5E1;
+   --primary-400: #5B9AD6;
+   --primary-500: #2E7FCB;
+   /* Main EdX Blue */
+   --primary-600: #1F6CAD;
+   --primary-700: #135690;
+   --primary-800: #0A4173;
+   --primary-900: #022B4E;
+
+   /* Secondary Color Palette */
+   --secondary-50: #F5E6EF;
+   --secondary-100: #EBC0D9;
+   --secondary-200: #E190C2;
+   --secondary-300: #D660AC;
+   --secondary-400: #CC3096;
+   --secondary-500: #B82669;
+   /* EdX Maroon */
+   --secondary-600: #9A1E57;
+   --secondary-700: #7C1645;
+   --secondary-800: #5E0E33;
+   --secondary-900: #400622;
+
+   /* Danger Color Palette */
+   --danger-50: #FFE8ED;
+   --danger-100: #FFD0D9;
+   --danger-200: #FFA6B6;
+   --danger-300: #FF7C92;
+   --danger-400: #FF526F;
+   --danger-500: #FF284B;
+   --danger-600: #D9163A;
+   --danger-700: #B30429;
+   --danger-800: #8C0220;
+   --danger-900: #660017;
+
+   /* Warning Color Palette */
+   --warning-50: #FFF4E5;
+   --warning-100: #FFE4C0;
+   --warning-200: #FFCD91;
+   --warning-300: #FFB661;
+   --warning-400: #FF9F32;
+   --warning-500: #FF8A00;
+   --warning-600: #D96F00;
+   --warning-700: #B35600;
+   --warning-800: #8C3E00;
+   --warning-900: #662D00;
+
+   /* Custom font sizes for EdX */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Open Sans', Arial, sans-serif;
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 600;
+      color: var(--primary-800);
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 500;
+      color: var(--primary-700);
+   }
+
+   /* Additional EdX-specific styling */
+   .edx-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 4px;
+      padding: 10px 15px;
+      transition: background-color 0.3s ease;
+   }
+
+   .edx-button:hover {
+      background-color: var(--primary-600);
+   }
+}
+
+/* ---------------------------------- */
+
+/* Coursera Custom Theme */
+.theme-coursera {
+   /* Primary Color Palette */
+   --primary-50: #E6F2FF;
+   --primary-100: #B3DBFF;
+   --primary-200: #80C4FF;
+   --primary-300: #4DADFF;
+   --primary-400: #1A96FF;
+   --primary-500: #0056D2;
+   /* Main Coursera Blue */
+   --primary-600: #0044A6;
+   --primary-700: #003379;
+   --primary-800: #00224D;
+   --primary-900: #001122;
+
+   /* Secondary Color Palette */
+   --secondary-50: #E6F5EA;
+   --secondary-100: #B8E2C1;
+   --secondary-200: #8ACF97;
+   --secondary-300: #5CBC6E;
+   --secondary-400: #2CA945;
+   --secondary-500: #1E7E34;
+   /* Coursera Green */
+   --secondary-600: #166627;
+   --secondary-700: #0E4D1A;
+   --secondary-800: #06330D;
+   --secondary-900: #021A06;
+
+   /* Danger Color Palette */
+   --danger-50: #FFE6E6;
+   --danger-100: #FFB3B3;
+   --danger-200: #FF8080;
+   --danger-300: #FF4D4D;
+   --danger-400: #FF1A1A;
+   --danger-500: #CC0000;
+   --danger-600: #A30000;
+   --danger-700: #7A0000;
+   --danger-800: #510000;
+   --danger-900: #280000;
+
+   /* Warning Color Palette */
+   --warning-50: #FFF5E6;
+   --warning-100: #FFE0B3;
+   --warning-200: #FFCC80;
+   --warning-300: #FFB84D;
+   --warning-400: #FFA31A;
+   --warning-500: #CC8400;
+   --warning-600: #A36A00;
+   --warning-700: #7A5000;
+   --warning-800: #513600;
+   --warning-900: #281B00;
+
+   /* Custom font sizes for Coursera */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      line-height: 1.6;
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-800);
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--primary-700);
+   }
+
+   /* Coursera-specific button styling */
+   .coursera-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 5px;
+      padding: 12px 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease;
+   }
+
+   .coursera-button:hover {
+      background-color: var(--primary-600);
+   }
+}
+
+/* ---------------------------------- */
+
+/* Khan Academy Custom Theme */
+.theme-khanacademy {
+   /* Primary Color Palette */
+   --primary-50: #F0F5E6;
+   --primary-100: #D6E6BD;
+   --primary-200: #BCD794;
+   --primary-300: #A2C86B;
+   --primary-400: #88B942;
+   --primary-500: #9cb443;
+   --primary-600: #7E9636;
+   --primary-700: #5F7229;
+   --primary-800: #404D1C;
+   --primary-900: #21290F;
+
+   /* Secondary Color Palette */
+   --secondary-50: #E6EAF0;
+   --secondary-100: #B8C2D1;
+   --secondary-200: #8A9AB3;
+   --secondary-300: #5C7294;
+   --secondary-400: #2E4A75;
+   --secondary-500: #242f3a;
+   --secondary-600: #1D2631;
+   --secondary-700: #161D27;
+   --secondary-800: #0F141D;
+   --secondary-900: #080B12;
+
+   /* Replacing Accent Color Palette */
+   --tertiary-50: #FFE6E6;
+   --tertiary-100: #FFB3B3;
+   --tertiary-200: #FF8080;
+   --tertiary-300: #FF4D4D;
+   --tertiary-400: #FF1A1A;
+   --tertiary-500: #E63946;
+   --tertiary-600: #B71C1C;
+   --tertiary-700: #8B0000;
+   --tertiary-800: #5C0000;
+   --tertiary-900: #2D0000;
+
+   /* Replacing Learning Color Palette */
+   --info-50: #E6F3FF;
+   --info-100: #B3DBFF;
+   --info-200: #80C4FF;
+   --info-300: #4DADFF;
+   --info-400: #1A96FF;
+   --info-500: #0077CC;
+   --info-600: #005FAD;
+   --info-700: #00478E;
+   --info-800: #002F5F;
+   --info-900: #001730;
+
+   /* Custom font sizes for Khan Academy */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--secondary-500);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-600);
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--primary-500);
+   }
+
+   /* Khan Academy-specific button styling */
+   .khan-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-weight: 600;
+      text-transform: capitalize;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+   }
+
+   .khan-button:hover {
+      background-color: var(--primary-600);
+      transform: translateY(-2px);
+   }
+}
+/* ---------------------------------- */
+
+/* Udemy Custom Theme */
+.theme-udemy {
+   /* Primary Color Palette */
+   --primary-50: #F0E6F9;
+   --primary-100: #D1B3EC;
+   --primary-200: #B380E0;
+   --primary-300: #944DD3;
+   --primary-400: #751AC7;
+   --primary-500: #39257C;
+   /* Main Udemy Deep Purple */
+   --primary-600: #2E1E62;
+   --primary-700: #231648;
+   --primary-800: #180E2E;
+   --primary-900: #0D0714;
+
+   /* Secondary Color Palette */
+   --secondary-50: #E6F2FF;
+   --secondary-100: #B3DBFF;
+   --secondary-200: #80C4FF;
+   --secondary-300: #4DA7FF;
+   --secondary-400: #1A8EFF;
+   --secondary-500: #0077CC;
+   /* Udemy Bright Blue */
+   --secondary-600: #005FAD;
+   --secondary-700: #00478E;
+   --secondary-800: #002F5F;
+   --secondary-900: #001730;
+
+   /* Replacing Accent Color Palette */
+   --tertiary-50: #FFF0E6;
+   --tertiary-100: #FFD1B3;
+   --tertiary-200: #FFB380;
+   --tertiary-300: #FF944D;
+   --tertiary-400: #FF751A;
+   --tertiary-500: #E65C00;
+   --tertiary-600: #B34700;
+   --tertiary-700: #7A3100;
+   --tertiary-800: #511C00;
+   --tertiary-900: #280E00;
+
+   /* Custom font sizes for Udemy */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Open Sans', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--primary-900);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: -1px;
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--primary-700);
+   }
+
+   /* Udemy-specific button styling */
+   .udemy-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 4px;
+      padding: 12px 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, box-shadow 0.2s ease;
+   }
+
+   .udemy-button:hover {
+      background-color: var(--primary-600);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   }
+}
+
+/* ---------------------------------- */
+
+/* LinkedIn Learning Custom Theme */
+.theme-linkedinlearning {
+   /* Primary Color Palette */
+   --primary-50: #E6F2FF;
+   --primary-100: #B3DBFF;
+   --primary-200: #80C4FF;
+   --primary-300: #4DADFF;
+   --primary-400: #1A96FF;
+   --primary-500: #0A66C2;
+   /* LinkedIn Blue */
+   --primary-600: #084C8F;
+   --primary-700: #06325C;
+   --primary-800: #041829;
+   --primary-900: #020C12;
+
+   /* Secondary Color Palette */
+   --secondary-50: #F0F7FF;
+   --secondary-100: #B8DBFF;
+   --secondary-200: #8AC2FF;
+   --secondary-300: #5CA8FF;
+   --secondary-400: #2E8FFF;
+   --secondary-500: #5E9EFF;
+   /* Soft Learning Blue */
+   --secondary-600: #4A7FCC;
+   --secondary-700: #365F99;
+   --secondary-800: #234066;
+   --secondary-900: #0F2033;
+
+   /* Accent Color Palette */
+   --accent-50: #FFF5E6;
+   --accent-100: #FFE0B3;
+   --accent-200: #FFCC80;
+   --accent-300: #FFB84D;
+   --accent-400: #FFA31A;
+   --accent-500: #F5A623;
+   /* Professional Orange */
+   --accent-600: #C28400;
+   --accent-700: #8F6000;
+   --accent-800: #5C3C00;
+   --accent-900: #291800;
+
+   /* Custom font sizes for LinkedIn Learning */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'LinkedIn Sans', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--primary-900);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: -0.5px;
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--primary-700);
+      color: var(--);
+   }
+
+   /* LinkedIn Learning-specific button styling */
+   .linkedin-learning-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 3px;
+      padding: 12px 18px;
+      font-weight: 600;
+      text-transform: capitalize;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+   }
+
+   .linkedin-learning-button:hover {
+      background-color: var(--primary-600);
+      transform: translateY(-2px);
+   }
+}
+
+/* ---------------------------------- */
+
+/* Skillshare Custom Theme */
+.theme-skillshare {
+   /* Primary Color Palette */
+   --primary-50: #E6FCF5;
+   --primary-100: #B3F5E0;
+   --primary-200: #80EECA;
+   --primary-300: #4DE7B5;
+   --primary-400: #1AE0A0;
+   --primary-500: #00FF84;
+   /* Vibrant Skillshare Green */
+   --primary-600: #00CC6A;
+   --primary-700: #009950;
+   --primary-800: #006636;
+   --primary-900: #00331C;
+
+   /* Secondary Color Palette */
+   --secondary-50: #E6F2FF;
+   --secondary-100: #B3D9FF;
+   --secondary-200: #80C0FF;
+   --secondary-300: #4DA7FF;
+   --secondary-400: #1A8EFF;
+   --secondary-500: #002333;
+   /* Deep Navy Skillshare Blue */
+   --secondary-600: #001A26;
+   --secondary-700: #001119;
+   --secondary-800: #000C0F;
+   --secondary-900: #000608;
 
 
+   /* Accent Color Palette */
+   --accent-50: #FFF0E6;
+   --accent-100: #FFD1B3;
+   --accent-200: #FFB380;
+   --accent-300: #FF944D;
+   --accent-400: #FF751A;
+   --accent-500: #F47B2A;
+   /* Creative Orange Accent */
+   --accent-600: #C35E1F;
+   --accent-700: #924314;
+   --accent-800: #612B0D;
+   --accent-900: #301606;
+
+   /* Custom font sizes for Skillshare */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--secondary-500);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: -0.5px;
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--secondary-500);
+   }
+
+   /* Skillshare-specific button styling */
+   .skillshare-button {
+      background-color: var(--primary-500);
+      color: var(--secondary-500);
+      border-radius: 6px;
+      padding: 12px 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+   }
+
+   .skillshare-button:hover {
+      background-color: var(--primary-600);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   }
+}
+
+/* ---------------------------------- */
+
+/* Udacity Custom Theme */
+.theme-udacity {
+   /* Primary Color Palette */
+   --primary-50: #E6E6FF;
+   --primary-100: #B3B3FF;
+   --primary-200: #8080FF;
+   --primary-300: #4D4DFF;
+   --primary-400: #1A1AFF;
+   --primary-500: #2015FF;
+   /* Udacity Vibrant Blue */
+   --primary-600: #1A11CC;
+   --primary-700: #130D99;
+   --primary-800: #0D0966;
+   --primary-900: #060533;
+
+   /* Secondary Color Palette */
+   --secondary-50: #F0F4F8;
+   --secondary-100: #D9E8F5;
+   --secondary-200: #B8D1EC;
+   --secondary-300: #8AB5E1;
+   --secondary-400: #5B9AD6;
+   --secondary-500: #2E4A75;
+   /* Deep Tech Blue */
+   --secondary-600: #1D2E4A;
+   --secondary-700: #0C1321;
+   --secondary-800: #060A12;
+   --secondary-900: #030509;
+
+   /* Accent Color Palette */
+   --accent-50: #FFF0E6;
+   --accent-100: #FFD1B3;
+   --accent-200: #FFB380;
+   --accent-300: #FF944D;
+   --accent-400: #FF751A;
+   --accent-500: #F47B2A;
+   /* Tech Orange Accent */
+   --accent-600: #C35E1F;
+   --accent-700: #924314;
+   --accent-800: #612B0D;
+   --accent-900: #301606;
+
+
+   /* Custom font sizes for Udacity */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Instrument Serif', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--secondary-500);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: -0.5px;
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--secondary-500);
+   }
+
+   /* Udacity-specific button styling */
+   .udacity-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 4px;
+      padding: 12px 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+   }
+
+   .udacity-button:hover {
+      background-color: var(--primary-600);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   }
+}
+
+/* ---------------------------------- */
+
+/* PluralSight Custom Theme */
+.theme-pluralsight {
+   /* Primary Color Palette */
+   --primary-50: #FFE6E6;
+   --primary-100: #FFB3B3;
+   --primary-200: #FF8080;
+   --primary-300: #FF4D4D;
+   --primary-400: #FF1A1A;
+   --primary-500: #F15B2A;
+   /* PluralSight Orange */
+   --primary-600: #CC4A23;
+   --primary-700: #A33A1C;
+   --primary-800: #7A2B15;
+   --primary-900: #511C0D;
+
+   /* Secondary Color Palette */
+   --secondary-50: #F0E6F9;
+   --secondary-100: #D1B3EC;
+   --secondary-200: #B380E0;
+   --secondary-300: #944DD3;
+   --secondary-400: #751AC7;
+   --secondary-500: #EC008C;
+   /* PluralSight Pink */
+   --secondary-600: #BC0070;
+   --secondary-700: #8C0054;
+   --secondary-800: #5C0038;
+   --secondary-900: #2C001C;
+
+   /* Accent Color Palette */
+   --accent-50: #E6F2FF;
+   --accent-100: #B3DBFF;
+   --accent-200: #80C4FF;
+   --accent-300: #4DADFF;
+   --accent-400: #1A96FF;
+   --accent-500: #0077CC;
+   /* Technical Blue */
+   --accent-600: #005FAD;
+   --accent-700: #00478E;
+   --accent-800: #002F5F;
+   --accent-900: #001730;
+
+   /* Custom font sizes for PluralSight */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Montserrat', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--secondary-900);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: -0.5px;
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--secondary-500);
+   }
+
+   /* PluralSight-specific button styling */
+   .pluralsight-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 5px;
+      padding: 12px 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+   }
+
+   .pluralsight-button:hover {
+      background-color: var(--primary-600);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   }
+}
+
+/* ---------------------------------- */
+
+/* MasterClass Custom Theme */
+.theme-masterclass {
+   /* Primary Color Palette */
+   --primary-50: #F5E6E6;
+   --primary-100: #E6B3B3;
+   --primary-200: #D68080;
+   --primary-300: #C74D4D;
+   --primary-400: #B81A1A;
+   --primary-500: #8B0000;
+   /* Deep Burgundy Red */
+   --primary-600: #6E0000;
+   --primary-700: #510000;
+   --primary-800: #340000;
+   --primary-900: #170000;
+
+   /* Secondary Color Palette */
+   --secondary-50: #F5F5F5;
+   --secondary-100: #E6E6E6;
+   --secondary-200: #D6D6D6;
+   --secondary-300: #C7C7C7;
+   --secondary-400: #B8B8B8;
+   --secondary-500: #2E2E2E;
+   /* Charcoal Gray */
+   --secondary-600: #1F1F1F;
+   --secondary-700: #101010;
+   --secondary-800: #080808;
+   --secondary-900: #000000;
+
+   /* Accent Color Palette */
+   --accent-50: #FFF5E6;
+   --accent-100: #FFE6B3;
+   --accent-200: #FFD680;
+   --accent-300: #FFC74D;
+   --accent-400: #FFB81A;
+   --accent-500: #F5A623;
+   /* Warm Gold Accent */
+   --accent-600: #C28400;
+   --accent-700: #8F6000;
+   --accent-800: #5C3C00;
+   --accent-900: #291800;
+
+   /* Custom font sizes for MasterClass */
+   body {
+      font-size: var(--font-base, 16px);
+      font-family: 'Optima', 'Palatino Linotype', serif;
+      line-height: 1.6;
+      color: var(--secondary-500);
+   }
+
+   h1 {
+      font-size: var(--font-4xl, 2.5rem);
+      font-weight: 700;
+      color: var(--primary-500);
+      letter-spacing: -0.5px;
+      font-family: 'Optima', serif;
+   }
+
+   h2 {
+      font-size: var(--font-3xl, 2rem);
+      font-weight: 600;
+      color: var(--secondary-500);
+      font-family: 'Optima', serif;
+   }
+
+   /* MasterClass-specific button styling */
+   .masterclass-button {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 3px;
+      padding: 12px 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+   }
+
+   .masterclass-button:hover {
+      background-color: var(--primary-600);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   }
+
+}
+
+
+/* h1, h2, h3, h4, h5, h6 {
+  font-family: 'Instrument Serif', serif !important;
+} */
+/* Extend base styles for header tags */
+@layer base {
+   h1, h2, h3, h4, h5, h6 {
+     @apply font-serif !important;
+   }
+ }

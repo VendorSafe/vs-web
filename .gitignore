@@ -7,6 +7,8 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+*.zip
+
 # Ignore bundler config.
 /.bundle
 
@@ -58,6 +60,9 @@ yalc.lock
 
 Untitled
 .DS_Store
+
+#GenAIScripts
+.genaiscript*
 
 # Ignore application configuration
 /config/application.yml

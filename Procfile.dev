@@ -1,6 +1,7 @@
-web: bin/rails server -p 3000
-worker: bundle exec sidekiq -t 25
+web: THEME="light" DISABLE_SPRING="TRUE" bin/rails server -p 3000
+worker: THEME="light" bundle exec sidekiq -t 25
 js: THEME="light" yarn build --watch
-light-css: yarn light:build:css --watch
-light-mailer-css: yarn light:build:mailer:css --watch
+light-css: THEME="light" yarn light:build:css --watch
+light-mailer-css: THEME="light" yarn light:build:mailer:css --watch
+# bs: yarn bs
 # ngrok: ngrok http 3000
