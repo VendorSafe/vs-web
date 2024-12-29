@@ -2,7 +2,28 @@ en:
   memberships:
     fields:
       _:
+      role_ids:
+        options:
+          default:
+            label: Viewer
+            description: Can only view team data
+          admin:
+            label: Team Administrator
+            description: Team administrators can manage billing and manage special privileges for other users.
+          editor:
+            label: Editor
+            description: Can edit all resources on this team and allow others to do the same.
+          coordinator:
+            label: Coordinator
+            description: Can manage all resources on this team and allow others to do the same.
+          employee:
+            label: Employee
+            description: Can manage all resources on this team and allow others to do the same.
+          vendor:
+            label: Vendor
+            description: Manages team(s) of their employees.
       # 🚅 super scaffolding will insert new fields above this line.
+
   activerecord:
     attributes:
       membership:
