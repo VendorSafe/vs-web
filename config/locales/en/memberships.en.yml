@@ -1,8 +1,7 @@
 en:
   memberships:
     fields:
-      _:
-      role_ids:
+      role_ids: &role_ids
         options:
           default:
             label: Viewer
@@ -22,6 +21,7 @@ en:
           vendor:
             label: Vendor
             description: Manages team(s) of their employees.
+      _:
       # 🚅 super scaffolding will insert new fields above this line.
 
   activerecord:
@@ -29,3 +29,16 @@ en:
       membership:
         _:
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
+
+  # en.account.memberships.show.fields.role_ids.options.employee.label
+  # en.account.memberships.form.fields.role_ids.options.employee.labe
+  account:
+    memberships:
+      form:
+        fields:
+          role_ids:
+            <<: *role_ids
+      show:
+        fields:
+          role_ids:
+            <<: *role_ids
