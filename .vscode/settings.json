@@ -1,20 +1,19 @@
 {
-    "github.copilot.advanced": {
-        "useLanguageServer": true
-
-    },
+    // "github.copilot.advanced": {
+    //     // Description: "Enable the Copilot extension to provide code completions and suggestions."
+    //     "useLanguageServer": false
+    // },
     "github.copilot.editor.enableAutoCompletions": true,
-    "github.copilot.editor.enableCodeActions":true,
+    "github.copilot.editor.enableCodeActions": true,
     "github.copilot.chat.codeGeneration.useInstructionFiles": true,
     "github.copilot.chat.codeGeneration.instructions": [
-
         {
             "text": "Always consider the bullet train rails boilerplate's approach first.",
             //"file": "copilot-instructions.md"
         }
     ],
-    "editor.formatOnSave": true,
     "ruby.rubocop.onSave": false,
+    "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
         // "source.fixAll": "always"
     },

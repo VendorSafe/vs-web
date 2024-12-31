@@ -5,11 +5,13 @@
 # The application's main color scheme.
 # BulletTrain::Themes::Light.color = :pluralsight
 # BulletTrain::Themes::Light.color = :edx
-BulletTrain::Themes::Light.color = :masterclass
+BulletTrain::Themes::Light.color = :edx
 # BulletTrain::Themes::Light.color = :udemy
 # BulletTrain::Themes::Light.color = :linkedinlearning
 # BulletTrain::Themes::Light.color = :skillshare
 # BulletTrain::Themes::Light.color = :udacity
+# BulletTrain::Themes::Light.color = :coursera
+# BulletTrain::Themes::Light.color = :khanacademy
 
 # The orientation of the navbar.
 # BulletTrain::Themes::Light.navigation = :left

@@ -104,18 +104,31 @@ h2 {
    --primary-800: #0A4173;
    --primary-900: #022B4E;
 
-   /* Secondary Color Palette */
-   --secondary-50: #F5E6EF;
+   /* Warning Color Palette */
+   --secondary-50: #FFF4E5;
+   --secondary-100: #FFE4C0;
+   --secondary-200: #FFCD91;
+   --secondary-300: #FFB661;
+   --secondary-400: #FF9F32;
+   --secondary-500: #FF8A00;
+   --secondary-600: #D96F00;
+   --secondary-700: #B35600;
+   --secondary-800: #8C3E00;
+   --secondary-900: #662D00;
+
+
+   /* Secondary Color Palette
+    --secondary-50: #F5E6EF;
    --secondary-100: #EBC0D9;
    --secondary-200: #E190C2;
    --secondary-300: #D660AC;
    --secondary-400: #CC3096;
    --secondary-500: #B82669;
-   /* EdX Maroon */
+   / * EdX Maroon * /
    --secondary-600: #9A1E57;
    --secondary-700: #7C1645;
    --secondary-800: #5E0E33;
-   --secondary-900: #400622;
+   --secondary-900: #400622; */
 
    /* Danger Color Palette */
    --danger-50: #FFE8ED;
@@ -855,8 +868,8 @@ h2 {
   font-family: 'Instrument Serif', serif !important;
 } */
 /* Extend base styles for header tags */
-@layer base {
+/* @layer base {
    h1, h2, h3, h4, h5, h6 {
      @apply font-serif !important;
    }
- }
+ } */
