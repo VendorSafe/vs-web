@@ -14,50 +14,54 @@ namespace :db do
     # puts "Debug 3: " + can? :manage, @training_program
     # puts "Debug 4: " + can? :read, @training_program
 
-      user_admin = create_user_and_team(
-        "jcsarda+admin@gmail.com",
-        "Dev Team",
-        "dev",
-        [Role.admin.id]
-       )
+    user_admin = create_user_and_team(
+      "jcsarda+admin@gmail.com",
+      "Dev Team",
+      "dev",
+      [Role.admin.id]
+    )
 
-       # Seed Demo Users & Teams
-       [
-       # TODO: Seed Vendor Employee Team
-        create_user_and_team(
-          "jcsarda+mmoservendor1@gmail.com",
-          "M. Moser - Vendor Team 1",
-          "mmoser-vendor-1",
-          [Role.vendor.id]
-        ),
+    puts "🌱 Debugging Roles:\n\n #{Role.all.pretty_inspect}"
 
-        # TODO: Seed Vendor Manager Team
-        create_user_and_team(
-          "jcsarda+mmoservendor2@gmail.com",
-          "M. Moser - Vendor Team 2",
-          "mmoser-vendor-2",
-          [Role.employee.id]
-        ),
+    # Seed Demo Users & Teams
+    demo_teams = [
+      # TODO: Seed Vendor Employee Team
+      create_user_and_team(
+        "jcsarda+mmoservendor1@gmail.com",
+        "M. Moser - Vendor Team 1",
+        "mmoser-vendor-1",
+        [Role.find("vendor").id]
+      ),
 
-        # TODO: Seed Vendor Admin Team
-        # Probably not necessary
-        create_user_and_team(
-          "jcsarda+mmoservendor3@gmail.com",
-          "M. Moser - Vendor Team 3",
-          "mmoser-vendor-3",
-          [Role.admin.id]
-        )
-  ].each do |user|
-    seed_mmoser_training_program(user_admin.current_team)
-  end
+      # TODO: Seed Vendor Manager Team
+      create_user_and_team(
+        "jcsarda+mmoservendor2@gmail.com",
+        "M. Moser - Vendor Team 2",
+        "mmoser-vendor-2",
+        [Role.find("vendor").id]
+      ),
 
-      seed_training_programs 3, user_admin.current_team
-
-      # PacifiCorp Training Program Demo
-      TrainingProgram.create!(
-        name: "(DEMO) PacifiCorp Safety Training",
-        team: user_admin.current_team
+      # TODO: Seed Vendor Admin Team
+      # Probably not necessary
+      create_user_and_team(
+        "jcsarda+mmoservendor3@gmail.com",
+        "M. Moser - Vendor Team 3",
+        "mmoser-vendor-3",
+        [Role.find("vendor").id]
       )
+    ]
+
+    demo_teams.each do |user|
+      seed_mmoser_training_program(user.current_team)
+    end
+
+    seed_training_programs 3, user_admin.current_team
+
+    # PacifiCorp Training Program Demo
+    TrainingProgram.create!(
+      name: "(DEMO) PacifiCorp Safety Training",
+      team: user_admin.current_team
+    )
 
     # rescue Exception => e
     #   puts "An error occurred while seeding the training programs: #{e.message} \n#{e.to_json} \n#{e.inspect}"
