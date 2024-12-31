@@ -10,6 +10,17 @@
         <% end %>
 
         <% box.body do %>
+
+          <iframe
+            src="https://player.cloudinary.com/embed/?public_id=b58fc7aae3f4ea3adb902c2b1c36c7fe_mchucq&cloud_name=dp96vkvin&profile=VendorSafe-01"
+            width="640"
+            height="360"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            undefined
+            allowfullscreen
+            frameborder="0"
+          ></iframe>
+
           <% with_attribute_settings object: @training_program, strategy: :label do %>
             <%= render 'shared/attributes/text', attribute: :name %>
             <%= render 'shared/attributes/html', attribute: :description %>
