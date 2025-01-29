@@ -9,6 +9,18 @@ class Account::TrainingProgramsController < Account::ApplicationController
     # The @training_program is already set by the before_action
   end
 
+  # POST /account/training_programs/:id/start
+  def start
+    @training_program.start!
+    redirect_to account_training_program_path(@training_program), notice: "Training program has been started."
+  end
+
+  # POST /account/training_programs/:id/stop
+  def stop
+    @training_program.stop!
+    redirect_to account_training_program_path(@training_program), notice: "Training program has been stopped."
+  end
+
   private
 
   def set_training_program
