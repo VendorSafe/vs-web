@@ -1,8 +1,8 @@
 {
-    // "github.copilot.advanced": {
-    //     // Description: "Enable the Copilot extension to provide code completions and suggestions."
-    //     "useLanguageServer": false
-    // },
+    "github.copilot.advanced": {
+        // Description: "Enable the Copilot extension to provide code completions and suggestions."
+        "useLanguageServer": false
+    },
     "github.copilot.editor.enableAutoCompletions": true,
     "github.copilot.editor.enableCodeActions": true,
     "github.copilot.chat.codeGeneration.useInstructionFiles": true,
@@ -19,5 +19,16 @@
     },
     "[postcss]": {
         // "editor.acceptSuggestionOnEnter": "on"
-    }
+    },
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Vendorsafe Development",
+            "database": "vendorsafe_development",
+            "username": "sarda"
+        }
+    ]
 }

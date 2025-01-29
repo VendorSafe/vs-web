@@ -88,3 +88,4 @@ dump.rdb
 erd.pdf
 
 # 🚅 add your files to ignore here.
+.aider*

@@ -13,6 +13,15 @@ class Ability
       # inserts the appropriate `can` method calls here
       permit user, through: :memberships, parent: :team
 
+      # Training Program permissions for vendors and employees
+      if user.role_in?(['employee', 'vendor'])
+        can :read, TrainingProgram do |program|
+          user.memberships.joins(:training_memberships)
+              .where(training_memberships: { training_program: program })
+              .exists?
+        end
+      end
+
       # INDIVIDUAL USER PERMISSIONS.
       can :manage, User, id: user.id
       can :read, User, id: user.collaborating_user_ids

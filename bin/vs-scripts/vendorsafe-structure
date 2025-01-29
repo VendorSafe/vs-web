@@ -20,7 +20,7 @@ if [ "$REINIT" = "true" ]; then
 fi
 
 ####################################################
-# Misc Resources
+# Scaffold Resources
 ####################################################
 bundle exec rails g super_scaffold Facility Team name:text_field other_attribute:text_field url:text_field --navbar="ti ti-blackboard" --sortable
 # bundle exec rails g super_scaffold Page Facility,Team name:text_field path:text_field
@@ -37,6 +37,18 @@ bundle exec rails g super_scaffold:field Facility membership_id:super_select{cla
 ####################################################
 # bundle exec rails g model TrainingProgram name:string description:text status:string slides:json published_at:datetime deleted_at:datetime
 bundle exec rails g super_scaffold TrainingProgram Team name:text_field description:trix_editor status:text_field slides:text_area published_at:date_and_time_field --navbar="ti-book"
+
+# Add missing fields to TrainingProgram
+bundle exec rails g super_scaffold:field TrainingProgram \
+  customer_id:super_select{class_name=UserCustomer} \
+  title:text_field \
+  link:text_field \
+  passing:number_field \
+  price:number_field \
+  state:text_field \
+  certificate_valid_months:number_field \
+  certificate_valid_until:date_and_time_field \
+  deleted_at:date_and_time_field
 
 ####################################################
 #### TrainingContent
@@ -67,6 +79,92 @@ replace_valid_memberships() {
 }
 replace_valid_memberships
 
+####################################################
+#### Scaffolds for new tables:
+####################################################
+
+# LLM CODE NOTES:
+# We're going to be using cloudinary to host images and videos for these trainig programs.
+# This old implementation of a resource transformation queue is no longer needed.
+bundle exec rails g super_scaffold DeleteResourceQueue Team \
+  lock_id:number_field \
+  user_id:super_select{class_name=User} \
+  session_id:text_field \
+  resource_id:number_field \
+  resource:text_field \
+  status:text_field
+
+# NOTE: We're going to use the users, invitations, memberships, teams, roles, etc.,
+#       which bullet train's boilerplate comes with.
+bundle exec rails g super_scaffold EmployeeTrainingState Team \
+  training_access_id:super_select{class_name=TrainingAccess} \
+  tp_id:super_select{class_name=TrainingProgram} \
+  current_slide:number_field \
+  next_slide:number_field \
+  time_status:text_field \
+  time_remaining:number_field \
+  start_timer:date_and_time_field \
+  end_timer:date_and_time_field \
+  paused:boolean_field \
+  pause_start:date_and_time_field \
+  remain_time_pause:number_field \
+  passed_status:text_field \
+  end_time:date_and_time_field \
+  time_offset:number_field \
+  ratio:float_field \
+  certificate_id:text_field \
+  valid_until:date_and_time_field
+
+bundle exec rails g super_scaffold EncodingQueue Team \
+  encoding_status:text_field \
+  from_path:text_field \
+  to_path:text_field \
+  url:text_field \
+  item_type:text_field
+
+bundle exec rails g super_scaffold Link Team \
+  training_program_id:super_select{class_name=TrainingProgram} \
+  link:text_field \
+  trainings:number_field \
+  trainings_used:number_field \
+  comment:text_field
+
+bundle exec rails g super_scaffold LockResource Team \
+  user_id:super_select{class_name=User} \
+  session_id:text_field \
+  resource:text_field \
+  resource_id:number_field \
+  status:text_field
+
+bundle exec rails g super_scaffold MigrationVersion Team \
+  version:text_field
+
+bundle exec rails g super_scaffold Payment Team \
+  user_id:super_select{class_name=User} \
+  training_program_id:super_select{class_name=TrainingProgram} \
+  date:date_field \
+  total_price:float_field
+
+bundle exec rails g super_scaffold Slide Team \
+  trp_id:super_select{class_name=TrainingProgram} \
+  state:text_field \
+  slide_type:text_field \
+  slide_data:text_area \
+  extra_fields:text_area \
+  real_num:number_field \
+  time_limit:number_field \
+  marker:text_field
+
+bundle exec rails g super_scaffold TrainingAccess Team \
+  training_program_id:super_select{class_name=TrainingProgram} \
+  employee_id:super_select{class_name=UserEmployee} \
+  request_id:super_select{class_name=TrainingRequest} \
+  state:text_field
+
+bundle exec rails g super_scaffold TrainingRequest Team \
+  training_program_id:super_select{class_name=TrainingProgram} \
+  vendor_id:super_select{class_name=UserVendor} \
+  amount_of_trainings:number_field
 
 ####################################################
 #### End time for benchmarking
