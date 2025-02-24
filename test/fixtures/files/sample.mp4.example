@@ -1,0 +1,13 @@
+This is a placeholder for a sample video file. In a real application, you would:
+
+1. Create a real MP4 file with minimal size (1-2 seconds)
+2. Add it to version control
+3. Use it for testing video playback functionality
+
+For now, tests will create an empty file if this example file is not replaced with a real video file.
+
+Note: When implementing in production:
+- Replace this file with a real MP4 file
+- Keep the file size small (< 1MB) to avoid bloating the repository
+- Consider using a standardized test video (e.g., Big Buck Bunny test clip)
+- Ensure the video has no audio to avoid test environment issues

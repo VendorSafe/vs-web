@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# Exit on error
+set -e
+
+echo "🧹 Cleaning development environment..."
+
+# Remove JavaScript dependencies and build artifacts
+echo "Removing JavaScript dependencies..."
+rm -rf node_modules
+rm -rf app/assets/builds/*
+rm -rf public/assets/*
+rm -rf tmp/cache/assets/*
+rm -rf .yarn/cache
+rm -rf .yarn/unplugged
+rm -rf .yarn/build-state.yml
+rm -rf .yarn/install-state.gz
+
+# Remove Ruby dependencies
+echo "Removing Ruby dependencies..."
+rm -rf vendor/bundle
+rm -rf .bundle/cache
+
+# Remove temporary files
+echo "Removing temporary files..."
+rm -rf tmp/cache
+rm -rf tmp/pids
+rm -rf tmp/sockets
+rm -rf tmp/downloads
+rm -rf log/*.log
+
+# Clear Rails cache
+echo "Clearing Rails cache..."
+rails tmp:cache:clear
+rails assets:clobber
+
+# Reinstall dependencies
+echo "📦 Reinstalling dependencies..."
+
+# Install Ruby dependencies
+echo "Installing Ruby dependencies..."
+bundle config set --local path 'vendor/bundle'
+bundle install
+
+# Install Node.js dependencies
+echo "Installing Node.js dependencies..."
+yarn set version stable
+yarn install
+yarn cache clean --all
+
+# Build assets
+echo "Building assets..."
+yarn build
+
+# Create necessary directories
+echo "Creating necessary directories..."
+mkdir -p tmp/cache
+mkdir -p tmp/pids
+mkdir -p tmp/sockets
+mkdir -p tmp/downloads
+mkdir -p log
+mkdir -p public/assets
+mkdir -p app/assets/builds
+
+# Set permissions
+echo "Setting permissions..."
+chmod +x bin/*
+chmod -R u+w tmp
+chmod -R u+w log
+chmod -R u+w public/assets
+chmod -R u+w app/assets/builds
+
+echo "✨ Dependencies reset complete!"
+echo "You can now run your tests:"
+echo "rails test:all            # Run all tests"
+echo "rails test:models         # Run model tests"
+echo "rails test:system         # Run system tests"

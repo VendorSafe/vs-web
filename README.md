@@ -1,284 +1,129 @@
-# VendorSafe.app
+# Training Program Application
 
-## Database Setup and Structure
+## Running Tests
 
-### Quick Start
-To set up a fresh database with the complete structure:
+### System Tests
 
+The training program system tests can be run in two modes:
+
+1. Headless Mode (Default):
 ```bash
-# Make sure the script is executable
-chmod +x bin/vendorsafe-structure
-
-# Run the structure builder
-./bin/vendorsafe-structure
+rails test:system
 ```
 
-### Core Tables and Structure
-
-1. **Teams** (Multi-tenancy support)
-   - Central organization unit
-   - Has many locations and training programs
-   - Manages team-wide settings
-
-2. **Locations** (Physical locations hierarchy)
-   - Supports parent/child relationships
-   - Used for organizing training requirements
-   - Hierarchical structure for complex organizations
-
-3. **PricingModels** (Flexible pricing strategies)
-   - Supports fixed and variable pricing
-   - Handles volume discounts
-   - Links to training programs
-
-4. **TrainingPrograms** (Core content management)
-    - Manages training content and structure
-    - Links to pricing models
-    - Controls certification rules
-    - State management (draft, published, archived)
-    - Workflow transitions with validations
-    - Completion tracking and deadlines
-    - Passing percentage requirements
-    - Supports Vue.js player integration (pending)
-
-5. **TrainingMemberships** (Progress & Access Control)
-    - Links users to training programs
-    - Tracks detailed progress in JSON format
-    - Calculates completion percentages
-    - Records time spent per content
-    - Manages completion status
-    - Handles automatic certification
-    - Supports content-specific progress
-
-5. **TrainingContent** (Modular content units)
-   - Individual content modules
-   - Supports various content types
-   - Organized within programs
-   - Integrated with Vue.js player
-
-6. **TrainingQuestions** (Assessment system)
-   - Question management
-   - Answer validation
-   - Progress tracking
-   - Real-time feedback
-
-7. **TrainingMemberships** (Access control)
-   - Links users to training programs
-   - Manages certification validity
-   - Tracks progress
-   - Handles invitations
-
-### Initial Setup
-
-After running the structure builder, use the Rails console to create your initial admin user and team:
-
-```ruby
-# Create initial team
-team = Team.create!(
-  name: "Admin Team",
-  time_zone: "Pacific Time (US & Canada)"
-)
-
-# Create admin user
-admin = User.create!(
-  email: "admin@example.com",
-  password: "password",
-  password_confirmation: "password",
-  first_name: "Admin",
-  last_name: "User",
-  time_zone: "Pacific Time (US & Canada)"
-)
-
-# Add admin to team
-Membership.create!(
-  user: admin,
-  team: team,
-  role_ids: ["admin"]
-)
-```
-
-## Role System
-
-### Quick Start
-To set up the role system with predefined roles:
-
+2. Browser Mode (for debugging):
 ```bash
-# Make sure the script is executable
-chmod +x bin/roles-setup
-
-# Run the role setup
-./bin/roles-setup
+OPEN_BROWSER=1 rails test:system
 ```
 
-### Role Types and Capabilities
+Additional test options:
+- `CHROME_DEBUG=1`: Opens Chrome DevTools automatically
+- `SAVE_SCREENSHOTS=1`: Saves screenshots on test failures
+- `PARALLEL_WORKERS=1`: Runs tests sequentially (useful for debugging)
 
-1. **Administrator**
-   - Full system access
-   - Manage teams and memberships
-   - Manage all locations
-   - Control pricing models
-   - Oversee training programs
-   - Access all reports
+Examples:
+```bash
+# Run specific test file in browser mode
+OPEN_BROWSER=1 rails test test/system/training_player_test.rb
 
-2. **Vendor**
-   - View assigned locations
-   - Manage own training programs
-   - Issue certificates
-   - View own reports
-   - Access assigned content
+# Run specific test with debugging
+OPEN_BROWSER=1 CHROME_DEBUG=1 rails test test/system/training_player_test.rb -n test_completing_video_module
 
-3. **Customer**
-   - Manage own location
-   - Purchase training
-   - Assign training to employees
-   - View team certificates
-   - Access team reports
-
-4. **Employee**
-   - Access assigned training
-   - Take training modules
-   - View own certificates
-   - Track own progress
-
-### Implementation Details
-
-The role system uses Bullet Train's built-in role management and adds custom capabilities through:
-- `config/models/roles.yml`: Role definitions
-- `app/models/concerns/roles.rb`: Role behavior
-- `config/initializers/roles.rb`: Role configuration
-
-### Usage Examples
-
-```ruby
-# Check roles
-membership.admin?
-membership.vendor?
-membership.customer?
-membership.employee?
-
-# Check capabilities
-membership.can_manage_team?
-membership.can_manage_locations?
-membership.can_manage_training_programs?
-membership.can_view_certificates?
+# Run all tests with screenshots
+SAVE_SCREENSHOTS=1 rails test:system
 ```
 
-## Training Program Player with Vue.js
+### Test Structure
 
-### Overview
-The Training Program Player is a Vue.js-based component that provides an interactive interface for users to engage with training content. It supports various content types including video, text, and quizzes.
+The test suite includes:
 
-### Features
-- Multi-format content support
-- Progress tracking
-- Interactive quizzes
-- Certificate generation
-- Real-time updates
+1. System Tests (`test/system/`)
+   - Training player integration tests
+   - User interaction simulations
+   - Browser compatibility tests
+   - Responsive design tests
 
-### Setup
-The player is automatically included in the asset pipeline. To use it in your views:
-
-```erb
-<%%= render "training_programs/player", training_program: @training_program %>
-```
-
-### Components
-1. **VideoPlayer**
-   - Supports multiple video formats
+2. Model Tests (`test/models/`)
+   - Training program business logic
    - Progress tracking
-   - Playback controls
+   - Certificate generation
+   - State management
 
-2. **ContentViewer**
-   - Text content display
-   - Image galleries
-   - Document viewers
+3. Controller Tests (`test/controllers/`)
+   - API endpoints
+   - Progress updates
+   - Authorization checks
 
-3. **QuizSystem**
-   - Multiple question types
-   - Real-time validation
-   - Progress tracking
+4. Factory Definitions (`test/factories/`)
+   - Training program factories
+   - Content type factories
+   - Progress tracking factories
+   - Certificate factories
 
-4. **ProgressTracker**
-   - Visual progress indicators
-   - Completion status
-   - Achievement tracking
+### Test Data
 
-### API Integration
-The player automatically integrates with the VendorSafe API endpoints:
-- `/api/v1/training_programs/:id`
-- `/api/v1/training_programs/:id/progress`
-- `/api/v1/training_programs/:id/complete`
+Sample data is provided for testing:
+- `test/fixtures/files/sample.mp4.example`: Sample video for testing
+- Factory definitions for all models
+- VCR cassettes for external service mocking
 
-### State Management
-Uses Pinia for state management with the following stores:
-- `trainingProgramStore`
-- `progressStore`
-- `userStore`
+### Development Workflow
 
-### Customization
-The player can be customized through:
-- Tailwind CSS classes
-- Vue.js props
-- Event handlers
-- Custom components
+1. Write tests first (TDD approach)
+2. Run in headless mode for quick feedback
+3. Use browser mode for debugging UI issues
+4. Save screenshots for UI regression testing
+5. Use Chrome DevTools for JavaScript debugging
 
-For detailed customization options, see the Vue.js component documentation in `app/javascript/training-program-viewer/README.md`.
+### Continuous Integration
 
-## State Management & Progress Tracking
+The test suite is configured for CI environments:
+- Runs in headless mode by default
+- Parallel test execution
+- Test coverage reporting
+- Screenshot artifacts for failed tests
 
-### Training Program States
+### Best Practices
 
-Training programs follow a workflow with three states:
-- **Draft**: Initial state for new programs
-- **Published**: Available for users to take
-- **Archived**: No longer active but preserved for records
-
-```ruby
-# State transitions
-training_program = TrainingProgram.create!(name: "Safety Training", team: team)
-training_program.draft?      # => true (default state)
-training_program.publish!    # => transitions to published
-training_program.archive!    # => transitions to archived
-training_program.restore!    # => back to published
-training_program.unpublish!  # => back to draft
+1. Always run tests before pushing:
+```bash
+rails test:all
 ```
 
-### Progress Tracking
-
-Progress is tracked per user through TrainingMembership:
-
-```ruby
-# Track progress for a specific content
-membership = training_program.training_memberships.find_by(membership: current_membership)
-membership.update_progress(
-  content_id: 1,
-  status: "completed",
-  time_spent: 300 # seconds
-)
-
-# Check progress
-membership.content_progress(content_id: 1)
-# => {"status" => "completed", "time_spent" => 300, "updated_at" => "2025-02-24T..."}
-
-# Get completion percentage
-membership.completion_percentage # => 75
-
-# Check if completed
-membership.completed? # => true/false
-
-# Get completion time
-membership.completed_at # => returns completion timestamp if completed
+2. Check test coverage:
+```bash
+COVERAGE=1 rails test:all
+open coverage/index.html
 ```
 
-### Completion Requirements
+3. Update test data when adding features:
+- Add new factories
+- Update sample files
+- Record new VCR cassettes
 
-Training programs can specify completion requirements:
-
-```ruby
-training_program.update!(
-  passing_percentage: 80,           # Minimum percentage to pass
-  completion_timeframe: 30,         # Days allowed to complete
-  completion_deadline: 1.month.from_now # Absolute deadline
-)
+4. Debug failing tests:
+```bash
+OPEN_BROWSER=1 PARALLEL_WORKERS=1 rails test:system
 ```
 
-For more details on implementing specific workflows, see the model documentation in `app/models/training_program.rb` and `app/models/training_membership.rb`.
+### Common Issues
+
+1. Flaky Tests
+   - Use `wait_for_ajax` helper
+   - Increase Capybara wait time
+   - Run tests sequentially
+
+2. Video Playback
+   - Ensure sample video exists
+   - Check video format support
+   - Verify JavaScript events
+
+3. Screenshots
+   - Check tmp/screenshots directory
+   - Verify browser window size
+   - Check CSS rendering
+
+4. Browser Mode
+   - Port conflicts
+   - Chrome process cleanup
+   - DevTools connection

@@ -4,6 +4,15 @@
 
 ### Added
 
+*   Added comprehensive test infrastructure:
+    - System tests with headless/browser mode toggle
+    - Factory definitions for all training models
+    - Test helpers and utilities
+    - Documentation and best practices
+    - Screenshot and debugging support
+    - VCR integration for HTTP mocking
+    - Coverage reporting configuration
+
 *   Added state management to training programs with workflow transitions (draft, published, archived)
 *   Added completion fields to training programs
 *   Added progress tracking to training memberships with completion percentage and status tracking
@@ -20,6 +29,7 @@
     - Certificate generation on completion
     - Responsive design with Tailwind CSS
     - State management with Pinia
+    - Comprehensive test coverage
 *   Added training program state management
 *   Added certificate generation system with:
     - Automatic certificate number generation
