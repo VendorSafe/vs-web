@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_24_212916) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_24_213100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -345,6 +345,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_212916) do
     t.integer "time_limit"
     t.boolean "is_published"
     t.string "state", default: "draft", null: false
+    t.integer "certificate_validity_period", comment: "Number of days the certificate is valid for"
+    t.string "certificate_template", comment: "Template identifier for certificate generation"
+    t.jsonb "custom_certificate_fields", default: {}, null: false, comment: "Custom fields to display on certificates"
+    t.index ["certificate_template"], name: "index_training_programs_on_certificate_template"
+    t.index ["custom_certificate_fields"], name: "index_training_programs_on_custom_certificate_fields", using: :gin
     t.index ["pricing_model_id"], name: "index_training_programs_on_pricing_model_id"
     t.index ["state"], name: "index_training_programs_on_state"
     t.index ["team_id"], name: "index_training_programs_on_team_id"

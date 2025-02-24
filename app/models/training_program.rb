@@ -1,29 +1,77 @@
-# TODO: Major Enhancements Needed
-# 1. State Management
-#    - Add workflow_activerecord gem
-#    - Implement states: draft, published, archived
-#    - Add state transitions and validations
+# TrainingProgram Model
 #
-# 2. Progress Tracking
-#    - Add progress calculation methods
-#    - Implement completion tracking
-#    - Add progress validation
+# == Schema Information
 #
-# 3. Certificate Management
-#    - Add certificate generation
-#    - Implement expiration handling
-#    - Add verification mechanism
+# Table name: training_programs
+#  id                         :bigint           not null, primary key
+#  team_id                    :bigint           not null
+#  name                      :string
+#  description               :text
+#  status                    :string
+#  slides                    :text
+#  published_at              :datetime
+#  pricing_model_id          :bigint
+#  completion_deadline       :datetime
+#  completion_timeframe      :integer
+#  passing_percentage        :integer
+#  time_limit               :integer
+#  is_published             :boolean
+#  state                    :string           default("draft"), not null
+#  certificate_validity_period :integer        comment: "Number of days the certificate is valid for"
+#  certificate_template      :string          comment: "Template identifier for certificate generation"
+#  custom_certificate_fields :jsonb           default({}), not null, comment: "Custom fields to display on certificates"
 #
-# 4. Vue.js Player Integration
-#    - Add content serialization for player
-#    - Implement progress sync methods
-#    - Add player configuration options
+# == State Management
+# Current implementation uses workflow_activerecord for state management:
+# - draft: Initial state for new programs
+# - published: Program is live and available to users
+# - archived: Program is no longer active
 #
-# 5. Activity Tracking
-#    - Re-enable PublicActivity
-#    - Add custom activity tracking
-#    - Implement activity filters
+# TODO: Implement additional state features:
+# - Add validation for required fields before publishing
+# - Add state-specific scopes for easier querying
+# - Implement state change notifications
 #
+# == Progress Tracking
+# Progress is tracked through training_memberships and training_progress tables:
+# - training_memberships: Overall progress for a user
+# - training_progress: Detailed progress for each content item
+#
+# TODO: Implement progress tracking:
+# - Add methods to calculate overall progress
+# - Implement completion criteria validation
+# - Add progress update callbacks
+# - Add completion notifications
+#
+# == Certificate Management
+# Certificates are managed through training_certificates table with:
+# - Validity period tracking
+# - Custom certificate fields
+# - Template management
+#
+# TODO: Implement certificate features:
+# - Add certificate generation service
+# - Implement expiration notifications
+# - Add certificate verification endpoints
+# - Add certificate template management
+#
+# == Content Organization
+# Content is managed through training_contents and training_questions tables:
+# - training_contents: Main content items (videos, documents, etc.)
+# - training_questions: Assessment questions
+#
+# TODO: Implement content features:
+# - Add content type validation
+# - Implement content ordering
+# - Add content prerequisites
+# - Add content visibility rules
+#
+# == Activity Tracking
+# TODO: Re-enable and implement activity tracking:
+# - Enable PublicActivity tracking
+# - Add custom activity types
+# - Implement activity filters
+# - Add activity notifications
 
 class TrainingProgram < ApplicationRecord
   # Temporarily disable PublicActivity for seeding
@@ -82,6 +130,7 @@ class TrainingProgram < ApplicationRecord
   has_many :training_contents, dependent: :destroy
   has_many :training_memberships, dependent: :destroy
   has_many :memberships, through: :training_memberships
+  has_many :training_certificates, dependent: :destroy
   # 🚅 add has_many associations above.
 
   has_rich_text :description

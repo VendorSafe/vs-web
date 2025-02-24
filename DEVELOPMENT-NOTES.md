@@ -1,99 +1,74 @@
-GitHub Copilot
-I'll help modify the structure to accommodate flexible pricing models in Bullet Train Rails style.
+# Development Notes
 
-Create a new model for pricing details:
+## Known Issues and Solutions
 
-Generate the scaffolding:
+### Entity-Relationship Diagram (ERD) Generation Warnings
 
-Create a model for tracking payment responsibilities:
+When running migrations or generating ERD diagrams, you may see the following warnings:
 
-Generate the scaffolding:
+1. `Warning: Ignoring invalid association :country on Address`
+2. `Warning: Ignoring invalid association :region on Address`
 
-Update the training request model:
+These warnings have been addressed by properly configuring ActiveHash associations in the Address model:
 
-Add the associations to the training program:
+```ruby
+# app/models/address.rb
+class Address < ApplicationRecord
+  extend ActiveHash::Associations::ActiveRecordExtensions
+  belongs_to_active_hash :country, class_name: 'Addresses::Country'
+  belongs_to_active_hash :region, class_name: 'Addresses::Region'
+end
+```
 
-This implementation:
+3. `Warning: Ignoring invalid association :event_type on Webhooks::Outgoing::Event`
 
-Supports multiple pricing strategies
-Allows for group discounts
-Tracks payment responsibilities
-Handles different payment scenarios
-Integrates with Bullet Train's team system
-Maintains audit trails through PublicActivity
-Would you like me to detail the views and controllers for managing these pricing structures?
+This warning indicates that the webhooks functionality is not properly set up. The required database tables and models are missing. To fix this:
 
-hackur
-Explain how you interpret the different roles in their explanation and wirefreames and my implementation so far.
+1. Copy the migrations from the bullet_train-outgoing_webhooks gem:
+```bash
+cp `bundle show bullet_train-outgoing_webhooks`/db/migrate/* db/migrate/
+```
 
-GitHub Copilot
-Role Analysis: Udoras vs Current Implementation
-Original Udoras Roles
-From the database structure and wireframes:
+2. Run the migrations:
+```bash
+rails db:migrate
+```
 
-Current Bullet Train Implementation
-Proposed Merged Structure
-Role-Specific Profile Models
-Key Differences and Improvements
-Role Hierarchy
+These migrations will:
+- Create webhooks_outgoing_endpoints table
+- Create webhooks_outgoing_events table
+- Create webhooks_outgoing_deliveries table
+- Create webhooks_outgoing_delivery_attempts table
+- Set up proper event type associations
+- Add necessary fields for API versioning
 
-Udoras: Flat role structure
-Bullet Train: Team-based with role assignments
-Merged: Team-based with polymorphic profiles
-Access Control
+After running these migrations, the warning should be resolved as the proper database structure for webhooks will be in place.
 
-Udoras: Table-based (user_customers, user_vendors, etc.)
-Bullet Train: Permission-based
-Merged: Permission-based with role-specific features
-Team Management
+Note: The event types defined in `config/models/webhooks/outgoing/event_types.yml` will be properly associated with the Webhooks::Outgoing::Event model once these migrations are run.
 
-Training Flow
+## Bullet Train Dependencies Management
 
-Udoras: Direct relationships between users
-Bullet Train: Team-scoped relationships
-Merged: Team-scoped with role-specific workflows
-Permission Structure
+### Best Practices
 
-Would you like me to elaborate on any specific role's implementation or the permission structure?
+1. **Pull Down Dependencies Locally**: For better development experience and easier debugging, consider pulling down Bullet Train dependencies locally:
+   - Use `bin/hack` to clone core packages to `local/bullet_train-core`
+   - Use `bin/hack --link` to link local packages
+   - Use `bin/hack --reset` to revert to using original gems
 
+2. **File Modification Strategy**:
+   - Favor using Bullet Train's approach first before custom implementations
+   - Use `bin/resolve` to locate and understand framework files
+   - Only eject files when you need to modify specific functionality
+   - When ejecting, only override the specific methods that need changes
+   - Keep original files as reference for future upgrades
 
------
+3. **Upgrading Process**:
+   - Document any ejected files and overridden methods
+   - Keep track of modifications in CHANGELOG.md
+   - Test thoroughly after any framework upgrades
+   - Review ejected files during upgrades to ensure compatibility
 
-# Architectural Decisions and Updates
-
-## Location Model (replacing Facility)
-- Changed from Facility to Location to better align with industry standards
-- Implemented hierarchical structure to support:
-  - Multiple facilities on a single property
-  - Different types of units (plants, offices, warehouses)
-  - Complex organizational structures
-- Rationale:
-  - Matches patterns in ISNetworld and BROWZ
-  - Provides more flexibility for large organizations
-  - Enables better location-specific training requirements
-
-## Pricing Model Implementation
-- Added flexible pricing system with:
-  - Fixed price option for standard training
-  - Variable pricing with volume discounts
-  - Team-scoped pricing strategies
-- Benefits:
-  - Supports different business models
-  - Enables bulk training discounts
-  - Maintains pricing consistency within teams
-
-## Technical Improvements
-- Enhanced real-time updates using CableReady:
-  - Location changes reflect immediately
-  - Pricing updates show in real-time
-  - Training program modifications sync automatically
-- Team-based multitenancy improvements:
-  - Strict validation of parent-child relationships
-  - Team-scoped pricing models
-  - Enhanced security for cross-team access
-
-## Future Considerations
-- Consider implementing location-specific training requirements
-- Explore advanced pricing strategies (seasonal, promotional)
-- Add support for location-based reporting and analytics
-Would you like me to elaborate on how this integrates with the role-based access control or show examples of location-specific training requirements?
+4. **Framework Integration**:
+   - Use Bullet Train's conventions and patterns where possible
+   - Leverage existing tools and helpers before creating custom solutions
+   - Document any deviations from standard Bullet Train patterns

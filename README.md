@@ -31,11 +31,23 @@ chmod +x bin/vendorsafe-structure
    - Links to training programs
 
 4. **TrainingPrograms** (Core content management)
-   - Manages training content and structure
-   - Links to pricing models
-   - Controls certification rules
-   - Supports Vue.js player integration
-   - Handles progress tracking
+    - Manages training content and structure
+    - Links to pricing models
+    - Controls certification rules
+    - State management (draft, published, archived)
+    - Workflow transitions with validations
+    - Completion tracking and deadlines
+    - Passing percentage requirements
+    - Supports Vue.js player integration (pending)
+
+5. **TrainingMemberships** (Progress & Access Control)
+    - Links users to training programs
+    - Tracks detailed progress in JSON format
+    - Calculates completion percentages
+    - Records time spent per content
+    - Manages completion status
+    - Handles automatic certification
+    - Supports content-specific progress
 
 5. **TrainingContent** (Modular content units)
    - Individual content modules
@@ -210,3 +222,63 @@ The player can be customized through:
 - Custom components
 
 For detailed customization options, see the Vue.js component documentation in `app/javascript/training-program-viewer/README.md`.
+
+## State Management & Progress Tracking
+
+### Training Program States
+
+Training programs follow a workflow with three states:
+- **Draft**: Initial state for new programs
+- **Published**: Available for users to take
+- **Archived**: No longer active but preserved for records
+
+```ruby
+# State transitions
+training_program = TrainingProgram.create!(name: "Safety Training", team: team)
+training_program.draft?      # => true (default state)
+training_program.publish!    # => transitions to published
+training_program.archive!    # => transitions to archived
+training_program.restore!    # => back to published
+training_program.unpublish!  # => back to draft
+```
+
+### Progress Tracking
+
+Progress is tracked per user through TrainingMembership:
+
+```ruby
+# Track progress for a specific content
+membership = training_program.training_memberships.find_by(membership: current_membership)
+membership.update_progress(
+  content_id: 1,
+  status: "completed",
+  time_spent: 300 # seconds
+)
+
+# Check progress
+membership.content_progress(content_id: 1)
+# => {"status" => "completed", "time_spent" => 300, "updated_at" => "2025-02-24T..."}
+
+# Get completion percentage
+membership.completion_percentage # => 75
+
+# Check if completed
+membership.completed? # => true/false
+
+# Get completion time
+membership.completed_at # => returns completion timestamp if completed
+```
+
+### Completion Requirements
+
+Training programs can specify completion requirements:
+
+```ruby
+training_program.update!(
+  passing_percentage: 80,           # Minimum percentage to pass
+  completion_timeframe: 30,         # Days allowed to complete
+  completion_deadline: 1.month.from_now # Absolute deadline
+)
+```
+
+For more details on implementing specific workflows, see the model documentation in `app/models/training_program.rb` and `app/models/training_membership.rb`.
