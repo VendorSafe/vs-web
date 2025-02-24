@@ -54,6 +54,10 @@
 - Add methods for progress tracking
 - Add certificate generation
 - Add invitation management
+- Implement workflow state management:
+  - States: draft, published, archived
+  - Events: publish, unpublish, archive, restore
+  - State-specific validations and behaviors
 
 ### TrainingContent Model
 - Add content type specific validations

@@ -70,3 +70,4 @@
 *   Fixed training program state transitions
 *   Resolved user confirmation email issues
 *   Fixed activity tracking in training programs
+*   Fixed training program workflow state management to properly handle state transitions and validations
