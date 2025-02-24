@@ -15,11 +15,12 @@ namespace :users do
                  when "admin"
                    "Administration Team"
                  when "vendor"
-                   "#{Faker::Company.name} Vendor"
+                   # All vendors belong to same team for invitations
+                   "Vendor Team #{Faker::Company.name}"
                  when "customer"
                    "#{Faker::Company.name} Customer"
                  else
-                   "#{Faker::Company.name} Staff"
+                   "#{Faker::Company.name} Organization"
                  end
 
       team = Team.find_or_create_by!(name: team_name) do |t|
@@ -48,13 +49,21 @@ namespace :users do
       # Add role-specific setup
       case role
       when "vendor"
-        # Create a sample training program for vendor
-        TrainingProgram.create!(
-          team: team,
-          name: "#{Faker::Educator.course_name} Training",
-          description: Faker::Lorem.paragraph,
-          status: "active"
-        )
+        # First vendor in a team is considered primary and can invite others
+        is_primary = team.memberships.where(role_ids: ["vendor"]).count == 0
+
+        if is_primary
+          # Create a sample training program for primary vendor
+          TrainingProgram.create!(
+            team: team,
+            name: "#{Faker::Educator.course_name} Training",
+            description: Faker::Lorem.paragraph,
+            status: "active"
+          )
+          puts "  Primary Vendor: Yes (can invite other vendors)"
+        else
+          puts "  Primary Vendor: No (invited vendor)"
+        end
       when "customer"
         # Create a sample location for customer
         Location.create!(

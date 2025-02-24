@@ -20,12 +20,18 @@ module Roles
 
     # Vendor Role
     # ----------
-    # Training content providers and certifiers
-    # - Can create and manage their own training programs
-    # - Can view locations they are assigned to
-    # - Can issue certificates for their programs
+    # Primary vendor (administrative) users can:
+    # - Create and manage their own training programs
+    # - View locations they are assigned to
+    # - Issue certificates for their programs
     # - Has access to reports for their programs
-    # - Can track progress of participants in their programs
+    # - Track progress of participants
+    # - Invite and manage additional vendor users on their team
+    #
+    # Invited vendor users can:
+    # - Access assigned training programs
+    # - View assigned locations
+    # - Issue certificates for their assigned programs
     def vendor?
       role_ids.include?("vendor")
     end
@@ -90,6 +96,11 @@ module Roles
       employee? || customer?
     end
 
+    def can_invite_vendors?
+      admin? || (vendor? && primary_vendor?)
+    end
+
+    # TODO: Needs to be irone
     def can_access_reports?
       case
       when admin?
@@ -106,6 +117,12 @@ module Roles
     end
 
     private
+
+    def primary_vendor?
+      return false unless vendor?
+      # First vendor user in the team is considered primary
+      team.memberships.where(role_ids: ["vendor"]).order(created_at: :asc).first.id == id
+    end
 
     def own_location?
       return true if admin?

@@ -7,6 +7,10 @@ This file is limited to breaking or potentially breaking changes. Please review 
    - Implemented granular capability checks
    - Added role setup script (`bin/roles-setup`)
    - Created detailed role documentation
+   - **Enhanced**: Vendor role hierarchy
+     - Primary vendors can invite additional vendors
+     - Team-based vendor organization
+     - Automatic primary vendor detection
 
  - **Breaking**: Changed Facility model to Location model with hierarchical structure support
    - If upgrading, you'll need to migrate existing facility data to the new location structure
