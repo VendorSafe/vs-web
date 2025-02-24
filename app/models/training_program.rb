@@ -1,4 +1,7 @@
 class TrainingProgram < ApplicationRecord
+  include PublicActivity::Model
+  tracked owner: :team
+
   # 🚅 add concerns above.
 
   # 🚅 add attribute accessors above.

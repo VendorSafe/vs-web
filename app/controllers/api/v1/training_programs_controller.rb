@@ -12,6 +12,22 @@ if defined?(Api::V1::ApplicationController)
 
     # GET /api/v1/training_programs/:id
     def show
+      training_membership = current_user.training_memberships.find_by(training_program: @training_program)
+      progress_data = training_membership&.progress || {}
+      render json: @training_program.as_json(
+        include: [:training_contents, training_contents: [:training_questions]]
+      ).merge(progress: progress_data)
+    end
+
+    # PUT /api/v1/training_programs/:id/update_progress
+    def update_progress
+      training_membership = current_user.training_memberships.find_by(training_program: @training_program)
+      if training_membership
+        training_membership.update(progress: params[:progress])
+        head :ok
+      else
+        render json: { error: 'Training membership not found' }, status: :not_found
+      end
     end
 
     # POST /api/v1/teams/:team_id/training_programs
@@ -38,6 +54,11 @@ if defined?(Api::V1::ApplicationController)
     end
 
     private
+
+    # Add update_progress to the list of authorized actions
+    def self.permitted_actions
+      super + [:update_progress]
+    end
 
     module StrongParameters
       # Only allow a list of trusted parameters through.
