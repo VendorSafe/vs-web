@@ -1,3 +1,30 @@
+# TODO: Major Enhancements Needed
+# 1. State Management
+#    - Add workflow_activerecord gem
+#    - Implement states: draft, published, archived
+#    - Add state transitions and validations
+#
+# 2. Progress Tracking
+#    - Add progress calculation methods
+#    - Implement completion tracking
+#    - Add progress validation
+#
+# 3. Certificate Management
+#    - Add certificate generation
+#    - Implement expiration handling
+#    - Add verification mechanism
+#
+# 4. Vue.js Player Integration
+#    - Add content serialization for player
+#    - Implement progress sync methods
+#    - Add player configuration options
+#
+# 5. Activity Tracking
+#    - Re-enable PublicActivity
+#    - Add custom activity tracking
+#    - Implement activity filters
+#
+
 class TrainingProgram < ApplicationRecord
   # Temporarily disable PublicActivity for seeding
   # include PublicActivity::Model
