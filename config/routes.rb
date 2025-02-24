@@ -69,6 +69,11 @@ Rails.application.routes.draw do
 
         resources :facilities, concerns: [:sortable]
         resources :training_programs do
+          member do
+            get "player", to: "training_programs#show"
+            post "progress", to: "training_programs#update_progress"
+          end
+
           resources :training_contents, concerns: [:sortable] do
             resources :training_questions
           end

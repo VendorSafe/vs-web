@@ -1,0 +1,44 @@
+<div class="container mx-auto px-4 py-8">
+  <div
+    id="training-player"
+    data-program-id="<%= @training_program.id %>"
+    data-csrf-token="<%= form_authenticity_token %>"
+  >
+    <!-- Vue.js Training Player will be mounted here -->
+    <div class="loading-placeholder">
+      <div class="animate-pulse">
+        <div class="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+        <div class="h-64 bg-gray-200 rounded mb-4"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# Include the training player JavaScript bundle %>
+<%= javascript_include_tag "training_player", "data-turbo-track": "reload" %>
+
+<%# Include required styles %>
+<%= stylesheet_link_tag "training_player", "data-turbo-track": "reload" %>
+
+<% content_for :head do %>
+  <%# Meta tags for video playback %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+<% end %>
+
+<% content_for :action_bar do %>
+  <div class="action-bar">
+    <%= link_to account_team_training_program_path(@team, @training_program),
+                class: "btn btn-link" do %>
+      <i class="fas fa-arrow-left"></i> Back to Program
+    <% end %>
+
+    <% if current_membership.can_manage_training_programs? %>
+      <%= link_to edit_account_team_training_program_path(@team, @training_program),
+                  class: "btn btn-secondary" do %>
+        <i class="fas fa-edit"></i> Edit Program
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
