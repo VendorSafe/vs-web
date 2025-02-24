@@ -4,7 +4,9 @@
 
 ### Added
 
+*   Added state management to training programs with workflow transitions (draft, published, archived)
 *   Added completion fields to training programs
+*   Added progress tracking to training memberships with completion percentage and status tracking
 *   Added training invitations feature
 *   Added training progress tracking
 *   Added support for faker gem

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_24_192345) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_24_212916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -321,6 +321,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_192345) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "progress", default: {}
+    t.datetime "completed_at"
+    t.integer "completion_percentage", default: 0, null: false
+    t.index ["completed_at"], name: "index_training_memberships_on_completed_at"
+    t.index ["completion_percentage"], name: "index_training_memberships_on_completion_percentage"
     t.index ["membership_id"], name: "index_training_memberships_on_membership_id"
     t.index ["training_program_id"], name: "index_training_memberships_on_training_program_id"
   end
@@ -340,7 +344,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_192345) do
     t.integer "passing_percentage"
     t.integer "time_limit"
     t.boolean "is_published"
+    t.string "state", default: "draft", null: false
     t.index ["pricing_model_id"], name: "index_training_programs_on_pricing_model_id"
+    t.index ["state"], name: "index_training_programs_on_state"
     t.index ["team_id"], name: "index_training_programs_on_team_id"
   end
 

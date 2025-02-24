@@ -31,6 +31,44 @@ class TrainingProgram < ApplicationRecord
   # tracked owner: :team, if: :should_track_activity?
 
   # 🚅 add concerns above.
+  include Workflow
+  include WorkflowActiverecord
+
+  # Define the workflow states and transitions
+  workflow do
+    state :draft do
+      event :publish, transitions_to: :published
+    end
+
+    state :published do
+      event :archive, transitions_to: :archived
+      event :unpublish, transitions_to: :draft
+    end
+
+    state :archived do
+      event :restore, transitions_to: :published
+    end
+  end
+
+  # Workflow callbacks
+  after_initialize :set_default_state
+  before_validation :ensure_valid_state_transition, on: :update
+
+  # Helper methods for state management
+  def set_default_state
+    self.state ||= "draft"
+  end
+
+  def ensure_valid_state_transition
+    return if state_changed? && valid_state_transition?
+    errors.add(:state, "invalid state transition")
+  end
+
+  def valid_state_transition?
+    return true if new_record?
+    current_state = workflow_state.to_sym
+    workflow_spec.states[current_state].events.key?(state.to_sym)
+  end
 
   # 🚅 add attribute accessors above.
 
