@@ -159,7 +159,65 @@
   - Validity period enforcement
   - Verification system access control
 
-## 5. Frontend Components
+## 5. Design System Integration
+
+### Color System
+- Primary Colors:
+  - Primary: #eab308 (yellow-500)
+  - Primary Dark: #ca8a04 (yellow-600)
+  - Secondary: #1e293b (slate-800)
+- Gradient Patterns:
+  - Hero gradient: radial-gradient(circle, #2A3B4C 0%, #162434 100%)
+  - Section gradients with yellow/slate overlays
+  - Interactive hover states using primary colors
+
+### Typography
+- Fonts:
+  - Headers: 'Fraunces', serif
+  - Body: 'DM Sans', sans-serif
+- Text Styles:
+  - Headings with tight tracking
+  - Subtitle class with relaxed leading
+  - Responsive font sizing
+
+### Component Styles
+- Navigation:
+  - Scrolled state with background blur
+  - Hover effects using primary colors
+  - Mobile-responsive menu
+- Buttons:
+  - Primary: Yellow with dark text
+  - Secondary: Slate with light text
+  - Hover states with color transitions
+- Cards:
+  - Gradient backgrounds
+  - Shadow effects
+  - Hover transitions
+
+### Animation System
+- Transitions:
+  - fade-in: Opacity and Y-axis transform
+  - slide-in: X-axis transform with fade
+  - Progress bars with linear transitions
+- Gradients:
+  - Pulse animation for hero section
+  - Floating effect for background elements
+  - Smooth scroll behavior
+
+### Layout Patterns
+- Container:
+  - Centered with 2rem padding
+  - Responsive breakpoints
+- Hero Sections:
+  - Full-width gradients
+  - Slide-based content
+  - Progress indicators
+- Section Layouts:
+  - Stats layout with centered headings
+  - Features layout with grid system
+  - Split layout for content/media
+
+## 6. Frontend Components
 
 ### Dashboard
 - Training program list
