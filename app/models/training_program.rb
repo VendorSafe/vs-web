@@ -157,5 +157,76 @@ class TrainingProgram < ApplicationRecord
     team.memberships
   end
 
+  # Certificate Management Methods
+
+  # Generates a new certificate for a membership if eligible
+  # @param membership [Membership] the membership to generate a certificate for
+  # @return [TrainingCertificate, nil] the generated certificate or nil if not eligible
+  def generate_certificate(membership)
+    return nil unless can_generate_certificate?(membership)
+
+    training_certificates.create!(
+      membership: membership,
+      issued_at: Time.current,
+      certificate_number: generate_certificate_number,
+      score: calculate_final_score(membership)
+    )
+  end
+
+  # Checks if a certificate can be generated for a membership
+  # @param membership [Membership] the membership to check
+  # @return [Boolean] whether a certificate can be generated
+  def can_generate_certificate?(membership)
+    return false unless membership
+    training_membership = training_memberships.find_by(membership: membership)
+    return false unless training_membership&.completed?
+    return false if has_valid_certificate?(membership)
+    true
+  end
+
+  # Checks if a membership has a valid certificate
+  # @param membership [Membership] the membership to check
+  # @return [Boolean] whether the membership has a valid certificate
+  def has_valid_certificate?(membership)
+    return false unless certificate_validity_period
+    cutoff_date = certificate_validity_period.days.ago
+    training_certificates.where(membership: membership)
+      .where("issued_at > ?", cutoff_date)
+      .exists?
+  end
+
+  # Gets all valid certificates for this program
+  # @return [ActiveRecord::Relation] valid certificates
+  def valid_certificates
+    return training_certificates unless certificate_validity_period
+    cutoff_date = certificate_validity_period.days.ago
+    training_certificates.where("issued_at > ?", cutoff_date)
+  end
+
+  private
+
+  # Generates a unique certificate number
+  # @return [String] unique certificate number
+  def generate_certificate_number
+    loop do
+      number = "#{Time.current.year}-#{SecureRandom.hex(4).upcase}"
+      break number unless TrainingCertificate.exists?(certificate_number: number)
+    end
+  end
+
+  # Calculates the final score for a membership
+  # @param membership [Membership] the membership to calculate score for
+  # @return [Integer, nil] the calculated score or nil if not applicable
+  def calculate_final_score(membership)
+    training_membership = training_memberships.find_by(membership: membership)
+    return nil unless training_membership&.completed?
+
+    # TODO: Implement actual score calculation based on:
+    # - Question responses
+    # - Time taken
+    # - Completion percentage
+    training_membership.completion_percentage
+  end
+
   # 🚅 add methods above.
 end

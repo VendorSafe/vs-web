@@ -14,7 +14,13 @@
 *   Added activities tracking system
 *   Added Vue.js training program player integration
 *   Added training program state management
-*   Added certificate generation system
+*   Added certificate generation system with:
+    - Automatic certificate number generation
+    - QR code generation for verification
+    - Certificate validity period tracking
+    - Custom certificate fields support
+    - Certificate verification endpoints
+    - Certificate data serialization
 
 ### Changed
 

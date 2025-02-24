@@ -43,14 +43,58 @@ class TrainingCertificate < ApplicationRecord
     ((expires_at - Time.current) / 1.day).floor
   end
 
+  # Returns the verification URL for this certificate
+  # @return [String] the verification URL
   def verification_url
-    # TODO: Implement with actual domain
-    "#{Rails.application.routes.default_url_options[:host]}/certificates/verify/#{certificate_number}"
+    Rails.application.routes.url_helpers.verify_training_certificate_url(
+      certificate_number,
+      host: Rails.application.config.action_mailer.default_url_options[:host],
+      protocol: Rails.application.config.force_ssl ? "https" : "http"
+    )
   end
 
-  def verification_qr_code
-    # TODO: Implement QR code generation
-    verification_url
+  # Generates a QR code for certificate verification
+  # @param size [Integer] the size of the QR code in pixels
+  # @return [String] Base64 encoded PNG image
+  def verification_qr_code(size: 300)
+    require "rqrcode"
+
+    qrcode = RQRCode::QRCode.new(verification_url)
+    qrcode.as_png(
+      bit_depth: 1,
+      border_modules: 4,
+      color_mode: ChunkyPNG::COLOR_GRAYSCALE,
+      color: "black",
+      file: nil,
+      fill: "white",
+      module_px_size: size / qrcode.modules.size,
+      resize_exactly_to: false,
+      resize_gte_to: false
+    ).to_data_url
+  end
+
+  # Returns certificate data in a structured format
+  # @return [Hash] certificate data
+  def certificate_data
+    {
+      certificate_number: certificate_number,
+      issued_at: issued_at,
+      expires_at: expires_at,
+      score: score,
+      program: {
+        name: training_program.name,
+        team: training_program.team.name
+      },
+      holder: {
+        name: "#{membership.user_first_name} #{membership.user_last_name}",
+        email: membership.user_email
+      },
+      verification: {
+        url: verification_url,
+        qr_code: verification_qr_code
+      },
+      custom_fields: training_program.custom_certificate_fields
+    }
   end
 
   def revoke!
