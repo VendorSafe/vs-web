@@ -2,10 +2,25 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 require "capybara/rails"
-require "selenium-webdriver"
+
+# Use Cuprite for system tests
+require "capybara/cuprite"
 
 # Configure headless/browser mode for system tests
 HEADLESS_MODE = !ENV["OPEN_BROWSER"]
+
+# Configure Cuprite driver
+Capybara.register_driver(:cuprite) do |app|
+  Capybara::Cuprite::Driver.new(app, {
+    window_size: [1400, 1400],
+    browser_options: { 'no-sandbox': nil },
+    headless: HEADLESS_MODE
+  })
+end
+
+# Set Cuprite as the default driver
+Capybara.javascript_driver = :cuprite
+Capybara.default_driver = :cuprite
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -74,7 +89,14 @@ VCR.configure do |config|
   config.cassette_library_dir = "test/vcr_cassettes"
   config.hook_into :webmock
   config.ignore_localhost = true
-  config.allow_http_connections_when_no_cassette = false
+  config.allow_http_connections_when_no_cassette = true
+
+  # Allow ChromeDriver downloads
+  config.ignore_hosts(
+    'chromedriver.storage.googleapis.com',
+    'github.com',
+    'objects.githubusercontent.com'
+  )
 end
 
 # Configure test coverage reporting

@@ -69,6 +69,9 @@ Untitled
 
 # Ignore IDE specific folders
 .idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
 
 # Ignore development tools files
 .byebug_history
@@ -86,6 +89,59 @@ dump.rdb
 
 # Ignore output from rails-erd
 erd.pdf
+
+# Additional Rails ignores
+*.rbc
+capybara-*.html
+.rspec
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+/public/system
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+.env
+.env.*
+!.env.example
+/vendor/bundle
+
+# Additional JavaScript ignores
+.eslintcache
+.npm
+npm-debug.log*
+.tern-port
+.webpack/
+dist/
+.cache/
+.parcel-cache/
+.next/
+out/
+build/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Editor/OS specific
+*~
+*.swp
+*.swo
+.project
+.settings/
+.classpath
+.loadpath
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+nbproject/
+.vs/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # 🚅 add your files to ignore here.
 .aider*

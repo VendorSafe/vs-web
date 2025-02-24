@@ -109,15 +109,8 @@ group :test do
   # system test stability. Only works on the Selenium Driver though.
   gem "capybara-lockstep"
 
-  # Selenium is the default default Capybara driver for system tests that ships with
-  # Rails. Cuprite is an alternative driver that uses Chrome's native DevTools protocol
-  # and offers improved speed and reliability, but only works with Chrome. If you want
-  # to switch to Cuprite, you can comment out the `selenium-webdriver` gem
-  # and uncomment the `cuprite` gem below. Bullet Train will automatically load
-  # the correct configuration based on which gem is included.
-  gem "selenium-webdriver"
-
-  # gem "cuprite"
+  # Use Cuprite for system tests
+  gem "cuprite"
 end
 
 # BULLET TRAIN GEMS
@@ -188,12 +181,16 @@ group :test do
 
   # Better test output
   gem "minitest-reporters"
+  gem "minitest-focus"
 
-  # Interact with emails during testing.
+  # System testing
   gem "capybara-email"
-
-  # Write system tests by pointing and clicking in your browser.
+  gem "webdrivers"
   gem "magic_test"
+
+  # HTTP request mocking
+  gem "webmock"
+  gem "vcr"
 
   # Increase parallelism to run CI tests across multiple nodes
   # Note: You need to ensure that ENV["KNAPSACK_PRO_CI_NODE_INDEX"] is set if you want to use this.

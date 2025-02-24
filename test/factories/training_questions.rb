@@ -1,10 +1,30 @@
 FactoryBot.define do
   factory :training_question do
-    association :training_content
-    title { "MyString" }
-    body { "MyText" }
-    good_answers { "MyText" }
-    bad_answers { "MyText" }
-    published_at { "2024-12-15 19:13:14" }
+    training_content
+    sequence(:title) { |n| "Question #{n}" }
+    body { "What is the correct answer?" }
+    question_type { "multiple_choice" }
+    options do
+      [
+        {id: 1, text: "Correct Answer", correct: true},
+        {id: 2, text: "Wrong Answer 1", correct: false},
+        {id: 3, text: "Wrong Answer 2", correct: false}
+      ]
+    end
+    passing_score { 70 }
+
+    trait :multiple_choice do
+      question_type { "multiple_choice" }
+    end
+
+    trait :true_false do
+      question_type { "true_false" }
+      options do
+        [
+          {id: 1, text: "True", correct: true},
+          {id: 2, text: "False", correct: false}
+        ]
+      end
+    end
   end
 end
