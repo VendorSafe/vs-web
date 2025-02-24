@@ -7,6 +7,7 @@ require "pry"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require 'public_activity'
 require_relative "../lib/bullet_train_oauth_scaffolder_support"
 
 module Vendorsafe

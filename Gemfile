@@ -97,6 +97,7 @@ group :development do
   gem 'rails-erd'
 
   gem 'ruby-lsp-rails'
+gem 'public_activity', '~> 2.0'
 gem 'faker', '~> 2.23'
 end
 

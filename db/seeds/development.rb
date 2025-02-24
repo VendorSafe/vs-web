@@ -1,81 +1,208 @@
 puts "🌱 Generating development environment seeds."
 
-# begin
-# We use this stub to test `seeding?` for ActiveRecord models.
+require_relative "../../config/seeder_config"
 
-user_admin = User.create!(
-  email: "jcsarda+admin@gmail.com",
-  password: "TTSPW123!!!",
-  first_name: "John",
-  last_name: "Sarda",
-  time_zone: ActiveSupport::TimeZone.all.first.name,
-  locale: "en"
+# Get a valid time zone from Rails
+default_time_zone = ActiveSupport::TimeZone.all.first.name
+
+# Create admin user and team
+admin_data = SEEDER_CONFIG[:admin]
+puts "Creating admin user with email: #{admin_data[:email]}"
+user_admin = User.new(
+  email: admin_data[:email],
+  password: admin_data[:password],
+  first_name: admin_data[:first_name],
+  last_name: admin_data[:last_name],
+  time_zone: default_time_zone,
+  locale: admin_data[:locale]
 )
+user_admin.skip_confirmation!
+user_admin.save!
 
-# user_facility = User.create!(email: "jcsarda+facility@gmail.com", password: "password", first_name: "Jane", last_name: "Doe")
-# user_editor = User.create!(email: "jcsarda+editor@gmail.com", password: "password", first_name: "Editor", last_name: "User")
-# user_vendor = User.create!(email: "jcsarda+vendor@gmail.com", password: "password", first_name: "Vendor", last_name: "User")
-# user_trainee = User.create!(email: "jcsarda+trainee@gmail.com", password: "password", first_name: "Trainee", last_name: "User")
-# team_admin = Team.create!(name: "Admins")
-# team_facility = Team.create!(name: "First Facility Team")
-# team_vendor = Team.create!(name: "First Vendor Team")
-
-# # Fix
-# user_admin.update(
-#   time_zone: ActiveSupport::TimeZone.all.first.name,
-#   locale: "en"
-#   # sign_in_count { 1 }
-#   # current_sign_in_at { Time.now }
-#   # last_sign_in_at { 1.day.ago }
-#   # current_sign_in_ip { "127.0.0.1" }
-#   # last_sign_in_ip { "127.0.0.2" }
-# )
-
-# Create a team for administrators
+# Create admin team
 team_admin = user_admin.teams.create!(
-  name: "Developer Team",
-  slug: "dev",
-  time_zone: ActiveSupport::TimeZone.all.first.name,
-  locale: "en"
+  name: "System Administrators",
+  slug: "sys-admin",
+  time_zone: default_time_zone,
+  locale: admin_data[:locale]
 )
 
+# Set admin role and current team
 user_admin
   .memberships
   .find_by(team: team_admin)
-  .update(role_ids: [Role.admin.id])
+  .update(role_ids: ["admin"])
 
 user_admin.update(current_team: team_admin)
 
-# Seed sample training programs.
-seed_training_programs 3, user_admin.current_team
+# Create customer teams and their training programs
+customer_teams = {}
+SEEDER_CONFIG[:customers].each do |customer_data|
+  # Create customer user
+  puts "Creating customer user with email: #{customer_data[:email]}"
+  customer = User.new(
+    email: customer_data[:email],
+    password: customer_data[:password],
+    first_name: customer_data[:first_name],
+    last_name: customer_data[:last_name],
+    time_zone: default_time_zone,
+    locale: "en"
+  )
+  customer.skip_confirmation!
+  customer.save!
 
-# DEMO - PacifiCorp Training Program
-TrainingProgram.create!(
-  name: "(DEMO) PacifiCorp Safety Training",
-  team: team_admin
-)
+  # Create team for each customer
+  team = customer.teams.create!(
+    name: customer_data[:company],
+    slug: customer_data[:company].parameterize,
+    time_zone: default_time_zone,
+    locale: "en"
+  )
 
-# DEMO - PacifiCorp Training Program
-TrainingProgram.create!(
-  name: "(DEMO) PacifiCorp Safety Training",
-  team: team_admin
-)
+  # Store team for later use
+  customer_teams[customer_data[:company]] = team
 
-# DEMO - PacifiCorp Training Program
-TrainingProgram.create!(
-  name: "(DEMO) PacifiCorp Safety Training",
-  team: team_admin
-)
-# rescue Exception => e
-#   puts "An error occurred while seeding the database: #{e.message} \n#{e.to_json} \n#{e.inspect}"
-#   # Optionally, you can also log the error or take other actions as needed
-#   #   # Access the backtrace
-#   backtrace = e.backtrace
-#   # The backtrace is an array of strings, each representing a line in the call stack
-#   # For example, to get the line number of the exception:
-#   exception_line = backtrace.first.split(":").last.to_i
-#   puts "Exception occurred at line #{exception_line}"
-# ensure
-#   # Ensure database connections are closed
-#   ActiveRecord::Base.clear_active_connections!
-# end
+  # Set customer role
+  customer
+    .memberships
+    .find_by(team: team)
+    .update(role_ids: ["customer"])
+
+  customer.update(current_team: team)
+
+  # Create locations
+  customer_data[:locations].each do |location_name|
+    Location.create!(
+      name: location_name,
+      team: team
+    )
+  end
+
+  # Create training programs
+  customer_data[:training_programs].each do |program|
+    training_program = TrainingProgram.new(
+      name: program[:name],
+      team: team
+    )
+    training_program.description = program[:description]
+    training_program.save!
+  end
+end
+
+# Create vendors and associate them with customers
+SEEDER_CONFIG[:vendors].each do |vendor_data|
+  # Create vendor user
+  puts "Creating vendor user with email: #{vendor_data[:email]}"
+  vendor = User.new(
+    email: vendor_data[:email],
+    password: vendor_data[:password],
+    first_name: vendor_data[:first_name],
+    last_name: vendor_data[:last_name],
+    time_zone: default_time_zone,
+    locale: "en"
+  )
+  vendor.skip_confirmation!
+  vendor.save!
+
+  # Create team for vendor
+  vendor_team = vendor.teams.create!(
+    name: vendor_data[:company],
+    slug: vendor_data[:company].parameterize,
+    time_zone: default_time_zone,
+    locale: "en"
+  )
+
+  # Set vendor role for their own team
+  vendor
+    .memberships
+    .find_by(team: vendor_team)
+    .update(role_ids: ["vendor"])
+
+  vendor.update(current_team: vendor_team)
+
+  # Associate vendor with customer teams
+  vendor_data[:serves_customers].each do |customer_company|
+    if customer_team = customer_teams[customer_company]
+      # Create membership with vendor_associate role for customer teams
+      Membership.create!(
+        user: vendor,
+        team: customer_team,
+        role_ids: ["vendor_associate"],
+        user_first_name: vendor.first_name,
+        user_last_name: vendor.last_name,
+        user_email: vendor.email
+      )
+    end
+  end
+end
+
+# Create employees
+SEEDER_CONFIG[:employees].each do |employee_data|
+  # Create employee user
+  puts "Creating employee user with email: #{employee_data[:email]}"
+  employee = User.new(
+    email: employee_data[:email],
+    password: employee_data[:password],
+    first_name: employee_data[:first_name],
+    last_name: employee_data[:last_name],
+    time_zone: default_time_zone,
+    locale: "en"
+  )
+  employee.skip_confirmation!
+  employee.save!
+
+  # Associate with company team
+  if company_team = customer_teams[employee_data[:company]]
+    membership = Membership.create!(
+      user: employee,
+      team: company_team,
+      role_ids: ["employee"],
+      user_first_name: employee.first_name,
+      user_last_name: employee.last_name,
+      user_email: employee.email
+    )
+    employee.update(current_team: company_team)
+  end
+end
+
+# Create trainees
+SEEDER_CONFIG[:trainees].each do |trainee_data|
+  # Create trainee user
+  puts "Creating trainee user with email: #{trainee_data[:email]}"
+  trainee = User.new(
+    email: trainee_data[:email],
+    password: trainee_data[:password],
+    first_name: trainee_data[:first_name],
+    last_name: trainee_data[:last_name],
+    time_zone: default_time_zone,
+    locale: "en"
+  )
+  trainee.skip_confirmation!
+  trainee.save!
+
+  # Associate with company team
+  if company_team = customer_teams[trainee_data[:company]]
+    membership = Membership.create!(
+      user: trainee,
+      team: company_team,
+      role_ids: ["trainee"],
+      user_first_name: trainee.first_name,
+      user_last_name: trainee.last_name,
+      user_email: trainee.email
+    )
+    trainee.update(current_team: company_team)
+
+    # Assign training programs
+    trainee_data[:assigned_programs].each do |program_name|
+      if program = TrainingProgram.find_by(name: program_name, team: company_team)
+        # Create training membership for the trainee
+        TrainingMembership.create!(
+          training_program: program,
+          membership: membership
+        )
+      end
+    end
+  end
+end
+
+puts "✅ Seeding completed successfully!"

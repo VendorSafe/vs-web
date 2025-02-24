@@ -34,21 +34,26 @@ chmod +x bin/vendorsafe-structure
    - Manages training content and structure
    - Links to pricing models
    - Controls certification rules
+   - Supports Vue.js player integration
+   - Handles progress tracking
 
 5. **TrainingContent** (Modular content units)
    - Individual content modules
    - Supports various content types
    - Organized within programs
+   - Integrated with Vue.js player
 
 6. **TrainingQuestions** (Assessment system)
    - Question management
    - Answer validation
    - Progress tracking
+   - Real-time feedback
 
 7. **TrainingMemberships** (Access control)
    - Links users to training programs
    - Manages certification validity
    - Tracks progress
+   - Handles invitations
 
 ### Initial Setup
 
@@ -145,4 +150,63 @@ membership.can_manage_training_programs?
 membership.can_view_certificates?
 ```
 
-# Training Program Player with Vue.js
+## Training Program Player with Vue.js
+
+### Overview
+The Training Program Player is a Vue.js-based component that provides an interactive interface for users to engage with training content. It supports various content types including video, text, and quizzes.
+
+### Features
+- Multi-format content support
+- Progress tracking
+- Interactive quizzes
+- Certificate generation
+- Real-time updates
+
+### Setup
+The player is automatically included in the asset pipeline. To use it in your views:
+
+```erb
+<%%= render "training_programs/player", training_program: @training_program %>
+```
+
+### Components
+1. **VideoPlayer**
+   - Supports multiple video formats
+   - Progress tracking
+   - Playback controls
+
+2. **ContentViewer**
+   - Text content display
+   - Image galleries
+   - Document viewers
+
+3. **QuizSystem**
+   - Multiple question types
+   - Real-time validation
+   - Progress tracking
+
+4. **ProgressTracker**
+   - Visual progress indicators
+   - Completion status
+   - Achievement tracking
+
+### API Integration
+The player automatically integrates with the VendorSafe API endpoints:
+- `/api/v1/training_programs/:id`
+- `/api/v1/training_programs/:id/progress`
+- `/api/v1/training_programs/:id/complete`
+
+### State Management
+Uses Pinia for state management with the following stores:
+- `trainingProgramStore`
+- `progressStore`
+- `userStore`
+
+### Customization
+The player can be customized through:
+- Tailwind CSS classes
+- Vue.js props
+- Event handlers
+- Custom components
+
+For detailed customization options, see the Vue.js component documentation in `app/javascript/training-program-viewer/README.md`.

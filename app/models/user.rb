@@ -1,9 +1,10 @@
 class User < ApplicationRecord
-            # Include default devise modules.
-            devise :database_authenticatable, :registerable,
-                    :recoverable, :rememberable, :trackable, :validatable,
-                    :confirmable, :omniauthable
-            include DeviseTokenAuth::Concerns::User
+  # Include default devise modules.
+  devise :database_authenticatable, :registerable,
+    :recoverable, :rememberable, :trackable, :validatable,
+    :confirmable, :omniauthable
+  # TODO: Set up required database columns before enabling token auth
+  # include DeviseTokenAuth::Concerns::User
   include Users::Base
   include Roles::User
   # 🚅 add concerns above.

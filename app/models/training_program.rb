@@ -1,12 +1,16 @@
 class TrainingProgram < ApplicationRecord
-  include PublicActivity::Model
-  tracked owner: :team
+  # Temporarily disable PublicActivity for seeding
+  # include PublicActivity::Model
+  # tracked owner: :team, if: :should_track_activity?
 
   # 🚅 add concerns above.
 
   # 🚅 add attribute accessors above.
 
   belongs_to :team
+  validates :name, presence: true
+  validates :description, presence: true
+  validates :team, presence: true
   belongs_to :pricing_model, optional: true
   # 🚅 add belongs_to associations above.
 
@@ -20,7 +24,6 @@ class TrainingProgram < ApplicationRecord
 
   # 🚅 add scopes above.
 
-  validates :name, presence: true
   validates :pricing_model, scope: true
   # 🚅 add validations above.
 
@@ -32,6 +35,12 @@ class TrainingProgram < ApplicationRecord
   # Ensures pricing models belong to the same team
   def valid_pricing_models
     team.pricing_models
+  end
+
+  # Returns valid memberships for this training program
+  # All memberships in the same team are valid
+  def valid_memberships
+    team.memberships
   end
 
   # 🚅 add methods above.

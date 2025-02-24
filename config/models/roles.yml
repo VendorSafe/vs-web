@@ -1,98 +1,45 @@
-# "default:" roles apply to every user in the system.
-default:
-  models:
-    PricingModel: read
-    Location: read
-    TrainingQuestion: read
-    TrainingContent: read
-    TrainingProgram: read
-    Facility: read
-    Team: read
-    Membership:
-      - read
-      - search
-    Platform::Application: read
-    Webhooks::Outgoing::Endpoint: manage
-    Webhooks::Outgoing::Event: read
-    Webhooks::Outgoing::Delivery: read
-    Webhooks::Outgoing::DeliveryAttempt: read
-    Invitation:
-      - read
-      - create
-      - destroy
-    # Add any models all users should be able to read
-
-# Under each role (like "employee", "vendor", etc.), "manageable_roles" lists
-# what roles they can assign to others.
-# The "models" define which actions (read, manage, update) the role can perform on each model.
-
-# For "employee":
-# - "manageable_roles: - employee" means employees can manage other employees' roles.
-# - "models: ... manage ... read ... update" means employees can create, update,
-#   or otherwise manage listed models if they have the correct permissions.
-
-employee:
-  manageable_roles:
-    - employee
-  models:
-    Scaffolding::CompletelyConcrete::TangibleThing: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcept:
-      - read
-      - update
-    # Add models that employees should have access to
-    TrainingProgram: read
-
-vendor:
-  manageable_roles:
-    - vendor
-  models:
-    Scaffolding::CompletelyConcrete::TangibleThing: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcept:
-      - read
-      - update
-    # Add models that vendors should have access to
-    TrainingProgram: read
-
-editor:
-  models:
-    Scaffolding::CompletelyConcrete::TangibleThing: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcept:
-      - read
-      - update
-
-coordinator:
-  models:
-    Scaffolding::CompletelyConcrete::TangibleThing: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcept:
-      - read
-      - update
-
-# "includes:" merges permissions from other roles into this one.
-# In "admin:", it includes "editor", "vendor", and "employee".
-# Essentially, "admin" inherits all privileges from those roles.
+# Base Roles Configuration for VendorSafe
+# Each role defines specific permissions and access levels
 
 admin:
-  includes:
-    - editor
-    - vendor
-    - employee
-  manageable_roles:
-    - admin
-    - editor
-    - vendor
-    - employee
-  models:
-    PricingModel: manage
-    Location: manage
-    TrainingQuestion: manage
-    TrainingContent: manage
-    TrainingProgram: manage
-    Facility: manage
-    Team: manage
-    Membership: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
+  name: "Administrator"
+  description: "Full system access and management capabilities"
+  capabilities:
+    - manage_team
+    - manage_memberships
+    - manage_locations
+    - manage_pricing_models
+    - manage_training_programs
+    - view_reports
+    - manage_certificates
 
-# Bullet Train processes this file to build the authorization rules.
-# Whenever the application checks if a user can perform an action,
-# Bullet Train consults the appropriate role(s) defined here.
-# This happens at runtime when evaluating permissions in controllers, views, or policies.
+vendor:
+  name: "Vendor"
+  description: "Training provider capabilities"
+  capabilities:
+    - view_assigned_locations
+    - view_training_programs
+    - manage_own_training_programs
+    - view_certificates
+    - issue_certificates
+    - view_own_reports
+
+customer:
+  name: "Customer"
+  description: "Training purchaser and manager"
+  capabilities:
+    - manage_own_location
+    - purchase_training
+    - view_purchased_training
+    - assign_training
+    - view_team_certificates
+    - view_team_reports
+
+employee:
+  name: "Employee"
+  description: "Training participant"
+  capabilities:
+    - view_assigned_training
+    - take_training
+    - view_own_certificates
+    - view_own_progress
