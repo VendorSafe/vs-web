@@ -1,0 +1,8 @@
+<% pricing_model ||= @pricing_model %>
+<% team ||= @team || pricing_model&.team %>
+<%= render 'account/teams/breadcrumbs', team: team %>
+<%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, team, :pricing_models] %>
+<% if pricing_model&.persisted? %>
+  <%= render 'account/shared/breadcrumb', label: pricing_model.label_string, url: [:account, pricing_model] %>
+<% end %>
+<%= render 'account/shared/breadcrumbs/actions', only_for: 'pricing_models' %>

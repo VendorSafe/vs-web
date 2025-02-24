@@ -1,0 +1,116 @@
+en:
+  locations: &locations
+    label: &label Locations
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: ti ti ti-map-pin
+    buttons: &buttons
+      new: Add New Location
+      create: Create Location
+      edit: Edit Location
+      update: Update Location
+      destroy: Remove Location
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{location_name}? This will also remove any child resources and can't be undone.
+    location:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Location ID
+      team_id:
+        heading: Team ID
+      name:
+        _: &name Name
+        label: *name
+        heading: *name
+        api_title: *name
+        api_description: *name
+      address:
+        _: &address Address
+        label: *address
+        heading: *address
+        api_title: *address
+        api_description: *address
+      location_type:
+        _: &location_type Location Type
+        label: *location_type
+        heading: *location_type
+        api_title: *location_type
+        api_description: *location_type
+      parent_id: &parent
+        _: &parent_id Parent
+        label: *parent_id
+        heading: *parent_id
+        api_title: *parent_id
+        api_description: *parent_id
+        placeholder: None
+      parent: *parent
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Locations"
+      index: "List Locations"
+      create: "Add a New Location"
+      member_actions: "Actions for an Individual Location"
+      show: "Retrieve a Location"
+      update: "Update a Location"
+      destroy: "Delete a Location"
+      fields: *fields
+    index:
+      section: "%{teams_possessive} Locations"
+      contexts:
+        team:
+          header: Locations
+          description: Below is a list of Locations that have been added for %{team_name}.
+          description_empty: No Locations have been added for %{team_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{location_name}"
+      header: Location Details
+      description: Below are the details we have for %{location_name}.
+      manage_description: You'll also find options for updating these details or removing %{location_name} from %{team_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Location for %{team_name}"
+      header: New Location Details
+      description: Please provide the details of the new Location you'd like to add to %{team_name}.
+      form: *form
+    edit:
+      section: "%{location_name}"
+      header: Edit Location Details
+      description: You can update the details or settings for %{location_name} below.
+      form: *form
+    notifications:
+      created: Location was successfully created.
+      updated: Location was successfully updated.
+      destroyed: Location was successfully destroyed.
+  account:
+    locations: *locations
+  activerecord:
+    attributes:
+      location:
+        name: *name
+        address: *address
+        location_type: *location_type
+        parent_id: *parent_id
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

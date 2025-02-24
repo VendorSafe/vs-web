@@ -1,0 +1,10 @@
+<% if can? :read, PricingModel.new(team: current_team) %>
+  <%= render 'account/shared/menu/item', {
+    url: main_app.polymorphic_path([:account, current_team, :pricing_models]),
+    label: t('pricing_models.navigation.label'),
+  } do |p| %>
+    <% p.icon do %>
+      <i class="<%= t('pricing_models.navigation.icon') %>"></i>
+    <% end %>
+  <% end %>
+<% end %>

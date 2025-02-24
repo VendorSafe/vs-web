@@ -1,0 +1,120 @@
+en:
+  pricing_models: &pricing_models
+    label: &label Pricing Models
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: ti ti ti-currency-dollar
+    buttons: &buttons
+      new: Add New Pricing Model
+      create: Create Pricing Model
+      edit: Edit Pricing Model
+      update: Update Pricing Model
+      destroy: Remove Pricing Model
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{pricing_model_name}? This will also remove any child resources and can't be undone.
+    pricing_model:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Pricing Model ID
+      team_id:
+        heading: Team ID
+      name:
+        _: &name Name
+        label: *name
+        heading: *name
+        api_title: *name
+        api_description: *name
+      price_type:
+        _: &price_type Price Type
+        label: *price_type
+        heading: *price_type
+        api_title: *price_type
+        api_description: *price_type
+      base_price:
+        _: &base_price Base Price
+        label: *base_price
+        heading: *base_price
+        api_title: *base_price
+        api_description: *base_price
+      volume_discount:
+        _: &volume_discount Volume Discount
+        label: *volume_discount
+        heading: *volume_discount
+        api_title: *volume_discount
+        api_description: *volume_discount
+      description:
+        _: &description Description
+        label: *description
+        heading: *description
+        api_title: *description
+        api_description: *description
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Pricing Models"
+      index: "List Pricing Models"
+      create: "Add a New Pricing Model"
+      member_actions: "Actions for an Individual Pricing Model"
+      show: "Retrieve a Pricing Model"
+      update: "Update a Pricing Model"
+      destroy: "Delete a Pricing Model"
+      fields: *fields
+    index:
+      section: "%{teams_possessive} Pricing Models"
+      contexts:
+        team:
+          header: Pricing Models
+          description: Below is a list of Pricing Models that have been added for %{team_name}.
+          description_empty: No Pricing Models have been added for %{team_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{pricing_model_name}"
+      header: Pricing Model Details
+      description: Below are the details we have for %{pricing_model_name}.
+      manage_description: You'll also find options for updating these details or removing %{pricing_model_name} from %{team_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Pricing Model for %{team_name}"
+      header: New Pricing Model Details
+      description: Please provide the details of the new Pricing Model you'd like to add to %{team_name}.
+      form: *form
+    edit:
+      section: "%{pricing_model_name}"
+      header: Edit Pricing Model Details
+      description: You can update the details or settings for %{pricing_model_name} below.
+      form: *form
+    notifications:
+      created: Pricing Model was successfully created.
+      updated: Pricing Model was successfully updated.
+      destroyed: Pricing Model was successfully destroyed.
+  account:
+    pricing_models: *pricing_models
+  activerecord:
+    attributes:
+      pricing_model:
+        name: *name
+        price_type: *price_type
+        base_price: *base_price
+        volume_discount: *volume_discount
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

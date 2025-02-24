@@ -1,0 +1,4 @@
+<%= render 'account/shared/page' do |page| %>
+  <% page.title t('.section') %>
+  <% page.body.render 'index', pricing_models: @pricing_models %>
+<% end %>
