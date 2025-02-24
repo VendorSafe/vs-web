@@ -7,7 +7,15 @@ SEEDER_CONFIG = {
     first_name: "John",
     last_name: "Sarda",
     time_zone: "America/Los_Angeles",
-    locale: "en"
+    locale: "en",
+    roles: ["admin", "training_manager", "instructor"], # Full system access
+    permissions: {
+      can_manage_system: true,
+      can_manage_roles: true,
+      can_manage_teams: true,
+      can_manage_all_programs: true,
+      can_view_analytics: true
+    }
   },
   customers: [
     {
@@ -20,7 +28,48 @@ SEEDER_CONFIG = {
       training_programs: [
         {
           name: "Safety Protocol 101",
-          description: "Comprehensive safety training covering basic protocols and procedures for energy industry workers."
+          description: "Comprehensive safety training covering basic protocols and procedures for energy industry workers.",
+          state: "published",
+          passing_percentage: 80,
+          certificate_validity_period: 365, # 1 year
+          certificate_template: "safety_protocol",
+          custom_certificate_fields: {
+            accreditation_number: "SP101-2025",
+            industry_standard: "OSHA 29 CFR 1910"
+          },
+          contents: [
+            {
+              title: "Introduction to Safety",
+              content_type: "video",
+              sort_order: 1,
+              body: "Overview of workplace safety principles"
+            },
+            {
+              title: "Personal Protective Equipment",
+              content_type: "document",
+              sort_order: 2,
+              body: "Detailed guide to PPE requirements"
+            },
+            {
+              title: "Emergency Procedures",
+              content_type: "interactive",
+              sort_order: 3,
+              body: "Interactive simulation of emergency scenarios"
+            },
+            {
+              title: "Final Assessment",
+              content_type: "quiz",
+              sort_order: 4,
+              questions: [
+                {
+                  title: "PPE Requirements",
+                  body: "Which of the following is required PPE for high-voltage areas?",
+                  good_answers: ["Insulated gloves", "Safety glasses", "Hard hat"],
+                  bad_answers: ["Regular leather gloves", "Regular glasses"]
+                }
+              ]
+            }
+          ]
         },
         {
           name: "Environmental Compliance",
@@ -105,7 +154,24 @@ SEEDER_CONFIG = {
       last_name: "Miller",
       company: "SafetyFirst Training Co",
       serves_customers: ["Pacific Northwest Energy", "Western Grid Solutions"],
-      locations: ["Seattle", "Portland"]
+      locations: ["Seattle", "Portland"],
+      roles: ["instructor"],
+      permissions: {
+        can_create_content: true,
+        can_review_progress: true,
+        can_issue_certificates: true,
+        can_manage_assigned_programs: true
+      },
+      assigned_programs: [
+        {
+          name: "Safety Protocol 101",
+          responsibilities: ["content_creation", "student_support", "progress_monitoring"]
+        },
+        {
+          name: "Environmental Compliance",
+          responsibilities: ["content_review", "certification_management"]
+        }
+      ]
     },
     {
       email: "jcsarda+vendor2@gmail.com",
@@ -152,7 +218,15 @@ SEEDER_CONFIG = {
       last_name: "Martinez",
       role: "Safety Manager",
       company: "Pacific Northwest Energy",
-      location: "Seattle HQ"
+      location: "Seattle HQ",
+      roles: ["training_manager"],
+      permissions: {
+        can_manage_company_programs: true,
+        can_assign_training: true,
+        can_view_reports: true,
+        can_manage_certificates: true
+      },
+      managed_programs: ["Safety Protocol 101", "Environmental Compliance"]
     },
     {
       email: "jcsarda+employee2@gmail.com",
@@ -199,7 +273,31 @@ SEEDER_CONFIG = {
       last_name: "Clark",
       company: "Pacific Northwest Energy",
       location: "Portland Branch",
-      assigned_programs: ["Safety Protocol 101"]
+      roles: ["trainee"],
+      permissions: {
+        can_view_assigned_programs: true,
+        can_take_training: true,
+        can_view_certificates: true,
+        can_download_materials: true
+      },
+      assigned_programs: [
+        {
+          name: "Safety Protocol 101",
+          progress: {
+            completion_percentage: 75,
+            last_accessed_at: "2025-02-24T10:00:00Z",
+            completed_modules: [
+              "Introduction to Safety",
+              "Personal Protective Equipment",
+              "Emergency Procedures"
+            ],
+            pending_modules: [
+              "Final Assessment"
+            ],
+            time_spent: 180 # minutes
+          }
+        }
+      ]
     },
     {
       email: "jcsarda+trainee2@gmail.com",
