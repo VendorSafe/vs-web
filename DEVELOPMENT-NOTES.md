@@ -69,6 +69,50 @@ Note: The event types defined in `config/models/webhooks/outgoing/event_types.ym
    - Review ejected files during upgrades to ensure compatibility
 
 4. **Framework Integration**:
-   - Use Bullet Train's conventions and patterns where possible
-   - Leverage existing tools and helpers before creating custom solutions
-   - Document any deviations from standard Bullet Train patterns
+    - Use Bullet Train's conventions and patterns where possible
+    - Leverage existing tools and helpers before creating custom solutions
+    - Document any deviations from standard Bullet Train patterns
+
+## Training Program Role Architecture
+
+### Role-Based Access Control
+
+The training system uses Bullet Train's built-in team, role, and invitation functionality. This is configured in `config/models/roles.yml` with the following roles:
+
+1. **training_viewer**:
+   - Can view published training programs
+   - Read-only access to content and certificates
+
+2. **training_participant**:
+   - Inherits training_viewer permissions
+   - Can participate in training programs
+   - Can track progress and earn certificates
+
+3. **training_author**:
+   - Inherits training_participant permissions
+   - Can create and edit training programs in draft state
+   - Can publish training programs
+   - Can manage training content and questions
+
+4. **training_admin**:
+   - Inherits training_author permissions
+   - Can archive/restore training programs
+   - Full management of all training resources
+   - Can assign training roles to other team members
+
+### Invitation and Access Management
+
+Instead of implementing custom invitation logic, we leverage Bullet Train's team invitation system:
+
+1. Team admins can invite new members
+2. Invitees receive standard Bullet Train invitations
+3. Upon acceptance, appropriate training roles can be assigned
+4. Access to training programs is controlled through team membership and roles
+
+### State Management
+
+Training programs use workflow states (draft, published, archived) with role-based guards:
+- Only training_authors and admins can publish programs
+- Only training_admins can archive programs
+- Published programs are visible to all roles
+- Draft programs are only visible to authors and admins

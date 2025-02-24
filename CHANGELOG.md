@@ -56,12 +56,32 @@
 
 ### Changed
 
-*   Updated routes to handle training invitations
-*   Updated TrainingInvitationsController to handle invitation flow
-*   Enhanced training program model with completion tracking
+*   Migrated to Bullet Train's built-in team/role system:
+    - Replaced custom role implementation with Bullet Train roles
+    - Configured training-specific roles in roles.yml
+    - Added role-based guards to training program workflow
+    - Integrated with Bullet Train's permission system
+*   Switched to Bullet Train's invitation system:
+    - Removed custom training invitation implementation
+    - Leveraging team-based invitations with role assignment
+    - Using Bullet Train's standard invitation flow
+*   Enhanced training program model:
+    - Added PublicActivity tracking
+    - Integrated with Bullet Train's role-based access control
+    - Added role-based state transition guards
+*   Updated training membership model:
+    - Added Bullet Train role support
+    - Restricted available roles to training-specific ones
+    - Maintained existing progress tracking functionality
 *   Improved user authentication flow with confirmable
 *   Updated training content management system
 *   Implemented role-based access control improvements
+
+### Removed
+
+*   Removed custom training_invitations table and model in favor of Bullet Train's built-in invitation system
+*   Removed custom role implementation code
+*   Removed redundant invitation handling logic
 
 ### Fixed
 

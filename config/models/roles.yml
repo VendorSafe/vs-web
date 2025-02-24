@@ -1,45 +1,51 @@
-# Base Roles Configuration for VendorSafe
-# Each role defines specific permissions and access levels
-
-admin:
-  name: "Administrator"
-  description: "Full system access and management capabilities"
-  capabilities:
-    - manage_team
-    - manage_memberships
-    - manage_locations
-    - manage_pricing_models
-    - manage_training_programs
-    - view_reports
-    - manage_certificates
-
-vendor:
-  name: "Vendor"
-  description: "Training provider capabilities"
-  capabilities:
-    - view_assigned_locations
-    - view_training_programs
-    - manage_own_training_programs
-    - view_certificates
-    - issue_certificates
-    - view_own_reports
-
-customer:
-  name: "Customer"
-  description: "Training purchaser and manager"
-  capabilities:
-    - manage_own_location
-    - purchase_training
-    - view_purchased_training
-    - assign_training
-    - view_team_certificates
-    - view_team_reports
+# Training Program Roles
+default:
+  models:
+    TrainingProgram: show
+    TrainingContent: show
+    TrainingCertificate: show
 
 employee:
-  name: "Employee"
-  description: "Training participant"
-  capabilities:
-    - view_assigned_training
-    - take_training
-    - view_own_certificates
-    - view_own_progress
+  models:
+    TrainingProgram: show
+    TrainingContent:
+      - show
+      - do_training
+    TrainingCertificate:
+      - show
+      - download
+    TrainingMembership:
+      - show
+      - track_progress
+
+vendor:
+  includes:
+    - employee
+  models:
+    TrainingProgram:
+      - show
+      - manage_team_access
+    TrainingContent:
+      - show
+      - do_training
+      - manage_team_progress
+    TrainingCertificate:
+      - show
+      - download
+      - view_team_certificates
+    TrainingMembership:
+      - show
+      - track_progress
+      - manage_team_members
+
+customer:
+  manageable_roles:
+    - employee
+    - vendor
+    - customer
+  models:
+    TrainingProgram: manage_training
+    TrainingContent: manage_content
+    TrainingCertificate: manage_certificates
+    TrainingMembership: manage_memberships
+    TrainingQuestion: manage_questions

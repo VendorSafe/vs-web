@@ -29,16 +29,6 @@
   - `version` (integer) - For tracking content updates
   - `last_updated_by` (foreign key to users) - Content editor tracking
 
-- New table `training_invitations`:
-  - `id` (primary key)
-  - `training_program_id` (foreign key)
-  - `invitee_id` (foreign key to users)
-  - `inviter_id` (foreign key to users)
-  - `status` (enum: pending, accepted, completed, expired)
-  - `expires_at` (datetime)
-  - `completed_at` (datetime, nullable)
-  - `created_at`, `updated_at` timestamps
-
 - New table `training_progress`:
   - `id` (primary key)
   - `user_id` (foreign key)
@@ -132,17 +122,42 @@
 
 ## 4. Authentication & Authorization (See [Bullet Train Auth Docs](./bullet-train-docs.md#authentication))
 
-### Authentication Flow
-- Integrate Devise token auth with NextJS
-- Handle SSO if required
-- Manage session persistence
-- Handle invitation-based access
+### Authentication Flow (Using Bullet Train)
+- Leveraging Bullet Train's authentication system:
+  - Devise-based user authentication
+  - Team-based multitenancy
+  - Built-in invitation system
+- Integration with NextJS:
+  - Token-based API authentication
+  - Session management
+  - Real-time updates
+- Team invitation workflow:
+  - Team admins invite new members
+  - Automatic role assignment on acceptance
+  - Training role management through team UI
+- Optional SSO integration:
+  - Support for OAuth providers
+  - Enterprise SSO options
+  - Role mapping for SSO users
 
-### Authorization
-- Role-based access control
-- Content access restrictions
-- Progress-based restrictions
-- Certificate access control
+### Authorization (Using Bullet Train Roles)
+- Leveraging Bullet Train's built-in role system with custom training roles:
+  - training_viewer: Read-only access to published content
+  - training_participant: Can participate in programs and earn certificates
+  - training_author: Can create/edit programs and manage content
+  - training_admin: Full control of training system
+- Role-based workflow restrictions:
+  - Draft programs only visible to authors/admins
+  - Publishing requires author/admin role
+  - Archiving requires admin role
+- Content access restrictions:
+  - Sequential content progression
+  - Prerequisite validation
+  - Progress-based unlocking
+- Certificate management:
+  - Role-based certificate generation
+  - Validity period enforcement
+  - Verification system access control
 
 ## 5. Frontend Components
 

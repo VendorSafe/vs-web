@@ -74,12 +74,11 @@
 # - Add activity notifications
 
 class TrainingProgram < ApplicationRecord
-  # Temporarily disable PublicActivity for seeding
-  # include PublicActivity::Model
-  # tracked owner: :team, if: :should_track_activity?
-
   # 🚅 add concerns above.
+  include PublicActivity::Model
+  tracked owner: :team
   include Workflow
+  include Roles::Support
 
   workflow_column :state
 
@@ -210,6 +209,79 @@ class TrainingProgram < ApplicationRecord
     # - Time taken
     # - Completion percentage
     training_membership.completion_percentage
+  end
+
+  # Role-based validation methods
+  def can_be_published_by?(membership)
+    return false unless membership
+    membership.can?(:manage_training, self)
+  end
+
+  def can_be_archived_by?(membership)
+    return false unless membership
+    membership.can?(:manage_training, self)
+  end
+
+  def can_be_edited_by?(membership)
+    return false unless membership
+    membership.can?(:manage_training, self)
+  end
+
+  def can_be_viewed_by?(membership)
+    return false unless membership
+    return true if membership.can?(:manage_training, self)
+    return true if membership.can?(:manage_team_access, self)
+    return true if has_team_access?(membership) && published?
+    false
+  end
+
+  # Team access methods
+  def has_team_access?(membership)
+    return false unless membership && published?
+    training_memberships.exists?(membership: membership) ||
+      membership.can?(:manage_team_access, self)
+  end
+
+  def can_invite_team_members?(membership)
+    return false unless membership
+    membership.can?(:manage_team_access, self)
+  end
+
+  def can_manage_team_progress?(membership)
+    return false unless membership
+    membership.can?(:manage_team_progress, self)
+  end
+
+  # Sequential progression methods
+  def next_content_for(membership)
+    return nil unless has_team_access?(membership)
+    training_membership = training_memberships.find_by(membership: membership)
+    return first_content unless training_membership&.current_content
+    training_membership.next_available_content
+  end
+
+  def can_access_content?(membership, content)
+    return false unless has_team_access?(membership)
+    training_membership = training_memberships.find_by(membership: membership)
+    return false unless training_membership
+    training_membership.can_access_content?(content)
+  end
+
+  # Workflow event guards
+  def can_publish?
+    can_be_published_by?(Current.membership)
+  end
+
+  def can_archive?
+    can_be_archived_by?(Current.membership)
+  end
+
+  def can_restore?
+    can_be_archived_by?(Current.membership)
+  end
+
+  def can_unpublish?
+    can_be_published_by?(Current.membership)
   end
 
   # 🚅 add methods above.
