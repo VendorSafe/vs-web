@@ -78,7 +78,13 @@ class TrainingMembership < ApplicationRecord
   end
 
   def can_access_content?(content)
-    return false unless content
+    return false unless content && can_access_training?
+
+    # Admins and team managers can access any content
+    return true if membership.can?(:manage_training, training_program)
+    return true if membership.can?(:manage_team_access, training_program)
+
+    # For regular participants, enforce sequential progression
     return true if content == first_content
 
     # Check if previous content is completed
@@ -120,6 +126,7 @@ class TrainingMembership < ApplicationRecord
 
   # Progress tracking methods
   def update_progress(content_id, status, time_spent = 0)
+    return false unless can_access_training?
     content = training_contents.find_by(id: content_id)
     return false unless content && can_access_content?(content)
 
@@ -140,9 +147,24 @@ class TrainingMembership < ApplicationRecord
       update_dependencies_met
       advance_to_next_content
       mark_as_completed if completed?
+      track_completion_activity if completed?
     end
 
     success
+  end
+
+  def track_completion_activity
+    create_activity(
+      key: "training_membership.completed",
+      owner: team,
+      recipient: membership.user,
+      parameters: {
+        program_name: training_program.name,
+        completion_percentage: completion_percentage,
+        completed_at: completed_at,
+        role: membership.roles.first
+      }
+    )
   end
 
   def content_progress(content_id)

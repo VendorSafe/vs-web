@@ -56,23 +56,26 @@
 
 ### Changed
 
-*   Migrated to Bullet Train's built-in team/role system:
-    - Replaced custom role implementation with Bullet Train roles
-    - Configured training-specific roles in roles.yml
-    - Added role-based guards to training program workflow
-    - Integrated with Bullet Train's permission system
-*   Switched to Bullet Train's invitation system:
-    - Removed custom training invitation implementation
-    - Leveraging team-based invitations with role assignment
-    - Using Bullet Train's standard invitation flow
-*   Enhanced training program model:
-    - Added PublicActivity tracking
-    - Integrated with Bullet Train's role-based access control
-    - Added role-based state transition guards
-*   Updated training membership model:
-    - Added Bullet Train role support
-    - Restricted available roles to training-specific ones
-    - Maintained existing progress tracking functionality
+*   Implemented customer/vendor/employee role structure:
+    - Customer: Creates and manages training programs
+    - Vendor: Team manager with training access and employee management
+    - Employee: Individual team member taking training
+*   Enhanced team-based access control:
+    - Added team-specific content visibility
+    - Implemented role-based permission checks
+    - Added team progress tracking
+*   Improved sequential progression system:
+    - Added strict content order enforcement
+    - Implemented dependency checking
+    - Added progress tracking with team context
+*   Enhanced activity tracking:
+    - Added completion activity tracking
+    - Tracked team-based progress
+    - Added role-specific activity parameters
+*   Integrated with Bullet Train's team system:
+    - Leveraged built-in team management
+    - Used team-based invitations
+    - Added team-scoped queries
 *   Improved user authentication flow with confirmable
 *   Updated training content management system
 *   Implemented role-based access control improvements
