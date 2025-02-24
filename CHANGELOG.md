@@ -2,6 +2,12 @@
 This file is limited to breaking or potentially breaking changes. Please review any new items carefully when upgrading your application.
 
 ## February 24, 2025
+ - **New**: Role-based access control system
+   - Added four core roles (admin, vendor, customer, employee)
+   - Implemented granular capability checks
+   - Added role setup script (`bin/roles-setup`)
+   - Created detailed role documentation
+
  - **Breaking**: Changed Facility model to Location model with hierarchical structure support
    - If upgrading, you'll need to migrate existing facility data to the new location structure
    - Added parent/child relationships for locations

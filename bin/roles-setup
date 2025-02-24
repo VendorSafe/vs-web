@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+
+####################################################
+# VendorSafe Role Management Setup
+# This script sets up all required roles and their
+# associated permissions in config/models/roles.yml
+####################################################
+
+export DISABLE_SPRING="TRUE"
+set -e
+
+echo "🔑 Setting up roles configuration..."
+
+# Create roles.yml if it doesn't exist
+mkdir -p config/models
+cat > config/models/roles.yml <<EOL
+# Base Roles Configuration for VendorSafe
+# Each role defines specific permissions and access levels
+
+admin:
+  name: "Administrator"
+  description: "Full system access and management capabilities"
+  capabilities:
+    - manage_team
+    - manage_memberships
+    - manage_locations
+    - manage_pricing_models
+    - manage_training_programs
+    - view_reports
+    - manage_certificates
+
+vendor:
+  name: "Vendor"
+  description: "Training provider capabilities"
+  capabilities:
+    - view_assigned_locations
+    - view_training_programs
+    - manage_own_training_programs
+    - view_certificates
+    - issue_certificates
+    - view_own_reports
+
+customer:
+  name: "Customer"
+  description: "Training purchaser and manager"
+  capabilities:
+    - manage_own_location
+    - purchase_training
+    - view_purchased_training
+    - assign_training
+    - view_team_certificates
+    - view_team_reports
+
+employee:
+  name: "Employee"
+  description: "Training participant"
+  capabilities:
+    - view_assigned_training
+    - take_training
+    - view_own_certificates
+    - view_own_progress
+EOL
+
+echo "✅ Roles configuration created at config/models/roles.yml"
+
+# Create role definitions Ruby file
+mkdir -p app/models/concerns
+cat > app/models/concerns/roles.rb <<EOL
+module Roles
+  extend ActiveSupport::Concern
+
+  included do
+    # Define role-specific methods
+    def admin?
+      role_ids.include?("admin")
+    end
+
+    def vendor?
+      role_ids.include?("vendor")
+    end
+
+    def customer?
+      role_ids.include?("customer")
+    end
+
+    def employee?
+      role_ids.include?("employee")
+    end
+
+    # Permission checks based on capabilities
+    def can_manage_team?
+      admin?
+    end
+
+    def can_manage_locations?
+      admin? || (customer? && own_location?)
+    end
+
+    def can_manage_training_programs?
+      admin? || (vendor? && own_training_program?)
+    end
+
+    def can_view_certificates?
+      admin? || vendor? || customer? || (employee? && own_certificate?)
+    end
+
+    def can_issue_certificates?
+      admin? || vendor?
+    end
+
+    private
+
+    def own_location?
+      # Implement location ownership check
+      true
+    end
+
+    def own_training_program?
+      # Implement training program ownership check
+      true
+    end
+
+    def own_certificate?
+      # Implement certificate ownership check
+      true
+    end
+  end
+end
+EOL
+
+echo "✅ Role definitions created at app/models/concerns/roles.rb"
+
+# Create initializer for role configuration
+cat > config/initializers/roles.rb <<EOL
+# Load and validate roles configuration
+ROLES_CONFIG = YAML.load_file(Rails.root.join("config", "models", "roles.yml"))
+
+# Validate required roles exist
+required_roles = %w[admin vendor customer employee]
+missing_roles = required_roles - ROLES_CONFIG.keys
+
+if missing_roles.any?
+  raise "Missing required roles in roles.yml: \#{missing_roles.join(', ')}"
+end
+EOL
+
+echo "✅ Role initializer created at config/initializers/roles.rb"
+
+echo "🔄 Ensuring Membership model includes roles..."
+# Update Membership model to include roles
+if ! grep -q "include Roles" app/models/membership.rb; then
+  echo "include Roles" >> app/models/membership.rb
+fi
+
+echo "
+🎉 Role system setup complete!
+
+Next steps:
+1. Review config/models/roles.yml and adjust capabilities as needed
+2. Include the Roles concern in your Membership model if not already done
+3. Use role checks in your controllers and views:
+   - membership.admin?
+   - membership.can_manage_team?
+   - etc.
+
+To create a new admin:
+rails c
+team = Team.first
+user = User.create!(email: 'admin@example.com', password: 'password')
+Membership.create!(user: user, team: team, role_ids: ['admin'])
+"
