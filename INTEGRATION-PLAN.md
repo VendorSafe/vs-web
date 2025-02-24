@@ -11,10 +11,23 @@
   - `is_published` (boolean) - Training visibility status
 
 - Add to `training_contents`:
-  - `content_type` (enum: text, video, audio, quiz)
+  - `content_type` (enum: text, video, audio, quiz, slides)
   - `time_limit` (integer, nullable) - Minutes allowed for this content
   - `media_url` (string, nullable) - For video/audio content
   - `is_required` (boolean) - Whether content must be completed
+  - `position` (integer) - Order in training program sequence
+  - `content_data` (jsonb) - Stores content based on type:
+    - Slides: array of slide objects with text/images
+    - Quiz: questions and answers
+    - Text: formatted content and metadata
+  - `completion_criteria` (jsonb) - Type-specific completion rules:
+    - Video/Audio: percentage watched
+    - Slides: all slides viewed
+    - Quiz: passing score
+    - Text: scroll percentage/time spent
+  - `dependencies` (array) - IDs of content items that must be completed first
+  - `version` (integer) - For tracking content updates
+  - `last_updated_by` (foreign key to users) - Content editor tracking
 
 - New table `training_invitations`:
   - `id` (primary key)
@@ -46,7 +59,7 @@
   - `score` (integer)
   - `created_at`, `updated_at` timestamps
 
-## 2. Model Enhancements
+## 2. Model Enhancements ([Bullet Train Model Architecture](./bullet-train-docs.md#model-architecture))
 
 ### TrainingProgram Model
 - Add validations for new fields
@@ -64,6 +77,29 @@
 - Add time tracking methods
 - Add progress calculation
 - Add media handling
+- Implement sequential content progression:
+  - Content must be completed in order
+  - Support for different content types:
+    - Slide carousels with navigation
+    - Video content with completion tracking
+    - Text/article content with scroll tracking
+    - Interactive quizzes
+    - Audio content with playback tracking
+- Add position/ordering field for content sequence
+- Add dependencies between content items
+- Add completion criteria for each content type
+
+### Content Creation GUI
+- Develop admin interface for content creation:
+  - Drag-and-drop content ordering
+  - Rich text editor for text content
+  - Slide builder with image upload
+  - Video/audio upload and embedding
+  - Quiz builder with different question types
+  - Preview mode for content review
+  - Bulk content import/export
+  - Content templates and reusable components
+  - Version control for content updates
 
 ### User Model
 - Add training program associations
@@ -71,7 +107,7 @@
 - Add progress tracking methods
 - Add invitation handling
 
-## 3. NextJS Integration
+## 3. NextJS Integration (See [Bullet Train Frontend Docs](./bullet-train-docs.md#nextjs-integration))
 
 ### Setup
 - Create new NextJS application in `/client`
@@ -81,12 +117,20 @@
 
 ### Core Features
 - Training dashboard
-- Content viewer components
-- Progress tracking
-- Certificate generation
-- Invitation management
+- Content viewer components:
+  - Sequential content navigation system
+  - Type-specific content renderers
+  - Progress and completion tracking
+  - Learning tools integration
+- Content management system:
+  - Content creation interface
+  - Content organization tools
+  - Version control system
+- Progress tracking and analytics
+- Certificate generation and management
+- Invitation and access management
 
-## 4. Authentication & Authorization
+## 4. Authentication & Authorization (See [Bullet Train Auth Docs](./bullet-train-docs.md#authentication))
 
 ### Authentication Flow
 - Integrate Devise token auth with NextJS
@@ -109,10 +153,30 @@
 - Upcoming deadlines
 
 ### Content Viewer
-- Multi-media content support
-- Progress indicators
-- Time tracking
-- Quiz interface
+- Sequential content navigation system:
+  - Next/Previous content controls
+  - Content type-specific viewers:
+    - Slide carousel with navigation controls
+    - Video player with progress tracking
+    - Audio player with timestamps
+    - Text viewer with scroll tracking
+    - Interactive quiz interface with instant feedback
+  - Progress indicators:
+    - Overall training program progress
+    - Current content item progress
+    - Required vs optional content indicators
+  - Time tracking features:
+    - Content-specific time limits
+    - Auto-save progress
+    - Resume from last position
+  - Learning aids:
+    - Notes and annotations
+    - Bookmarking capability
+    - Content search (if allowed)
+  - Technical features:
+    - Offline content caching
+    - Mobile-responsive design
+    - Accessibility compliance
 
 ### Certificate Management
 - Certificate template
