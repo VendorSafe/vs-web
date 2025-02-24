@@ -1,0 +1,10 @@
+Explain it in the change log before you delete or remove anything and explain why.
+
+## File Editing Workflow
+
+When making multiple edits to related files, it's more efficient to:
+
+1. **Read all relevant files first:** Use a script to read the contents of all target files into memory.
+2. **Make edits individually:** Use separate `apply_diff` or `write_to_file` requests for each file, referencing the in-memory content.
+
+This avoids redundant file reads and improves overall speed, especially when dealing with many small changes across multiple files.

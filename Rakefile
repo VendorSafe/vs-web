@@ -3,4 +3,5 @@
 
 require_relative "config/application"
 
+# require 'erd'
 Rails.application.load_tasks

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_24_185519) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_24_192345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -274,6 +274,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_185519) do
     t.string "locale"
   end
 
+  create_table "training_certificates", force: :cascade do |t|
+    t.bigint "membership_id", null: false
+    t.bigint "training_program_id", null: false
+    t.datetime "issued_at", null: false
+    t.string "certificate_number", null: false
+    t.integer "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["certificate_number"], name: "index_training_certificates_on_certificate_number", unique: true
+    t.index ["membership_id", "training_program_id"], name: "idx_training_certificates_unique_membership_program", unique: true
+    t.index ["membership_id"], name: "index_training_certificates_on_membership_id"
+    t.index ["training_program_id"], name: "index_training_certificates_on_training_program_id"
+  end
+
   create_table "training_contents", force: :cascade do |t|
     t.bigint "training_program_id", null: false
     t.integer "sort_order"
@@ -284,6 +298,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_185519) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["training_program_id"], name: "index_training_contents_on_training_program_id"
+  end
+
+  create_table "training_invitations", force: :cascade do |t|
+    t.bigint "training_program_id", null: false
+    t.bigint "invitee_id", null: false
+    t.bigint "inviter_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "expires_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitee_id"], name: "index_training_invitations_on_invitee_id"
+    t.index ["inviter_id"], name: "index_training_invitations_on_inviter_id"
+    t.index ["training_program_id", "invitee_id"], name: "idx_training_invitations_unique_program_invitee", unique: true
+    t.index ["training_program_id"], name: "index_training_invitations_on_training_program_id"
   end
 
   create_table "training_memberships", force: :cascade do |t|
@@ -306,8 +335,29 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_185519) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "pricing_model_id"
+    t.datetime "completion_deadline"
+    t.integer "completion_timeframe"
+    t.integer "passing_percentage"
+    t.integer "time_limit"
+    t.boolean "is_published"
     t.index ["pricing_model_id"], name: "index_training_programs_on_pricing_model_id"
     t.index ["team_id"], name: "index_training_programs_on_team_id"
+  end
+
+  create_table "training_progress", force: :cascade do |t|
+    t.bigint "membership_id", null: false
+    t.bigint "training_program_id", null: false
+    t.bigint "training_content_id", null: false
+    t.string "status", default: "not_started", null: false
+    t.integer "score"
+    t.integer "time_spent", default: 0
+    t.datetime "last_accessed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["membership_id", "training_program_id", "training_content_id"], name: "idx_training_progress_unique_membership_program_content", unique: true
+    t.index ["membership_id"], name: "index_training_progress_on_membership_id"
+    t.index ["training_content_id"], name: "index_training_progress_on_training_content_id"
+    t.index ["training_program_id"], name: "index_training_progress_on_training_program_id"
   end
 
   create_table "training_questions", force: :cascade do |t|
@@ -452,11 +502,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_185519) do
   add_foreign_key "scaffolding_completely_concrete_tangible_things", "scaffolding_absolutely_abstract_creative_concepts", column: "absolutely_abstract_creative_concept_id"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "memberships"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "scaffolding_completely_concrete_tangible_things", column: "tangible_thing_id"
+  add_foreign_key "training_certificates", "memberships"
+  add_foreign_key "training_certificates", "training_programs"
   add_foreign_key "training_contents", "training_programs"
+  add_foreign_key "training_invitations", "memberships", column: "invitee_id"
+  add_foreign_key "training_invitations", "memberships", column: "inviter_id"
+  add_foreign_key "training_invitations", "training_programs"
   add_foreign_key "training_memberships", "memberships"
   add_foreign_key "training_memberships", "training_programs"
   add_foreign_key "training_programs", "pricing_models"
   add_foreign_key "training_programs", "teams"
+  add_foreign_key "training_progress", "memberships"
+  add_foreign_key "training_progress", "training_contents"
+  add_foreign_key "training_progress", "training_programs"
   add_foreign_key "training_questions", "training_contents"
   add_foreign_key "users", "oauth_applications", column: "platform_agent_of_id"
   add_foreign_key "webhooks_outgoing_endpoints", "scaffolding_absolutely_abstract_creative_concepts"
