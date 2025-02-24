@@ -80,9 +80,9 @@ class TrainingProgram < ApplicationRecord
 
   # 🚅 add concerns above.
   include Workflow
-  include WorkflowActiverecord
 
-  # Define the workflow states and transitions
+  workflow_column :state
+
   workflow do
     state :draft do
       event :publish, transitions_to: :published
@@ -98,31 +98,15 @@ class TrainingProgram < ApplicationRecord
     end
   end
 
-  # Workflow callbacks
-  after_initialize :set_default_state
-  before_validation :ensure_valid_state_transition, on: :update
-
-  # Helper methods for state management
-  def set_default_state
+  after_initialize do
     self.state ||= "draft"
-  end
-
-  def ensure_valid_state_transition
-    return if state_changed? && valid_state_transition?
-    errors.add(:state, "invalid state transition")
-  end
-
-  def valid_state_transition?
-    return true if new_record?
-    current_state = workflow_state.to_sym
-    workflow_spec.states[current_state].events.key?(state.to_sym)
   end
 
   # 🚅 add attribute accessors above.
 
   belongs_to :team
   validates :name, presence: true
-  validates :description, presence: true
+  validates :description, presence: true, unless: -> { rich_text_description&.body&.present? }
   validates :team, presence: true
   belongs_to :pricing_model, optional: true
   # 🚅 add belongs_to associations above.

@@ -15,6 +15,7 @@ class TrainingQuestion < ApplicationRecord
   # 🚅 add scopes above.
 
   validates :title, presence: true
+  validates :question_type, presence: true, inclusion: {in: %w[multiple_choice true_false short_answer]}
   # 🚅 add validations above.
 
   # 🚅 add callbacks above.

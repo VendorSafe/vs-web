@@ -1,29 +1,27 @@
 require "test_helper"
 
 class TrainingProgramTest < ActiveSupport::TestCase
-  # Test that a training program is valid with a name, description, and team
-  test "is valid with name, description, and team" do
-    training_program = TrainingProgram.new(name: "Test Program", description: "This is a test program", team: Team.first)
-    puts training_program.errors.full_messages
-    assert training_program.valid?
+  test "is valid with valid attributes" do
+    training_program = build(:training_program)
     assert training_program.valid?
   end
 
-  # Test that a training program is not valid without a name
   test "is not valid without name" do
-    training_program = TrainingProgram.new(description: "This is a test program", team: Team.first)
+    training_program = build(:training_program, name: nil)
     refute training_program.valid?
+    assert_includes training_program.errors.full_messages, "Name can't be blank"
   end
 
-  # Test that a training program is not valid without a description
   test "is not valid without description" do
-    training_program = TrainingProgram.new(name: "Test Program", team: Team.first)
+    training_program = build(:training_program)
+    training_program.description = nil
     refute training_program.valid?
+    assert_includes training_program.errors.full_messages, "Description can't be blank"
   end
 
-  # Test that a training program is not valid without a team
   test "is not valid without team" do
-    training_program = TrainingProgram.new(name: "Test Program", description: "This is a test program")
+    training_program = build(:training_program, team: nil)
     refute training_program.valid?
+    assert_includes training_program.errors.full_messages, "Team must exist"
   end
 end

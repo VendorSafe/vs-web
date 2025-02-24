@@ -26,5 +26,10 @@ FactoryBot.define do
         ]
       end
     end
+
+    trait :short_answer do
+      question_type { "short_answer" }
+      options { [] }  # Short answer questions don't have predefined options
+    end
   end
 end
