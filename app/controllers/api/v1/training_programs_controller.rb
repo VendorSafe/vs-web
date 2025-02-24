@@ -70,6 +70,7 @@ if defined?(Api::V1::ApplicationController)
           :status,
           :slides,
           :published_at,
+          :pricing_model_id,
           # 🚅 super scaffolding will insert new fields above this line.
           *permitted_arrays,
           # 🚅 super scaffolding will insert new arrays above this line.

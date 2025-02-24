@@ -55,3 +55,45 @@ Merged: Team-scoped with role-specific workflows
 Permission Structure
 
 Would you like me to elaborate on any specific role's implementation or the permission structure?
+
+
+-----
+
+# Architectural Decisions and Updates
+
+## Location Model (replacing Facility)
+- Changed from Facility to Location to better align with industry standards
+- Implemented hierarchical structure to support:
+  - Multiple facilities on a single property
+  - Different types of units (plants, offices, warehouses)
+  - Complex organizational structures
+- Rationale:
+  - Matches patterns in ISNetworld and BROWZ
+  - Provides more flexibility for large organizations
+  - Enables better location-specific training requirements
+
+## Pricing Model Implementation
+- Added flexible pricing system with:
+  - Fixed price option for standard training
+  - Variable pricing with volume discounts
+  - Team-scoped pricing strategies
+- Benefits:
+  - Supports different business models
+  - Enables bulk training discounts
+  - Maintains pricing consistency within teams
+
+## Technical Improvements
+- Enhanced real-time updates using CableReady:
+  - Location changes reflect immediately
+  - Pricing updates show in real-time
+  - Training program modifications sync automatically
+- Team-based multitenancy improvements:
+  - Strict validation of parent-child relationships
+  - Team-scoped pricing models
+  - Enhanced security for cross-team access
+
+## Future Considerations
+- Consider implementing location-specific training requirements
+- Explore advanced pricing strategies (seasonal, promotional)
+- Add support for location-based reporting and analytics
+Would you like me to elaborate on how this integrates with the role-based access control or show examples of location-specific training requirements?

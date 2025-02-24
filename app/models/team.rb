@@ -7,6 +7,8 @@ class Team < ApplicationRecord
 
   has_many :facilities, dependent: :destroy
   has_many :training_programs, dependent: :destroy
+  has_many :locations, dependent: :destroy, enable_cable_ready_updates: true
+  has_many :pricing_models, dependent: :destroy, enable_cable_ready_updates: true
   # 🚅 add has_many associations above.
 
   # 🚅 add oauth providers above.

@@ -1,6 +1,8 @@
 # "default:" roles apply to every user in the system.
 default:
   models:
+    PricingModel: read
+    Location: read
     TrainingQuestion: read
     TrainingContent: read
     TrainingProgram: read
@@ -80,6 +82,8 @@ admin:
     - vendor
     - employee
   models:
+    PricingModel: manage
+    Location: manage
     TrainingQuestion: manage
     TrainingContent: manage
     TrainingProgram: manage

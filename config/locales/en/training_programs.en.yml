@@ -55,6 +55,14 @@ en:
         heading: *published_at
         api_title: *published_at
         api_description: *published_at
+      pricing_model_id: &pricing_model
+        _: &pricing_model_id Pricing Model
+        label: *pricing_model_id
+        heading: *pricing_model_id
+        api_title: *pricing_model_id
+        api_description: *pricing_model_id
+        placeholder: None
+      pricing_model: *pricing_model
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Added
@@ -115,6 +123,7 @@ en:
         status: *status
         slides: *slides
         published_at: *published_at
+        pricing_model_id: *pricing_model_id
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at
         updated_at: *updated_at

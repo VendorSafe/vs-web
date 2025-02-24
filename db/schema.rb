@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_24_185519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -119,6 +119,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
     t.index ["team_id"], name: "index_invitations_on_team_id"
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.integer "sort_order"
+    t.string "name"
+    t.string "address"
+    t.string "location_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parent_id"
+    t.index ["parent_id"], name: "index_locations_on_parent_id"
+    t.index ["team_id"], name: "index_locations_on_team_id"
+  end
+
   create_table "memberships", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.integer "team_id"
@@ -197,6 +210,18 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
     t.index ["user_id"], name: "index_oauth_stripe_accounts_on_user_id"
   end
 
+  create_table "pricing_models", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.string "name"
+    t.string "price_type"
+    t.integer "base_price"
+    t.integer "volume_discount"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_pricing_models_on_team_id"
+  end
+
   create_table "scaffolding_absolutely_abstract_creative_concepts", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.string "name"
@@ -266,6 +291,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
     t.bigint "membership_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "progress", default: {}
     t.index ["membership_id"], name: "index_training_memberships_on_membership_id"
     t.index ["training_program_id"], name: "index_training_memberships_on_training_program_id"
   end
@@ -279,6 +305,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "pricing_model_id"
+    t.index ["pricing_model_id"], name: "index_training_programs_on_pricing_model_id"
     t.index ["team_id"], name: "index_training_programs_on_team_id"
   end
 
@@ -408,6 +436,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
   add_foreign_key "integrations_stripe_installations", "teams"
   add_foreign_key "invitations", "account_onboarding_invitation_lists", column: "invitation_list_id"
   add_foreign_key "invitations", "teams"
+  add_foreign_key "locations", "locations", column: "parent_id"
+  add_foreign_key "locations", "teams"
   add_foreign_key "memberships", "invitations"
   add_foreign_key "memberships", "memberships", column: "added_by_id"
   add_foreign_key "memberships", "oauth_applications", column: "platform_agent_of_id"
@@ -417,6 +447,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_applications", "teams"
   add_foreign_key "oauth_stripe_accounts", "users"
+  add_foreign_key "pricing_models", "teams"
   add_foreign_key "scaffolding_absolutely_abstract_creative_concepts", "teams"
   add_foreign_key "scaffolding_completely_concrete_tangible_things", "scaffolding_absolutely_abstract_creative_concepts", column: "absolutely_abstract_creative_concept_id"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "memberships"
@@ -424,6 +455,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_16_031333) do
   add_foreign_key "training_contents", "training_programs"
   add_foreign_key "training_memberships", "memberships"
   add_foreign_key "training_memberships", "training_programs"
+  add_foreign_key "training_programs", "pricing_models"
   add_foreign_key "training_programs", "teams"
   add_foreign_key "training_questions", "training_contents"
   add_foreign_key "users", "oauth_applications", column: "platform_agent_of_id"

@@ -33,6 +33,7 @@ class Api::V1::TrainingProgramsControllerTest < Api::Test
     assert_equal_or_nil training_program_data['status'], training_program.status
     assert_equal_or_nil training_program_data['slides'], training_program.slides
     assert_equal_or_nil DateTime.parse(training_program_data['published_at']), training_program.published_at
+    assert_equal_or_nil training_program_data['pricing_model_id'], training_program.pricing_model_id
     # 🚅 super scaffolding will insert new fields above this line.
 
     assert_equal training_program_data["team_id"], training_program.team_id

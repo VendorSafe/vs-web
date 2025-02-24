@@ -7,6 +7,7 @@ class TrainingProgram < ApplicationRecord
   # 🚅 add attribute accessors above.
 
   belongs_to :team
+  belongs_to :pricing_model, optional: true
   # 🚅 add belongs_to associations above.
 
   has_many :training_contents, dependent: :destroy
@@ -20,11 +21,18 @@ class TrainingProgram < ApplicationRecord
   # 🚅 add scopes above.
 
   validates :name, presence: true
+  validates :pricing_model, scope: true
   # 🚅 add validations above.
 
   # 🚅 add callbacks above.
 
   # 🚅 add delegations above.
+
+  # Returns valid pricing models for this training program
+  # Ensures pricing models belong to the same team
+  def valid_pricing_models
+    team.pricing_models
+  end
 
   # 🚅 add methods above.
 end

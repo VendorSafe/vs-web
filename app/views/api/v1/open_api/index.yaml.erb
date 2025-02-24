@@ -26,6 +26,8 @@ components:
     <%= automatic_components_for TrainingProgram %>
     <%= automatic_components_for TrainingContent %>
     <%= automatic_components_for TrainingQuestion %>
+    <%= automatic_components_for Location %>
+    <%= automatic_components_for PricingModel %>
     <%# 🚅 super scaffolding will insert new components above this line. %>
   parameters:
     id:
@@ -64,4 +66,6 @@ paths:
   <%= automatic_paths_for TrainingProgram, Team %>
   <%= automatic_paths_for TrainingContent, TrainingProgram %>
   <%= automatic_paths_for TrainingQuestion, TrainingContent %>
+  <%= automatic_paths_for Location, Team %>
+  <%= automatic_paths_for PricingModel, Team %>
   <%# 🚅 super scaffolding will insert new paths above this line. %>

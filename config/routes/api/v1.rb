@@ -40,6 +40,9 @@ shallow do
           resources :training_questions
         end
       end
+
+      resources :locations, concerns: [:sortable]
+      resources :pricing_models
     end
   end
 end

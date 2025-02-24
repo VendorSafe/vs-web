@@ -4,6 +4,8 @@
   <% p.content_for :body do %>
     <%= render 'account/facilities/index', facilities: @team.facilities, hide_back: true %>
     <%= render 'account/training_programs/index', training_programs: @team.training_programs, hide_back: true %>
+    <%= render 'account/locations/index', locations: @team.locations, hide_back: true %>
+    <%= render 'account/pricing_models/index', pricing_models: @team.pricing_models, hide_back: true %>
     <%# 🚅 super scaffolding will insert new children above this line. %>
 
   <% end %>
