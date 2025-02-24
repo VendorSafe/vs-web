@@ -72,6 +72,9 @@
     - Added completion activity tracking
     - Tracked team-based progress
     - Added role-specific activity parameters
+    - Configured PublicActivity with jsonb parameters
+    - Added activity tracking to all training models
+    - Implemented team-based activity ownership
 *   Integrated with Bullet Train's team system:
     - Leveraged built-in team management
     - Used team-based invitations

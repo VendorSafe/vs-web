@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_24_225301) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_24_233110) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -297,6 +297,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_225301) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "content_data", default: {}, null: false
+    t.jsonb "completion_criteria", default: {}, null: false
+    t.integer "dependencies", default: [], array: true
+    t.integer "time_limit"
+    t.boolean "is_required", default: true, null: false
+    t.index ["dependencies"], name: "index_training_contents_on_dependencies", using: :gin
+    t.index ["is_required"], name: "index_training_contents_on_is_required"
     t.index ["training_program_id"], name: "index_training_contents_on_training_program_id"
   end
 
@@ -323,8 +330,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_225301) do
     t.jsonb "progress", default: {}
     t.datetime "completed_at"
     t.integer "completion_percentage", default: 0, null: false
+    t.bigint "current_content_id"
+    t.bigint "last_completed_content_id"
+    t.jsonb "content_access_history", default: {}, null: false
+    t.jsonb "content_dependencies_met", default: {}, null: false
     t.index ["completed_at"], name: "index_training_memberships_on_completed_at"
     t.index ["completion_percentage"], name: "index_training_memberships_on_completion_percentage"
+    t.index ["content_access_history"], name: "index_training_memberships_on_content_access_history", using: :gin
+    t.index ["content_dependencies_met"], name: "index_training_memberships_on_content_dependencies_met", using: :gin
+    t.index ["current_content_id"], name: "index_training_memberships_on_current_content_id"
+    t.index ["last_completed_content_id"], name: "index_training_memberships_on_last_completed_content_id"
     t.index ["membership_id"], name: "index_training_memberships_on_membership_id"
     t.index ["training_program_id"], name: "index_training_memberships_on_training_program_id"
   end
@@ -526,6 +541,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_225301) do
   add_foreign_key "training_invitations", "memberships", column: "inviter_id"
   add_foreign_key "training_invitations", "training_programs"
   add_foreign_key "training_memberships", "memberships"
+  add_foreign_key "training_memberships", "training_contents", column: "current_content_id"
+  add_foreign_key "training_memberships", "training_contents", column: "last_completed_content_id"
   add_foreign_key "training_memberships", "training_programs"
   add_foreign_key "training_programs", "pricing_models"
   add_foreign_key "training_programs", "teams"

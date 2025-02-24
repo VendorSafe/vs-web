@@ -5,18 +5,29 @@ default:
     TrainingContent: show
     TrainingCertificate: show
 
-employee:
+admin:
+  manageable_roles:
+    - admin
+    - customer
+    - vendor
+    - employee
   models:
-    TrainingProgram: show
-    TrainingContent:
-      - show
-      - do_training
-    TrainingCertificate:
-      - show
-      - download
-    TrainingMembership:
-      - show
-      - track_progress
+    TrainingProgram: manage
+    TrainingContent: manage
+    TrainingCertificate: manage
+    TrainingMembership: manage
+    TrainingQuestion: manage
+
+customer:
+  manageable_roles:
+    - vendor
+    - employee
+  models:
+    TrainingProgram: manage_training
+    TrainingContent: manage_content
+    TrainingCertificate: manage_certificates
+    TrainingMembership: manage_memberships
+    TrainingQuestion: manage_questions
 
 vendor:
   includes:
@@ -38,14 +49,15 @@ vendor:
       - track_progress
       - manage_team_members
 
-customer:
-  manageable_roles:
-    - employee
-    - vendor
-    - customer
+employee:
   models:
-    TrainingProgram: manage_training
-    TrainingContent: manage_content
-    TrainingCertificate: manage_certificates
-    TrainingMembership: manage_memberships
-    TrainingQuestion: manage_questions
+    TrainingProgram: show
+    TrainingContent:
+      - show
+      - do_training
+    TrainingCertificate:
+      - show
+      - download
+    TrainingMembership:
+      - show
+      - track_progress
