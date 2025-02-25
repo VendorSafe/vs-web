@@ -1,67 +1,76 @@
-# Api::V1::ApplicationController is in the starter repository and isn't
-# needed for this package's unit tests, but our CI tests will try to load this
-# class because eager loading is set to `true` when CI=true.
-# We wrap this class in an `if` statement to circumvent this issue.
-if defined?(Api::V1::ApplicationController)
-  class Api::V1::LocationsController < Api::V1::ApplicationController
-    account_load_and_authorize_resource :location, through: :team, through_association: :locations
+module Api
+  module V1
+    class LocationsController < Api::V1::ApplicationController
+      account_load_and_authorize_resource :location, through: :team, through_association: :locations
 
-    # GET /api/v1/teams/:team_id/locations
-    def index
-    end
+      # GET /api/v1/teams/:team_id/locations
+      def index
+        # Filter by geometry type if specified
+        @locations = @locations.with_geometry_type(params[:geometry_type]) if params[:geometry_type].present?
 
-    # GET /api/v1/locations/:id
-    def show
-    end
-
-    # POST /api/v1/teams/:team_id/locations
-    def create
-      if @location.save
-        render :show, status: :created, location: [:api, :v1, @location]
-      else
-        render json: @location.errors, status: :unprocessable_entity
+        render json: @locations
       end
-    end
 
-    # PATCH/PUT /api/v1/locations/:id
-    def update
-      if @location.update(location_params)
-        render :show
-      else
-        render json: @location.errors, status: :unprocessable_entity
-      end
-    end
-
-    # DELETE /api/v1/locations/:id
-    def destroy
-      @location.destroy
-    end
-
-    private
-
-    module StrongParameters
-      # Only allow a list of trusted parameters through.
-      def location_params
-        strong_params = params.require(:location).permit(
-          *permitted_fields,
-          :name,
-          :address,
-          :location_type,
-          :parent_id,
-          # 🚅 super scaffolding will insert new fields above this line.
-          *permitted_arrays,
-          # 🚅 super scaffolding will insert new arrays above this line.
+      # GET /api/v1/teams/:team_id/locations/near
+      def near
+        # Find locations near a point
+        @locations = @team.locations.near_geometry(
+          params[:lat].to_f,
+          params[:lng].to_f,
+          params[:radius].to_f
         )
 
-        process_params(strong_params)
+        render json: @locations
+      end
 
-        strong_params
+      # GET /api/v1/locations/:id
+      def show
+        render json: @location
+      end
+
+      # POST /api/v1/teams/:team_id/locations
+      def create
+        @location = @team.locations.build(location_params)
+
+        if @location.save
+          render json: @location, status: :created
+        else
+          render json: { errors: @location.errors }, status: :unprocessable_entity
+        end
+      end
+
+      # PATCH/PUT /api/v1/locations/:id
+      def update
+        if @location.update(location_params)
+          render json: @location
+        else
+          render json: { errors: @location.errors }, status: :unprocessable_entity
+        end
+      end
+
+      # DELETE /api/v1/locations/:id
+      def destroy
+        @location.destroy
+        head :ok
+      end
+
+      # GET /api/v1/locations/:id/children
+      def children
+        @children = @location.children
+        render json: @children
+      end
+
+      private
+
+      def location_params
+        params.require(:location).permit(
+          :name,
+          :location_type,
+          :address,
+          :parent_id,
+          geometry: {}
+        )
       end
     end
-
-    include StrongParameters
-  end
-else
-  class Api::V1::LocationsController
   end
 end
