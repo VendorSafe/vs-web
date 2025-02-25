@@ -48,10 +48,22 @@ else
   echo "Please check the output above for details."
 fi
 
+# Run the focused test file for Facilities API
+echo -e "${YELLOW}Running Facilities API tests...${NC}"
+bin/rails test test/controllers/api/v1/focused_facilities_controller_test.rb -v
+
+# Check the exit code
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}Facilities API tests passed!${NC}"
+else
+  echo -e "${RED}Facilities API tests failed.${NC}"
+  echo "Please check the output above for details."
+fi
+
 echo "==============================================="
 echo -e "${YELLOW}Test run complete.${NC}"
 
 # Add more focused test files here as they are created
 # Example:
-# echo -e "${YELLOW}Running Facilities API tests...${NC}"
-# bin/rails test test/controllers/api/v1/focused_facilities_controller_test.rb -v
+# echo -e "${YELLOW}Running Locations API tests...${NC}"
+# bin/rails test test/controllers/api/v1/focused_locations_controller_test.rb -v

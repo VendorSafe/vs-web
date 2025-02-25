@@ -31,7 +31,6 @@ shallow do
         # 🚅 super scaffolding will insert new integration installations above this line.
       end
 
-      # Facilities routes - nested under teams
       resources :facilities, concerns: [:sortable]
 
       # Training Programs routes
@@ -71,9 +70,7 @@ shallow do
     # Training Questions direct access
     resources :training_questions, only: %i[show update destroy]
 
-    # Facilities direct access
     resources :facilities, only: %i[show update destroy]
-
     resources :locations, only: %i[show update destroy]
     resources :pricing_models, only: %i[show update destroy]
   end

@@ -8,69 +8,33 @@ if defined?(Api::V1::ApplicationController)
 
     # GET /api/v1/teams/:team_id/facilities
     def index
-      # Ensure the team is loaded
-      unless @team
-        render json: { error: 'Team not found' }, status: :not_found
-        return
-      end
-
-      render json: @facilities
     end
 
     # GET /api/v1/facilities/:id
     def show
-      # Ensure the facility is loaded
-      unless @facility
-        render json: { error: 'Facility not found' }, status: :not_found
-        return
-      end
-
-      render json: @facility
     end
 
     # POST /api/v1/teams/:team_id/facilities
     def create
-      # Ensure the team is loaded
-      unless @team
-        render json: { error: 'Team not found' }, status: :not_found
-        return
-      end
-
-      # Create a new facility
-      @facility = @team.facilities.build(facility_params)
-
       if @facility.save
-        render json: @facility, status: :created
+        render :show, status: :created, location: [:api, :v1, @facility]
       else
-        render json: { errors: @facility.errors }, status: :unprocessable_entity
+        render json: @facility.errors, status: :unprocessable_entity
       end
     end
 
     # PATCH/PUT /api/v1/facilities/:id
     def update
-      # Ensure the facility is loaded
-      unless @facility
-        render json: { error: 'Facility not found' }, status: :not_found
-        return
-      end
-
       if @facility.update(facility_params)
-        render json: @facility
+        render :show
       else
-        render json: { errors: @facility.errors }, status: :unprocessable_entity
+        render json: @facility.errors, status: :unprocessable_entity
       end
     end
 
     # DELETE /api/v1/facilities/:id
     def destroy
-      # Ensure the facility is loaded
-      unless @facility
-        render json: { error: 'Facility not found' }, status: :not_found
-        return
-      end
-
       @facility.destroy
-      head :ok
     end
 
     private
@@ -85,7 +49,7 @@ if defined?(Api::V1::ApplicationController)
           :url,
           :membership_id,
           # 🚅 super scaffolding will insert new fields above this line.
-          *permitted_arrays
+          *permitted_arrays,
           # 🚅 super scaffolding will insert new arrays above this line.
         )
 
