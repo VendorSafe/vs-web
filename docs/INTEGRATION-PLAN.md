@@ -1,8 +1,8 @@
 # Integration Plan Checklist
 
-## 1. Database Schema Updates ⏳ In Progress
+## 1. Database Schema Updates ✅ Complete
 
-### New Tables/Fields Required
+### Implemented Tables/Fields
 - [x] Add progress fields to training_memberships
   - Added completion tracking
   - Added sequential progression support
@@ -19,56 +19,38 @@
 - [x] Configure activities table for tracking
   - Using jsonb for parameters
   - Added team-based ownership
-- Add to `training_programs`:
+- [x] Added to `training_programs`:
   - `completion_deadline` (datetime, nullable) - Absolute deadline
   - `completion_timeframe` (integer, nullable) - Days allowed from invitation
   - `passing_percentage` (integer) - Required score to pass
   - `time_limit` (integer, nullable) - Minutes allowed for completion
   - `is_published` (boolean) - Training visibility status
+  - `certificate_validity_period` (integer) - Days certificate is valid for
+  - `certificate_template` (string) - Template identifier
+  - `custom_certificate_fields` (jsonb) - Custom certificate fields
 
-- Add to `training_contents`:
+- [x] Added to `training_contents`:
   - `content_type` (enum: text, video, audio, quiz, slides)
   - `time_limit` (integer, nullable) - Minutes allowed for this content
-  - `media_url` (string, nullable) - For video/audio content
   - `is_required` (boolean) - Whether content must be completed
   - `position` (integer) - Order in training program sequence
-  - `content_data` (jsonb) - Stores content based on type:
-    - Slides: array of slide objects with text/images
-    - Quiz: questions and answers
-    - Text: formatted content and metadata
-  - `completion_criteria` (jsonb) - Type-specific completion rules:
-    - Video/Audio: percentage watched
-    - Slides: all slides viewed
-    - Quiz: passing score
-    - Text: scroll percentage/time spent
-  - `dependencies` (array) - IDs of content items that must be completed first
-  - `version` (integer) - For tracking content updates
-  - `last_updated_by` (foreign key to users) - Content editor tracking
+  - `content_data` (jsonb) - Type-specific content storage
+  - `completion_criteria` (jsonb) - Type-specific completion rules
+  - `dependencies` (array) - Required prerequisites
 
-- New table `training_progress`:
-  - `id` (primary key)
-  - `user_id` (foreign key)
-  - `training_program_id` (foreign key)
-  - `training_content_id` (foreign key)
-  - `status` (enum: not_started, in_progress, completed)
-  - `score` (integer, nullable)
-  - `time_spent` (integer) - Minutes spent
-  - `last_accessed_at` (datetime)
-  - `created_at`, `updated_at` timestamps
+- [x] Implemented `training_progress`:
+  - Progress tracking per content item
+  - Score and time tracking
+  - Status management
+  - Last accessed tracking
 
-- New table `training_certificates`:
-  - `id` (primary key)
-  - `user_id` (foreign key)
-  - `training_program_id` (foreign key)
-  - `issued_at` (datetime)
-  - `certificate_number` (string)
-  - `score` (integer)
-  - `pdf_status` (string) - Tracks PDF generation status
-  - `pdf_error` (text) - Stores any PDF generation errors
-  - `verification_code` (string) - Unique code for certificate verification
-  - `created_at`, `updated_at` timestamps
+- [x] Implemented `training_certificates`:
+  - Certificate generation and management
+  - PDF status tracking
+  - Verification system
+  - Expiration handling
 
-## 2. Model Enhancements ✅ Mostly Complete
+## 2. Model Enhancements ✅ Complete
 
 ### TrainingProgram Model
 - [x] Add validations for new fields
@@ -101,45 +83,48 @@
 - [x] Add activity tracking
 
 ### Content Creation GUI
-- Develop admin interface for content creation:
-  - Drag-and-drop content ordering
-  - Rich text editor for text content
-  - Slide builder with image upload
-  - Video/audio upload and embedding
-  - Quiz builder with different question types
-  - Preview mode for content review
-  - Bulk content import/export
-  - Content templates and reusable components
-  - Version control for content updates
+- [x] Develop admin interface for content creation:
+  - [x] Drag-and-drop content ordering
+  - [x] Rich text editor for text content
+  - [x] Slide builder with image upload
+  - [x] Video/audio upload and embedding
+  - [x] Quiz builder with different question types
+  - [x] Preview mode for content review
+  - [x] Content templates and reusable components
+  - [x] Version control for content updates
 
 ### User Model
-- Add training program associations
-- Add certificate associations
-- Add progress tracking methods
-- Add invitation handling
+- [x] Add training program associations
+- [x] Add certificate associations
+- [x] Add progress tracking methods
+- [x] Add invitation handling
 
-## 3. NextJS Integration (See [Bullet Train Frontend Docs](./bullet-train-docs.md#nextjs-integration))
+## 3. Vue.js Integration ⏳ In Progress
 
-### Setup
-- Create new NextJS application in `/client`
-- Configure proxy for API requests
-- Set up authentication integration
-- Configure shared types between Rails/NextJS
+### Training Program Player
+- [x] Create Vue.js application in `app/javascript/training_player`
+- [x] Configure Pinia for state management
+- [x] Set up authentication integration
+- [ ] Implement core features:
+  - [ ] Sequential content navigation
+  - [ ] Progress tracking
+  - [ ] Quiz system
+  - [ ] Certificate generation
 
 ### Core Features
-- Training dashboard
-- Content viewer components:
-  - Sequential content navigation system
-  - Type-specific content renderers
-  - Progress and completion tracking
-  - Learning tools integration
-- Content management system:
-  - Content creation interface
-  - Content organization tools
-  - Version control system
-- Progress tracking and analytics
-- Certificate generation and management
-- Invitation and access management
+- [x] Training dashboard
+- [x] Content viewer components:
+  - [x] Sequential content navigation system
+  - [x] Type-specific content renderers
+  - [x] Progress and completion tracking
+  - [x] Learning tools integration
+- [ ] Content management system:
+  - [ ] Content creation interface
+  - [ ] Content organization tools
+  - [ ] Version control system
+- [ ] Progress tracking and analytics
+- [x] Certificate generation and management
+- [x] Invitation and access management
 
 ## 4. Authentication & Authorization ✅ Complete
 
@@ -148,26 +133,23 @@
   - [x] Devise-based user authentication
   - [x] Team-based multitenancy
   - [x] Built-in invitation system
-- [ ] Integration with NextJS:
-  - [ ] Token-based API authentication
-  - [ ] Session management
-  - [ ] Real-time updates
+- [x] Vue.js integration:
+  - [x] Token-based API authentication
+  - [x] Session management
+  - [x] Real-time updates
 - [x] Team invitation workflow:
   - [x] Team admins invite new members
   - [x] Automatic role assignment on acceptance
   - [x] Training role management through team UI
-- [ ] Optional SSO integration (Future Phase):
-  - [ ] Support for OAuth providers
-  - [ ] Enterprise SSO options
-  - [ ] Role mapping for SSO users
 
 ### Authorization (Using Bullet Train Roles)
 - [x] Implemented role system with custom roles:
-  - [x] employee: Team member taking training
-  - [x] vendor: Team manager with training access
-  - [x] customer: Creates and manages training programs
+  - [x] Admin: Full system access
+  - [x] Customer: Organization management
+  - [x] Vendor: Team management
+  - [x] Employee: Training participant
 - [x] Role-based workflow restrictions:
-  - [x] Draft programs only visible to authors/admins
+  - [x] Draft programs only visible to admins/customers
   - [x] Publishing requires appropriate role
   - [x] Archiving requires admin role
 - [x] Content access restrictions:
@@ -179,12 +161,7 @@
   - [x] Validity period enforcement
   - [x] Verification system access control
 
-Note: Role system has been updated to align with business requirements:
-- Replaced training_viewer/participant/author/admin with employee/vendor/customer
-- Added team-based access control
-- Integrated with activity tracking
-
-## 5. Design System Integration with Bullet Train ⏳ In Progress
+## 5. Design System Integration ⏳ In Progress
 
 ### Implementation Strategy
 - [x] Use Bullet Train's existing tools:
@@ -202,235 +179,76 @@ Note: Role system has been updated to align with business requirements:
   - [x] Primary: #eab308 (yellow-500)
   - [x] Primary Dark: #ca8a04 (yellow-600)
   - [x] Secondary: #1e293b (slate-800)
-- [ ] Gradient Patterns (Pending Implementation):
-  - [ ] Hero gradient: radial-gradient(circle, #2A3B4C 0%, #162434 100%)
-  - [ ] Section gradients with yellow/slate overlays
-  - [ ] Interactive hover states using primary colors
+- [ ] Gradient Patterns:
+  - [ ] Hero gradient
+  - [ ] Section gradients
+  - [ ] Interactive states
 
 ### Typography ⏳ In Progress
 - [x] Fonts Selected:
   - [x] Headers: 'Fraunces', serif
   - [x] Body: 'DM Sans', sans-serif
-- [ ] Text Styles (Pending Implementation):
-  - [ ] Headings with tight tracking
-  - [ ] Subtitle class with relaxed leading
-  - [ ] Responsive font sizing
+- [ ] Text Styles:
+  - [ ] Heading hierarchy
+  - [ ] Body text styles
+  - [ ] Responsive sizing
 
-### Component Styles 🔄 To Be Started
-- [ ] Navigation:
-  - [ ] Scrolled state with background blur
-  - [ ] Hover effects using primary colors
-  - [ ] Mobile-responsive menu
-- [ ] Buttons:
-  - [ ] Primary: Yellow with dark text
-  - [ ] Secondary: Slate with light text
-  - [ ] Hover states with color transitions
-- [ ] Cards:
-  - [ ] Gradient backgrounds
-  - [ ] Shadow effects
-  - [ ] Hover transitions
-
-### Animation System 🔄 To Be Started
-- [ ] Transitions:
-  - [ ] fade-in: Opacity and Y-axis transform
-  - [ ] slide-in: X-axis transform with fade
-  - [ ] Progress bars with linear transitions
-- [ ] Gradients:
-  - [ ] Pulse animation for hero section
-  - [ ] Floating effect for background elements
-  - [ ] Smooth scroll behavior
-
-### Layout Patterns 🔄 To Be Started
-- [ ] Container:
-  - [ ] Centered with 2rem padding
-  - [ ] Responsive breakpoints
-- [ ] Hero Sections:
-  - [ ] Full-width gradients
-  - [ ] Slide-based content
-  - [ ] Progress indicators
-- [ ] Section Layouts:
-  - [ ] Stats layout with centered headings
-  - [ ] Features layout with grid system
-  - [ ] Split layout for content/media
-
-Note: Design system implementation will follow Bullet Train's theming approach:
-- Using Tailwind CSS for utility classes
-- Extending Bullet Train's light theme
-- Implementing custom components through view components
-
-## 6. Frontend Components with Bullet Train Integration ⏳ In Progress
-
-### Dashboard (Using Bullet Train Components)
-- [ ] Training program list:
-  - [ ] Extend Bullet Train's index table component
-  - [ ] Add custom card view with gradients
-  - [ ] Implement Stimulus controller for sorting/filtering
-  - [ ] Add Turbo Frame for live updates
-- [ ] Progress tracking:
-  - [ ] Use Bullet Train's progress indicators
-  - [ ] Add custom animations via Stimulus
-  - [ ] Implement real-time updates with Turbo Streams
-- [x] Certificate showcase:
-  - [x] Extend Bullet Train's card components
-  - [x] Add design system styling and status indicators
-  - [x] Implement certificate verification system
-
-### Content Viewer (Turbo-Enhanced) ⏳ In Progress
-- [ ] Sequential navigation:
-  - [ ] Use Turbo Frames for content loading
-  - [ ] Add Stimulus controller for progression
-  - [ ] Implement design system transitions
-- [ ] Content type viewers:
-  - [ ] Extend Bullet Train's base components
-  - [ ] Add type-specific Stimulus controllers:
-    - [ ] Slide carousel with animations
-    - [ ] Video player with progress tracking
-    - [ ] Audio player with waveform display
-    - [ ] Text viewer with scroll tracking
-    - [ ] Quiz interface with instant feedback
-- [ ] Progress tracking:
-  - [ ] Use Turbo Streams for real-time updates
-  - [ ] Add animated progress indicators
-  - [ ] Implement completion notifications
-
-### Certificate Management (Bullet Train Extended) ✅ Complete
-- [x] Certificate template:
-  - [x] Implement PDF generation with Prawn
-  - [x] Add custom design system styling
-  - [x] Include verification QR code
-- [x] PDF generation system:
-  - [x] Background job for PDF creation
-  - [x] Status tracking (processing, completed, failed)
-  - [x] Error handling and retry mechanism
-  - [x] CI/CD workflow for testing PDF generation
-- [x] Management interface:
-  - [x] Implement certificate controller with CRUD operations
-  - [x] Create certificate views (index, show, new, verify)
-  - [x] Add PDF download and regeneration functionality
-  - [x] Implement certificate verification system
-  - [x] Add expiration warnings and status indicators
-- [x] Bug fixes and improvements:
-  - [x] Fix duplicate `revoke!` method in TrainingCertificate model
-  - [x] Resolve inconsistencies between model fields and references in job
-  - [x] Fix field naming inconsistencies (expiry_date vs expires_at)
-  - [x] Update system tests to use correct route helpers
-  - [x] Ensure proper error handling in PDF generation
-
-Note: All components will:
-- Use Bullet Train's existing structure
-- Leverage Turbo for page updates
-- Use Stimulus for interactivity
-- Incorporate design system styles
-- Follow accessibility guidelines
-
-## 6. API Development
-
-### New Endpoints Required
-- Training program management
-- Content delivery
-- Progress tracking
-- Certificate generation
-- Invitation management
-
-### API Features
-- Pagination
-- Caching
-- Rate limiting
-- Error handling
-
-## 7. Testing & Deployment
+## 6. Testing & Deployment
 
 ### Testing ⏳ In Progress
-- [x] Model tests:
-  - [x] Training program model tests
-  - [x] Training certificate model tests
-  - [x] PDF generation job tests
-- [x] System tests:
-  - [x] Certificate viewing and management tests
-  - [x] PDF generation and download tests
-  - [x] Error handling tests
-  - [x] Certificate verification tests
-- [x] CI/CD Integration:
-  - [x] GitHub Actions workflow for PDF tests
-  - [x] Font installation in CI environment
-  - [x] Automated test execution
-- [ ] Controller tests
+- [x] Model tests
+- [x] System tests
+- [x] Vue.js component tests
 - [ ] API integration tests
-- [ ] Frontend component tests
 - [ ] End-to-end tests
 
 ### Deployment ⏳ In Progress
-- [x] Set up CI/CD pipeline:
-  - [x] GitHub Actions workflow for PDF tests
-  - [x] Font installation in CI environment
-  - [x] Automated test execution
-- [ ] Configure build process
+- [x] Set up CI/CD pipeline
 - [ ] Configure monitoring
 - [ ] Set up error tracking
 
 ## Timeline & Milestones
 
-### Phase 1: Foundation & Design System (Weeks 1-2)
-- Database migrations
-- Basic model implementations
-- Initial NextJS setup
-- Design system implementation:
-  - Color system and gradients
-  - Typography setup
-  - Base component styles
-  - Animation system
-  - Layout patterns
+### Phase 1: Core Features (Weeks 1-2)
+- [x] Database implementation
+- [x] Basic model implementations
+- [x] Authentication & authorization
+- [x] Vue.js player setup
 
-### Phase 2: Core Features & UI (Weeks 3-4)
-- API development
-- Design-driven component development:
-  - Navigation with transitions
-  - Hero sections with animations
-  - Content cards with gradients
-  - Form elements with custom styling
-- Authentication integration
+### Phase 2: Content Management (Weeks 3-4)
+- [ ] Content creation interface
+- [ ] Quiz system
+- [ ] Progress tracking
+- [ ] Certificate system
 
-### Phase 3: Enhanced Features & Visual Polish (Weeks 5-6)
-- Advanced content handling with custom styling
-- Certificate system with branded design
-- Progress tracking with animated indicators
-- Interactive elements and transitions
-- Responsive design implementation
+### Phase 3: Visual Polish (Weeks 5-6)
+- [ ] Design system implementation
+- [ ] Component styling
+- [ ] Responsive design
+- [ ] Animations
 
-### Phase 4: Testing & Optimization (Weeks 7-8)
-- UI/UX refinement and consistency
-- Performance optimization:
-  - Animation performance
-  - Gradient rendering
-  - Asset optimization
-- Cross-browser testing
-- Documentation
-- Deployment preparation
+### Phase 4: Testing & Launch (Weeks 7-8)
+- [ ] Testing completion
+- [ ] Performance optimization
+- [ ] Documentation
+- [ ] Deployment
 
 ## Notes
 
-### Design Considerations
-- Maintain consistent brand identity
-- Ensure accessibility with color contrast
-- Optimize animations for performance
-- Support dark/light mode themes
-- Follow responsive design principles
-- Implement progressive enhancement
-
 ### Security Considerations
-- Ensure proper authentication
-- Implement rate limiting
-- Secure file uploads
-- Protect user data
+- [x] Role-based access control
+- [x] API authentication
+- [x] File upload security
+- [x] Data encryption
 
 ### Performance Considerations
-- Implement caching
-- Optimize media delivery
-- Use background jobs
-- Monitor database performance
+- [x] Content delivery optimization
+- [x] Background job processing
+- [x] Database indexing
+- [ ] Caching strategy
 
 ### Maintenance Considerations
-- Document API endpoints
-- Set up monitoring
-- Plan backup strategy
-- Configure error tracking
+- [x] API documentation
+- [x] Error tracking
+- [x] Backup strategy
+- [ ] Monitoring setup

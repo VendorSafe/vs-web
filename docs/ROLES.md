@@ -2,39 +2,60 @@
 
 ## Current Role Structure
 
+The system uses four primary roles: Admin, Customer, Vendor, and Employee. These roles are designed to provide clear separation of concerns and hierarchical access control.
+
+### Admin
+- **Role:** System administrator with full access
+- **Capabilities:**
+  - Manage all customers, vendors, and employees
+  - Create and manage training programs
+  - Configure system-wide settings
+  - View and manage payments history
+  - Generate and manage certificates
+  - Access comprehensive reports
+  - Manage platform applications and API access
+
 ### Customer
-- Primary role for organizations creating and managing training programs
-- Capabilities:
-  * Create and edit training programs
-  * Configure training settings and requirements
-  * Manage vendor access and invitations
-  * View analytics and reports
-  * Generate certificates
-  * Set up sequential progression rules
+- **Role:** Organization creating and managing training programs
+- **Capabilities:**
+  - Create and manage vendors
+  - View and manage employees
+  - View training list and information
+  - Send training requests
+  - View employee certificates
+  - Access role-specific reports
+  - Share and download certificates
+  - Manage team profile
 
 ### Vendor
-- Team managers or company representatives
-- Capabilities:
-  * View assigned training programs
-  * Take training programs
-  * Invite and manage team employees
-  * Track team progress
-  * View team certificates
-  * Manage employee access
+- **Role:** Team manager or company representative
+- **Capabilities:**
+  - Create and manage employees
+  - View assigned training programs
+  - Pay for training programs
+  - Send training requests to employees
+  - Track team progress
+  - View and manage certificates
+  - View training information
+  - Manage team profile
 
 ### Employee
-- Individual team members taking training
-- Capabilities:
-  * Access training programs they're invited to
-  * Complete training content sequentially
-  * View their own progress
-  * Earn and download certificates
-  * Track personal completion status
+- **Role:** Individual team member taking training
+- **Capabilities:**
+  - View training requests
+  - Take assigned training programs
+  - Complete training content sequentially
+  - View training results
+  - Earn certificates upon completion
+  - View and manage personal certificates
+  - Share and download certificates
+  - Manage personal profile
 
 ## Pros of Current Structure
 
 1. Clear Separation of Concerns
-   - Customers focus on content creation and management
+   - Admin focuses on system management
+   - Customers focus on vendor management
    - Vendors handle team management
    - Employees focus on learning
 
@@ -126,9 +147,26 @@
 
 ## Implementation Notes
 
-1. Use Bullet Train's built-in role system
-2. Leverage team-based organization
-3. Implement role-specific validations
-4. Add activity tracking for role changes
-5. Support role-based notifications
-6. Include role documentation in API
+1. Database Schema
+   - User table with role field
+   - Separate tables for Customer, Vendor, Employee
+   - Foreign key relationships maintaining hierarchy
+   - Join tables for many-to-many relationships
+
+2. Authentication & Authorization
+   - Use Bullet Train's built-in role system
+   - Leverage team-based organization
+   - Implement role-specific validations
+   - Add activity tracking for role changes
+
+3. UI/UX Considerations
+   - Role-specific dashboards
+   - Context-aware navigation
+   - Permission-based action visibility
+   - Clear role indicators
+
+4. API Integration
+   - Role-based endpoint access
+   - Scoped API responses
+   - Role documentation in API specs
+   - OAuth2 integration with role claims
