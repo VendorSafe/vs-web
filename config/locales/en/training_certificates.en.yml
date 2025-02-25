@@ -1,0 +1,106 @@
+en:
+  training_certificates:
+    label: Certificate
+    label_plural: Certificates
+    certificate_details: Certificate Details
+    certificate_of_completion: Certificate of Completion
+    this_certifies_that: This is to certify that
+    has_successfully_completed: has successfully completed
+    with_grade: "with a grade of %{score}%"
+    no_certificates: No certificates found
+    no_expiration: No expiration
+    certificate_expires_soon: Certificate expires soon
+    days_remaining:
+      one: 1 day remaining
+      other: "%{count} days remaining"
+    certificate_info: Certificate Information
+    
+    fields:
+      certificate_number: Certificate Number
+      program: Program
+      user: User
+      recipient: Recipient
+      issued_at: Issued On
+      issued_by: Issued By
+      expires_at: Valid Until
+      status: Status
+      score: Score
+      completion_status: Completion Status
+      pdf_status: PDF Status
+      
+    status:
+      all: All Statuses
+      active: Active
+      expired: Expired
+      
+    completion_status:
+      passed: Passed
+      failed: Failed
+      in_progress: In Progress
+      
+    pdf_status:
+      title: PDF Certificate
+      pending: Pending
+      processing: Processing...
+      completed: Ready
+      failed: Generation Failed
+      pending_message: PDF certificate has not been generated yet.
+      processing_message: Your PDF certificate is being generated. This may take a moment.
+      completed_message: Your PDF certificate is ready for download.
+      failed_message: There was an error generating your PDF certificate. Please contact support or try again.
+      
+    verification:
+      title: Certificate Verification
+      page_title: Certificate Verification
+      page_description: Verify the authenticity of a training certificate
+      description: This certificate can be verified using the code or QR code below.
+      code: Verification Code
+      scan_to_verify: Scan to verify certificate
+      valid_certificate: Valid Certificate
+      invalid_certificate: Invalid Certificate
+      certificate_authentic: This certificate is authentic and has been verified.
+      certificate_not_found: We could not verify this certificate. Please check the verification code and try again.
+      try_again: Try Again
+      enter_code: Enter verification code
+      verify_button: Verify
+      contact_info_html: "If you have any questions, please contact <a href='mailto:%{email}' class='text-indigo-600'>%{email}</a>"
+      
+    filters:
+      status: Status
+      program: Program
+      all_programs: All Programs
+      
+    buttons:
+      new: Generate Certificate
+      create: Create Certificate
+      download_pdf: Download PDF
+      regenerate_pdf: Regenerate PDF
+      generate_pdf: Generate PDF
+      retry_generation: Retry Generation
+      revoke: Revoke Certificate
+      renew_now: Renew Now
+      
+    confirm:
+      revoke_title: Revoke Certificate
+      revoke_message: Are you sure you want to revoke this certificate? This action cannot be undone.
+      
+    new:
+      title: Generate Certificate
+      select_user: Select a user
+      select_status: Select a status
+      user_help: Select the user who completed the training program
+      score_help: Enter a score between 0 and 100
+      expiry_help: Leave blank for certificates that do not expire
+      
+    create:
+      success: Certificate was successfully generated
+      
+    download_pdf:
+      not_available: PDF is not available for download yet
+      
+    regenerate_pdf:
+      success: PDF generation has been triggered
+      
+    revoke:
+      success: Certificate has been successfully revoked
+      failure: Failed to revoke certificate

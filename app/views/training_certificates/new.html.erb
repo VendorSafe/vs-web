@@ -1,0 +1,82 @@
+<% content_for :breadcrumbs do %>
+  <%= render 'shared/breadcrumbs', breadcrumbs: [
+    { label: t('teams.label'), url: main_app.teams_path },
+    { label: @team.name, url: main_app.team_path(@team) },
+    { label: t('training_programs.label_plural'), url: main_app.team_training_programs_path(@team) },
+    { label: @training_program.name, url: main_app.team_training_program_path(@team, @training_program) },
+    { label: t('training_certificates.label_plural'), url: main_app.team_training_program_training_certificates_path(@team, @training_program) },
+    { label: t('training_certificates.new.title') }
+  ] %>
+<% end %>
+
+<div class="container mx-auto my-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold text-slate-800 mb-6"><%= t('training_certificates.new.title') %></h1>
+    
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-6">
+        <%= form_with model: [@team, @training_program, @training_certificate], local: true do |form| %>
+          <% if @training_certificate.errors.any? %>
+            <div class="mb-6 p-4 bg-red-50 rounded-md">
+              <h2 class="text-lg font-medium text-red-700 mb-2">
+                <%= t('errors.template.header', count: @training_certificate.errors.count) %>
+              </h2>
+              <ul class="list-disc pl-5 text-sm text-red-700">
+                <% @training_certificate.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          
+          <div class="mb-6">
+            <%= form.label :membership_id, t('training_certificates.fields.user'), class: "form-label" %>
+            <%= form.collection_select :membership_id, 
+                                      @memberships,
+                                      :id, 
+                                      ->(m) { "#{m.user_first_name} #{m.user_last_name} (#{m.user_email})" },
+                                      { prompt: t('training_certificates.new.select_user') },
+                                      class: "form-select w-full" %>
+            <p class="text-sm text-gray-500 mt-1"><%= t('training_certificates.new.user_help') %></p>
+          </div>
+          
+          <div class="mb-6">
+            <%= form.label :score, t('training_certificates.fields.score'), class: "form-label" %>
+            <%= form.number_field :score, min: 0, max: 100, class: "form-input w-full" %>
+            <p class="text-sm text-gray-500 mt-1"><%= t('training_certificates.new.score_help') %></p>
+          </div>
+          
+          <div class="mb-6">
+            <%= form.label :completion_status, t('training_certificates.fields.completion_status'), class: "form-label" %>
+            <%= form.select :completion_status, 
+                           options_for_select([
+                             [t('training_certificates.completion_status.passed'), 'passed'],
+                             [t('training_certificates.completion_status.failed'), 'failed'],
+                             [t('training_certificates.completion_status.in_progress'), 'in_progress']
+                           ]),
+                           { prompt: t('training_certificates.new.select_status') },
+                           class: "form-select w-full" %>
+          </div>
+          
+          <div class="mb-6">
+            <%= form.label :issued_at, t('training_certificates.fields.issued_at'), class: "form-label" %>
+            <%= form.date_field :issued_at, value: Date.current, class: "form-input w-full" %>
+          </div>
+          
+          <div class="mb-6">
+            <%= form.label :expires_at, t('training_certificates.fields.expires_at'), class: "form-label" %>
+            <%= form.date_field :expires_at, value: 1.year.from_now.to_date, class: "form-input w-full" %>
+            <p class="text-sm text-gray-500 mt-1"><%= t('training_certificates.new.expiry_help') %></p>
+          </div>
+          
+          <div class="flex justify-end space-x-2">
+            <%= link_to t('global.buttons.cancel'), 
+                        team_training_program_training_certificates_path(@team, @training_program),
+                        class: "btn btn-white" %>
+            <%= form.submit t('training_certificates.buttons.create'), class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

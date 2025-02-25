@@ -63,6 +63,9 @@
   - `issued_at` (datetime)
   - `certificate_number` (string)
   - `score` (integer)
+  - `pdf_status` (string) - Tracks PDF generation status
+  - `pdf_error` (text) - Stores any PDF generation errors
+  - `verification_code` (string) - Unique code for certificate verification
   - `created_at`, `updated_at` timestamps
 
 ## 2. Model Enhancements ✅ Mostly Complete
@@ -255,7 +258,7 @@ Note: Design system implementation will follow Bullet Train's theming approach:
 - Extending Bullet Train's light theme
 - Implementing custom components through view components
 
-## 6. Frontend Components with Bullet Train Integration
+## 6. Frontend Components with Bullet Train Integration ⏳ In Progress
 
 ### Dashboard (Using Bullet Train Components)
 - [ ] Training program list:
@@ -267,12 +270,12 @@ Note: Design system implementation will follow Bullet Train's theming approach:
   - [ ] Use Bullet Train's progress indicators
   - [ ] Add custom animations via Stimulus
   - [ ] Implement real-time updates with Turbo Streams
-- [ ] Certificate showcase:
-  - [ ] Extend Bullet Train's card components
-  - [ ] Add design system gradients and animations
-  - [ ] Implement hover effects with Stimulus
+- [x] Certificate showcase:
+  - [x] Extend Bullet Train's card components
+  - [x] Add design system styling and status indicators
+  - [x] Implement certificate verification system
 
-### Content Viewer (Turbo-Enhanced)
+### Content Viewer (Turbo-Enhanced) ⏳ In Progress
 - [ ] Sequential navigation:
   - [ ] Use Turbo Frames for content loading
   - [ ] Add Stimulus controller for progression
@@ -290,14 +293,28 @@ Note: Design system implementation will follow Bullet Train's theming approach:
   - [ ] Add animated progress indicators
   - [ ] Implement completion notifications
 
-### Certificate Management (Bullet Train Extended)
-- [ ] Certificate template:
-  - [ ] Use Bullet Train's PDF components
-  - [ ] Add custom design system styling
-- [ ] Management interface:
-  - [ ] Extend Bullet Train's CRUD views
-  - [ ] Add custom animations and transitions
-  - [ ] Implement Turbo Drive for navigation
+### Certificate Management (Bullet Train Extended) ✅ Complete
+- [x] Certificate template:
+  - [x] Implement PDF generation with Prawn
+  - [x] Add custom design system styling
+  - [x] Include verification QR code
+- [x] PDF generation system:
+  - [x] Background job for PDF creation
+  - [x] Status tracking (processing, completed, failed)
+  - [x] Error handling and retry mechanism
+  - [x] CI/CD workflow for testing PDF generation
+- [x] Management interface:
+  - [x] Implement certificate controller with CRUD operations
+  - [x] Create certificate views (index, show, new, verify)
+  - [x] Add PDF download and regeneration functionality
+  - [x] Implement certificate verification system
+  - [x] Add expiration warnings and status indicators
+- [x] Bug fixes and improvements:
+  - [x] Fix duplicate `revoke!` method in TrainingCertificate model
+  - [x] Resolve inconsistencies between model fields and references in job
+  - [x] Fix field naming inconsistencies (expiry_date vs expires_at)
+  - [x] Update system tests to use correct route helpers
+  - [x] Ensure proper error handling in PDF generation
 
 Note: All components will:
 - Use Bullet Train's existing structure
@@ -323,18 +340,33 @@ Note: All components will:
 
 ## 7. Testing & Deployment
 
-### Testing
-- Model tests
-- Controller tests
-- API integration tests
-- Frontend component tests
-- End-to-end tests
+### Testing ⏳ In Progress
+- [x] Model tests:
+  - [x] Training program model tests
+  - [x] Training certificate model tests
+  - [x] PDF generation job tests
+- [x] System tests:
+  - [x] Certificate viewing and management tests
+  - [x] PDF generation and download tests
+  - [x] Error handling tests
+  - [x] Certificate verification tests
+- [x] CI/CD Integration:
+  - [x] GitHub Actions workflow for PDF tests
+  - [x] Font installation in CI environment
+  - [x] Automated test execution
+- [ ] Controller tests
+- [ ] API integration tests
+- [ ] Frontend component tests
+- [ ] End-to-end tests
 
-### Deployment
-- Configure build process
-- Set up CI/CD pipeline
-- Configure monitoring
-- Set up error tracking
+### Deployment ⏳ In Progress
+- [x] Set up CI/CD pipeline:
+  - [x] GitHub Actions workflow for PDF tests
+  - [x] Font installation in CI environment
+  - [x] Automated test execution
+- [ ] Configure build process
+- [ ] Configure monitoring
+- [ ] Set up error tracking
 
 ## Timeline & Milestones
 

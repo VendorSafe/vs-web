@@ -282,10 +282,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_004536) do
     t.integer "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "pdf_status"
+    t.text "pdf_error"
+    t.string "verification_code"
+    t.datetime "revoked_at"
     t.index ["certificate_number"], name: "index_training_certificates_on_certificate_number", unique: true
     t.index ["membership_id", "training_program_id"], name: "idx_training_certificates_unique_membership_program", unique: true
     t.index ["membership_id"], name: "index_training_certificates_on_membership_id"
+    t.index ["revoked_at"], name: "index_training_certificates_on_revoked_at"
     t.index ["training_program_id"], name: "index_training_certificates_on_training_program_id"
+    t.index ["verification_code"], name: "index_training_certificates_on_verification_code", unique: true
   end
 
   create_table "training_contents", force: :cascade do |t|

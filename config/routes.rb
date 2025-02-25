@@ -1,21 +1,21 @@
 Rails.application.routes.draw do
   # See `config/routes/*.rb` to customize these configurations.
-  draw "concerns"
-  draw "devise"
-  draw "sidekiq"
-  draw "avo"
+  draw 'concerns'
+  draw 'devise'
+  draw 'sidekiq'
+  draw 'avo'
 
   # `collection_actions` is automatically super scaffolded to your routes file when creating certain objects.
   # This is helpful to have around when working with shallow routes and complicated model namespacing. We don't use this
   # by default, but sometimes Super Scaffolding will generate routes that use this for `only` and `except` options.
-  collection_actions = [:index, :new, :create] # standard:disable Lint/UselessAssignment
+  collection_actions = %i[index new create] # standard:disable Lint/UselessAssignment
 
   # This helps mark `resources` definitions below as not actually defining the routes for a given resource, but just
   # making it possible for developers to extend definitions that are already defined by the `bullet_train` Ruby gem.
   # TODO Would love to get this out of the application routes file.
-  extending = {only: []}
+  extending = { only: [] }
 
-  scope module: "public" do
+  scope module: 'public' do
     # To keep things organized, we put non-authenticated controllers in the `Public::` namespace.
     # The root `/` path is routed to `Public::HomeController#index` by default.
   end
@@ -29,9 +29,12 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    draw "api/v1"
+    draw 'api/v1'
     # 🚅 super scaffolding will insert new api versions above this line.
   end
+
+  # Certificate verification route (public)
+  get 'certificates/verify/:verification_code', to: 'training_certificates#verify', as: :verify_training_certificate
 
   namespace :account do
     shallow do
@@ -70,18 +73,31 @@ Rails.application.routes.draw do
         resources :facilities, concerns: [:sortable]
         resources :training_programs do
           member do
-            get "player", to: "training_programs#show"
-            post "progress", to: "training_programs#update_progress"
+            get 'player', to: 'training_programs#show'
+            post 'progress', to: 'training_programs#update_progress'
           end
 
           resources :training_contents, concerns: [:sortable] do
             resources :training_questions
           end
+
+          resources :training_certificates, only: %i[index new create]
         end
+
+        resources :training_certificates, only: [:index]
 
         resources :locations, concerns: [:sortable]
         resources :pricing_models
       end
+    end
+  end
+
+  # Individual certificate routes (shallow)
+  resources :training_certificates, only: [:show] do
+    member do
+      get :download_pdf
+      post :regenerate_pdf
+      post :revoke
     end
   end
 end

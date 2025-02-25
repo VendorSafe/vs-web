@@ -73,6 +73,94 @@ Note: The event types defined in `config/models/webhooks/outgoing/event_types.ym
     - Leverage existing tools and helpers before creating custom solutions
     - Document any deviations from standard Bullet Train patterns
 
+## PDF Certificate Generation
+
+### Overview
+
+The system includes a PDF certificate generation feature that creates professional-looking certificates for users who complete training programs. This feature uses the Prawn gem for PDF generation and includes:
+
+1. **Background Processing**:
+   - Certificates are generated asynchronously using ActiveJob
+   - Status tracking (processing, completed, failed)
+   - Error handling with detailed error messages
+
+2. **Certificate Features**:
+   - Program logo inclusion
+   - Custom fonts (Open Sans)
+   - Verification QR code
+   - Grade and completion status
+   - Issue and expiry dates
+   - Unique verification code
+
+3. **Testing**:
+   - Unit tests for the PDF generation job
+   - System tests for certificate management
+   - CI/CD integration with GitHub Actions
+
+### Implementation Notes
+
+1. **Required Gems**:
+   - `prawn` for PDF generation
+   - `prawn-table` for table layouts
+   - `rqrcode` for QR code generation
+
+2. **Font Installation**:
+   - Open Sans fonts must be available in `app/assets/fonts/`
+   - CI environment requires font installation (see `.github/workflows/pdf_tests.yml`)
+
+3. **Verification System**:
+   - Each certificate has a unique verification code
+   - QR codes link to verification page
+   - Route helper: `verify_training_certificate_url`
+   
+4. **Certificate Management**:
+   - Certificates are managed through the `TrainingCertificatesController`
+   - PDF generation is handled asynchronously via `GenerateCertificatePdfJob`
+   - Certificate status tracking includes:
+     - Active/expired status based on expiry date
+     - PDF generation status (processing, completed, failed)
+     - Error tracking for failed PDF generation
+   - Certificate verification is available via public URL
+
+5. **Routes**:
+   - Team-scoped routes for certificate management:
+     - `/account/teams/:team_id/training_certificates` - List certificates
+     - `/account/teams/:team_id/training_programs/:training_program_id/training_certificates` - Program-specific certificates
+     - `/account/teams/:team_id/training_programs/:training_program_id/training_certificates/new` - Create certificate
+   - Shallow routes for individual certificates:
+     - `/training_certificates/:id` - View certificate
+     - `/training_certificates/:id/download_pdf` - Download PDF
+     - `/training_certificates/:id/regenerate_pdf` - Regenerate PDF
+   - Public verification route:
+     - `/certificates/verify/:verification_code` - Verify certificate
+
+### Known Issues and Pending Fixes
+
+1. **Duplicate Methods**:
+   - The `TrainingCertificate` model has two `revoke!` methods with different implementations
+   - The first implementation (lines 52-54) updates `revoked_at` timestamp
+   - The second implementation (lines 122-124) updates `expires_at` to current time
+   - Need to consolidate these methods with consistent behavior
+
+2. **Field Naming Inconsistencies**:
+   - The model uses `expires_at` but the form in new.html.erb uses `expiry_date`
+   - The job references `certificate.grade` but the model uses `score`
+   - The job references `certificate.completion_status` which isn't defined in the model
+
+3. **User Reference Inconsistencies**:
+   - The PDF generation job uses `certificate.user.name`
+   - The model delegates to `membership.user_first_name` and `membership.user_last_name`
+   - Need to ensure consistent user reference approach
+
+4. **Route Helper Inconsistencies**:
+   - System tests reference paths like `certificates_path` and `training_program_path`
+   - These don't match the routes defined in routes.rb which use team-scoped paths
+
+5. **Error Handling Improvements**:
+   - PDF generation error handling could be improved with more specific error types
+   - Consider adding retry mechanism with exponential backoff
+   - Add monitoring for failed PDF generations
+
 ## Training Program Role Architecture
 
 ### Role-Based Access Control
@@ -116,3 +204,30 @@ Training programs use workflow states (draft, published, archived) with role-bas
 - Only training_admins can archive programs
 - Published programs are visible to all roles
 - Draft programs are only visible to authors and admins
+
+## Command Execution Logs
+
+To maintain a record of commands executed during development and testing, we've established a structured approach:
+
+1. **Command Log Directory**:
+   - All command scripts are stored in the `agent-cmd-log` directory
+   - Scripts are timestamped for easy reference (e.g., `2025-02-24-test-commands.sh`)
+   - Each script is executable and contains related commands for a specific task
+
+2. **Script Structure**:
+   - Scripts begin with proper shell environment setup: `#!/bin/zsh -l`
+   - Working directory is set to project root
+   - Commands are grouped by related functionality
+   - Comments explain the purpose of each command
+   - Output messages are included for clarity
+
+3. **Usage**:
+   - Execute scripts from the project root: `./agent-cmd-log/SCRIPT_NAME.sh`
+   - After execution, update the script with comments containing the output
+   - Mark executed scripts with execution date and results
+
+4. **Example**:
+   - The script `2025-02-24-test-commands.sh` contains commands to:
+     - Install the correct bundler version
+     - Run certificate job tests
+     - Run certificate system tests

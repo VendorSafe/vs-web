@@ -234,4 +234,8 @@ gem "pry"
 gem "workflow-activerecord", "~> 4.1"
 gem "prism", "~> 1.2"
 
+# PDF Generation
+gem "prawn", "~> 2.4"
+gem "prawn-table", "~> 0.2.2"
+
 # rubocop:enable Bundler/DuplicatedGroup

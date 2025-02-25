@@ -12,15 +12,34 @@
 	],
 	"settings": {
 		"github.copilot.advanced": {
-			"useLanguageServer": false
+			"useLanguageServer": true
 		},
 		"github.copilot.editor.enableCodeActions": true,
 		"github.copilot.chat.codeGeneration.useInstructionFiles": true,
 		"github.copilot.chat.codeGeneration.instructions": [
 			{
-				"text": "Always consider the bullet train rails boilerplate's approach first."
+				"text": "Before suggesting any solution, first check if there is a documented or undocumented Bullet Train solution available.
+
+When executing commands:
+1. Always use the vs-web root directory as the working directory
+2. Use zsh -l as the shell environment
+3. Create timestamped command files in agent-cmd-log/ directory
+4. After execution, comment out commands with their output and timestamp
+5. Follow established patterns and conventions
+6. Document any deviations or special cases
+7. Consider impacts on existing functionality
+8. Test changes thoroughly before committing
+
+Available options:
+- OPEN_BROWSER=1: Run tests in browser mode
+- CHROME_DEBUG=1: Open Chrome DevTools automatically  
+- SAVE_SCREENSHOTS=1: Save screenshots on test failures
+- PARALLEL_WORKERS=1: Run tests sequentially
+
+Remember to check ROLES.md for permission structures and DEVELOPMENT-NOTES.md for known issues before making changes."
 			}
 		],
+		
 		"sqltools.connections": [
 			{
 				"previewLimit": 50,
