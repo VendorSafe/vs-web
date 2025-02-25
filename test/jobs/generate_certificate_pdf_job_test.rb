@@ -25,7 +25,15 @@ class GenerateCertificatePdfJobTest < ActiveJob::TestCase
   end
 
   test 'handles PDF generation failure' do
-    Prawn::Document.stub(:new, -> { raise StandardError.new('PDF generation failed') }) do
+    # Save the original method
+    original_new = Prawn::Document.method(:new)
+
+    # Replace with our mock
+    Prawn::Document.define_singleton_method(:new) do |*args|
+      raise StandardError.new('PDF generation failed')
+    end
+
+    begin
       assert_raises StandardError do
         GenerateCertificatePdfJob.perform_now(@certificate)
       end
@@ -34,6 +42,8 @@ class GenerateCertificatePdfJobTest < ActiveJob::TestCase
       assert_equal 'failed', @certificate.pdf_status
       assert_equal 'PDF generation failed', @certificate.pdf_error
       assert_not @certificate.pdf.attached?
+    ensure
+      Prawn::Document.define_singleton_method(:new, original_new)
     end
   end
 
@@ -42,12 +52,18 @@ class GenerateCertificatePdfJobTest < ActiveJob::TestCase
     pdf_generation_started = false
     pdf_thread = nil
 
-    Prawn::Document.stub(:new, lambda { |*|
+    # Save the original method
+    original_new = Prawn::Document.method(:new)
+
+    # Replace with our mock
+    Prawn::Document.define_singleton_method(:new) do |*args|
       pdf_generation_started = true
       # Wait until the test gives us the signal to continue
       sleep 0.1 until pdf_thread&.status == false
       raise 'Cancelled'
-    }) do
+    end
+
+    begin
       # Run the job in a separate thread so we can check the processing status
       pdf_thread = Thread.new { GenerateCertificatePdfJob.perform_now(@certificate) }
 
@@ -60,6 +76,8 @@ class GenerateCertificatePdfJobTest < ActiveJob::TestCase
       # Allow the PDF thread to complete
       pdf_thread.kill
       pdf_thread.join
+    ensure
+      Prawn::Document.define_singleton_method(:new, original_new)
     end
   end
 end

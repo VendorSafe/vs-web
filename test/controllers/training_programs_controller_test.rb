@@ -9,27 +9,27 @@ class TrainingProgramsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index' do
     sign_in(@admin)
-    get training_programs_url
+    get account_team_training_programs_url(@program.team)
     assert_response :success
   end
 
   test 'should create program when admin' do
     sign_in(@admin)
     assert_difference('TrainingProgram.count') do
-      post training_programs_url, params: {
+      post account_team_training_programs_url(@program.team), params: {
         training_program: {
           title: 'New Program',
           description: 'Description'
         }
       }
     end
-    assert_redirected_to training_program_url(TrainingProgram.last)
+    assert_redirected_to account_team_training_program_url(@program.team, TrainingProgram.last)
   end
 
   test 'should not create program when trainee' do
     sign_in(@trainee)
     assert_no_difference('TrainingProgram.count') do
-      post training_programs_url, params: {
+      post account_team_training_programs_url(@program.team), params: {
         training_program: {
           title: 'New Program',
           description: 'Description'

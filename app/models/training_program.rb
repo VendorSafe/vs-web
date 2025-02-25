@@ -299,6 +299,7 @@ class TrainingProgram < ApplicationRecord
   end
 
   # Public methods
+  public
 
   # Enrolls a trainee in the training program
   # @param trainee [User] the trainee to enroll
