@@ -112,20 +112,25 @@ module.exports = {
       },
       // Merge custom fonts with Tailwind’s default font stack.
       fontFamily: {
-        // sans: [
-        //   'Avenir Next W01',
-        //   'Proxima Nova W01',
-        //   '-apple-system',
-        //   'system-ui',
-        //   'BlinkMacSystemFont',
-        //   'Segoe UI',
-        //   'Roboto',
-        //   'Helvetica Neue',
-        //   'Arial',
-        //   'sans-serif',
-        //   ...defaultTheme.fontFamily.sans,
-        // ],
-        serif: ['Instrument Serif', 'Georgia', 'serif'],
+        sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+        serif: ['Fraunces', 'Georgia', 'serif'],
+      },
+      boxShadow: {
+        'hover': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)',
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      backgroundImage: {
+        'hero-gradient': 'radial-gradient(circle at 50% 50%, #2A3B4C 0%, #162434 100%)',
+        'section-gradient': 'radial-gradient(circle at 20% 80%, rgba(234, 179, 8, 0.08) 0%, transparent 70%)',
       },
     },
   },

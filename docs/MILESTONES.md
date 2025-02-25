@@ -24,12 +24,19 @@ This guide details the custom enhancements needed to integrate a Training Progra
    - Add progress tracking endpoints
    - Add certificate endpoints
 
-4. **Component Implementation**
-   - Build core components:
-     - VideoPlayer: Video content with progress tracking
-     - QuestionsPanel: Interactive quiz system
-     - StepProgress: Sequential progression tracking
-     - CertificateViewer: Certificate management
+4. **Design System Integration**
+   - Implement shared design tokens and Tailwind configuration
+   - Create reusable component styles
+   - Add animation and transition system
+   - Ensure consistent typography and spacing
+   - Implement responsive design patterns
+
+5. **Component Implementation**
+   - Build core components with design system:
+     - VideoPlayer: Video content with custom controls, loading states, and progress tracking
+     - QuestionsPanel: Interactive quiz system with real-time feedback and animations
+     - StepProgress: Visual progression tracking with tooltips and completion indicators
+     - CertificateViewer: Certificate management with modern UI
 
 5. **Progress Management**
    - Track content-specific progress

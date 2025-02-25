@@ -69,48 +69,59 @@ const checkAnswer = (answer) => {
 
 const getAnswerClass = (answer) => {
   const selected = selectedAnswers.value[props.currentQuestionIndex];
-  if (!selected || selected.answer !== answer) return "";
+  if (!selected || selected.answer !== answer) return "border-gray-200";
 
   return selected.isCorrect
-    ? "bg-green-100 border-green-500"
-    : "bg-red-100 border-red-500";
+    ? "bg-primary-50 border-primary-500 text-primary-700"
+    : "bg-red-50 border-red-500 text-red-700";
 };
 </script>
 
 <template>
-  <div
-    v-if="currentQuestion"
-    class="questions-panel p-6 bg-white rounded-lg shadow-lg"
-  >
-    <h3 class="text-xl font-bold mb-4">{{ currentQuestion.title }}</h3>
-    <p class="mb-6 text-gray-700">{{ currentQuestion.body }}</p>
+  <div v-if="currentQuestion" class="questions-panel card fade-in">
+    <div class="card-body">
+      <h3 class="text-2xl font-bold mb-4 text-secondary-800">{{ currentQuestion.title }}</h3>
+      <p class="mb-8 text-gray-600">{{ currentQuestion.body }}</p>
 
-    <div class="space-y-3">
-      <button
-        v-for="answer in allAnswers"
-        :key="answer"
-        class="w-full p-4 text-left border-2 rounded-lg transition-colors duration-200 hover:bg-gray-50"
-        :class="getAnswerClass(answer)"
-        @click="!hasAnswered && checkAnswer(answer)"
-        :disabled="hasAnswered"
-      >
-        {{ answer }}
-      </button>
+      <div class="space-y-4">
+        <button
+          v-for="answer in allAnswers"
+          :key="answer"
+          class="w-full p-4 text-left rounded-xl transition-all duration-200 border-2 hover:shadow-md"
+          :class="[
+            hasAnswered ? getAnswerClass(answer) : 'hover:border-primary-500 hover:bg-primary-50',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
+          ]"
+          @click="!hasAnswered && checkAnswer(answer)"
+          :disabled="hasAnswered"
+        >
+          {{ answer }}
+        </button>
+      </div>
+
+      <div v-if="hasAnswered" class="mt-8 p-4 rounded-lg text-center">
+        <div
+          v-if="selectedAnswers[currentQuestionIndex].isCorrect"
+          class="flex items-center justify-center space-x-2 text-green-600"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="font-medium">Correct! Great job!</span>
+        </div>
+        <div
+          v-else
+          class="flex items-center justify-center space-x-2 text-red-600"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <span class="font-medium">Incorrect. Please try again.</span>
+        </div>
+      </div>
+
+      <p v-if="errorMessage" class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg">{{ errorMessage }}</p>
     </div>
-
-    <div v-if="hasAnswered" class="mt-6">
-      <p
-        v-if="selectedAnswers[currentQuestionIndex].isCorrect"
-        class="text-green-600 font-medium"
-      >
-        Correct! Great job!
-      </p>
-      <p v-else class="text-red-600 font-medium">
-        Incorrect. Please try again.
-      </p>
-    </div>
-
-    <p v-if="errorMessage" class="mt-4 text-red-600">{{ errorMessage }}</p>
   </div>
 </template>
 

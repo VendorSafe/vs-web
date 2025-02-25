@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require File.expand_path('../config/environment', __dir__)
+
+def count_arg
+  ARGV[0]&.to_i || 1
+end
+
+def print_header
+  puts "\n🏭 Setting up VendorSafe CEMS Training Demo Environment"
+  puts '=' * 50
+end
+
+def cleanup_demo_data
+  puts "\n🧹 Cleaning up existing demo data..."
+  [Team, User, TrainingProgram, TrainingContent, TrainingMembership].each do |model|
+    model.where("email LIKE 'demo.%@vendorsafe.com'").destroy_all
+  end
+end
+
+def create_demo_data(count)
+  puts "\n🌱 Creating #{count} demo environment#{count > 1 ? 's' : ''}..."
+  load Rails.root.join('db/seeds/demo_accounts.rb')
+end
+
+def print_usage
+  puts "\n📚 Usage Guide:"
+  puts '-------------'
+  puts '1. Start the server:   bin/dev'
+  puts '2. Open in browser:    http://localhost:3000'
+  puts '3. Login with any of the credentials shown above'
+  puts '4. Follow the workflow in docs/DEMO_WORKFLOW.md'
+  puts "\nTip: Run this script with a number argument to create multiple environments:"
+  puts "     bin/setup-demo 3    # Creates 3 demo environments\n\n"
+end
+
+begin
+  print_header
+  cleanup_demo_data
+  create_demo_data(count_arg)
+  print_usage
+rescue StandardError => e
+  puts "\n❌ Error: #{e.message}"
+  puts 'Stack trace:'
+  puts e.backtrace
+  exit 1
+end

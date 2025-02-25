@@ -26,28 +26,28 @@ const isStepComplete = (index) => {
 
 const getStepClass = (index) => {
   const baseClasses =
-    "flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200";
+    "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 transform hover:scale-110";
 
   if (index === props.currentIndex) {
-    return `${baseClasses} bg-blue-500 text-white`;
+    return `${baseClasses} bg-primary-500 text-white shadow-lg ring-4 ring-primary-100`;
   }
 
   if (isStepComplete(index)) {
-    return `${baseClasses} bg-green-500 text-white cursor-pointer hover:bg-green-600`;
+    return `${baseClasses} bg-secondary-500 text-white cursor-pointer hover:bg-secondary-600 shadow-md`;
   }
 
-  return `${baseClasses} bg-gray-200 text-gray-500`;
+  return `${baseClasses} bg-gray-100 text-gray-400 border-2 border-gray-200`;
 };
 
 const getConnectorClass = (index) => {
-  const baseClass = "flex-1 h-1 mx-2";
+  const baseClass = "flex-1 h-1 mx-4 transition-all duration-300";
 
   if (isStepComplete(index) && isStepComplete(index + 1)) {
-    return `${baseClass} bg-green-500`;
+    return `${baseClass} bg-secondary-500`;
   }
 
   if (isStepComplete(index)) {
-    return `${baseClass} bg-blue-500`;
+    return `${baseClass} bg-primary-500`;
   }
 
   return `${baseClass} bg-gray-200`;
@@ -61,36 +61,50 @@ const selectStep = (index) => {
 </script>
 
 <template>
-  <div class="step-progress-container">
-    <div class="flex items-center justify-between mb-8">
-      <div
-        v-for="(content, index) in contents"
-        :key="content.id"
-        class="flex items-center flex-1"
-      >
-        <button
-          :class="getStepClass(index)"
-          @click="selectStep(index)"
-          :disabled="!isStepComplete(index) && index !== currentIndex"
-        >
-          {{ index + 1 }}
-        </button>
-
+  <div class="step-progress-container card card-body">
+    <div class="relative">
+      <div class="flex items-center justify-between mb-8">
         <div
-          v-if="index < contents.length - 1"
-          :class="getConnectorClass(index)"
-        />
+          v-for="(content, index) in contents"
+          :key="content.id"
+          class="flex items-center flex-1"
+        >
+          <div class="relative group">
+            <button
+              :class="getStepClass(index)"
+              @click="selectStep(index)"
+              :disabled="!isStepComplete(index) && index !== currentIndex"
+            >
+              <span v-if="isStepComplete(index)" class="text-lg">✓</span>
+              <span v-else>{{ index + 1 }}</span>
+            </button>
+            <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div class="bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                {{ isStepComplete(index) ? 'Completed' : index === currentIndex ? 'Current' : 'Locked' }}
+              </div>
+            </div>
+          </div>
+
+          <div
+            v-if="index < contents.length - 1"
+            :class="getConnectorClass(index)"
+          />
+        </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-4 text-sm text-center">
+    <div class="grid grid-cols-4 gap-6 text-sm">
       <div
         v-for="(content, index) in contents"
         :key="content.id"
-        class="text-gray-600"
-        :class="{ 'font-medium': index === currentIndex }"
+        class="text-center transition-all duration-300"
+        :class="{
+          'text-secondary-800 font-medium transform scale-105': index === currentIndex,
+          'text-secondary-600': isStepComplete(index),
+          'text-gray-400': !isStepComplete(index) && index !== currentIndex
+        }"
       >
-        {{ content.title }}
+        <div class="line-clamp-2">{{ content.title }}</div>
       </div>
     </div>
   </div>
