@@ -26,3 +26,17 @@
     - Added `config/routes/api/v1_facilities_fixed.rb` with proper route definitions
     - Added `app/controllers/api/v1/facilities_controller_fixed.rb` with improved error handling
     - Created `bin/apply-api-facilities-fixes.sh` script to apply and test the fixes
+
+- Created comprehensive Facility to Location consolidation plan:
+  - Documented in FACILITY-TO-LOCATION-PLAN.md
+  - Outlines a strategy to consolidate Facilities into the existing hierarchical Locations model
+  - Includes database migration plans, API controller updates, and UI considerations
+  - Adds GeoJSON support for spatial representation of locations
+  - Provides implementation timeline and risk mitigation strategies
+  - Enhances customer experience by simplifying signup while enabling flexible organization
+
+- Added new golden rule about Bullet Train super-scaffolding:
+  - Updated GOLDEN-RULES.md with best practices for using super-scaffolding
+  - Provides guidance on when to use super-scaffolding in the development lifecycle
+  - Explains how to add fields after manual modifications
+  - Includes examples of preserving custom code during regeneration

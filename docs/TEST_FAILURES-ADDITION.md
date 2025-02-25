@@ -24,3 +24,18 @@
     - Added `config/routes/api/v1_facilities_fixed.rb` with proper route definitions
     - Added `app/controllers/api/v1/facilities_controller_fixed.rb` with improved error handling
     - Created `bin/apply-api-facilities-fixes.sh` script to apply and test the fixes
+
+- Developed a plan to consolidate Facilities into Locations model:
+  - Created comprehensive FACILITY-TO-LOCATION-PLAN.md document
+  - Identified that the existing Locations model already has hierarchical structure (parent_id)
+  - Planned migration strategy to transfer data from Facilities to Locations
+  - Added GeoJSON support for spatial representation of locations
+  - Addressed test failures by planning updates to all affected controllers and tests
+  - Documented implementation timeline with clear phases for database changes, API updates, UI implementation, and testing
+
+- Added new golden rule to prevent future test failures:
+  - Updated GOLDEN-RULES.md with best practices for using Bullet Train's super-scaffolding
+  - Provided guidance on when to use super-scaffolding in the development lifecycle
+  - Explained how to safely add fields after manual modifications
+  - Included examples of preserving custom code during regeneration
+  - Established a clear workflow to prevent conflicts between manual changes and scaffolding
