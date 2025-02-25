@@ -587,7 +587,40 @@ props: {
 
 ## General Development Guidelines
 
-### 1. Explicit Over Implicit
+### 1. Non-Interactive Scripts
+
+**Rule**: Scripts should output clear results without requiring user interaction.
+
+**Example**:
+```bash
+# INTERACTIVE (BAD)
+echo "Do you want to continue? (y/n)"
+read -p "> " user_input
+
+if [[ $user_input == "y" ]]; then
+  # Do something
+fi
+
+# NON-INTERACTIVE (GOOD)
+echo "Proceeding with operation..."
+# Do something
+echo "RESULT: OPERATION_COMPLETED"
+```
+
+**Why It's Good**:
+- Prevents scripts from freezing while waiting for input
+- Allows scripts to be run in automated environments
+- Provides clear output that can be parsed by other tools
+- Makes it easier to chain scripts together
+- Enables AI-assisted development to proceed without interruption
+
+**Why It's Bad When Violated**:
+- Scripts may hang indefinitely waiting for input
+- Prevents automation of complex workflows
+- Creates bottlenecks in development processes
+- Interrupts AI-assisted development workflows
+
+### 2. Explicit Over Implicit
 
 **Rule**: Prefer explicit, clear code over clever, implicit code.
 

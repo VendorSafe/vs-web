@@ -48,6 +48,11 @@ Api::V1::TrainingProgramsControllerTest#test_show
 - Added tests for progress tracking and certificate generation
 - Created `bin/run-focused-api-tests.sh` script to run the focused tests with detailed output
 - Added `README-focused-api-tests.md` with documentation on the testing approach and how to add new focused tests
+- Created fixed versions of API routes and controllers:
+  - Added `config/routes/api/v1_fixed.rb` with proper route definitions
+  - Added `app/controllers/api/v1/training_programs_controller_fixed.rb` with improved error handling
+  - Created `bin/apply-api-fixes.sh` script to apply and test the fixes
+  - Created `docs/API-CONTROLLER-FIXES.md` with detailed explanation of the issues and fixes
 
 **TODO:**
 - Check API routes to ensure they're properly defined

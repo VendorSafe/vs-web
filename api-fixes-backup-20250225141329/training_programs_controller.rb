@@ -8,17 +8,10 @@ if defined?(Api::V1::ApplicationController)
 
     # GET /api/v1/teams/:team_id/training_programs
     def index
-      render json: @training_programs
     end
 
     # GET /api/v1/training_programs/:id
     def show
-      # Ensure the training program is loaded
-      unless @training_program
-        render json: { error: 'Training program not found' }, status: :not_found
-        return
-      end
-
       membership = current_user.memberships.find_by(team: @training_program.team)
       training_membership = if membership
                               TrainingMembership.find_by(membership: membership,
@@ -34,12 +27,6 @@ if defined?(Api::V1::ApplicationController)
 
     # PUT /api/v1/training_programs/:id/update_progress
     def update_progress
-      # Ensure the training program is loaded
-      unless @training_program
-        render json: { error: 'Training program not found' }, status: :not_found
-        return
-      end
-
       membership = current_user.memberships.find_by(team: @training_program.team)
       training_membership = if membership
                               TrainingMembership.find_by(membership: membership,
@@ -57,12 +44,6 @@ if defined?(Api::V1::ApplicationController)
 
     # GET /api/v1/training_programs/:id/certificate
     def certificate
-      # Ensure the training program is loaded
-      unless @training_program
-        render json: { error: 'Training program not found' }, status: :not_found
-        return
-      end
-
       membership = current_user.memberships.find_by(team: @training_program.team)
 
       if membership
@@ -83,12 +64,6 @@ if defined?(Api::V1::ApplicationController)
 
     # POST /api/v1/training_programs/:id/generate_certificate
     def generate_certificate
-      # Ensure the training program is loaded
-      unless @training_program
-        render json: { error: 'Training program not found' }, status: :not_found
-        return
-      end
-
       membership = current_user.memberships.find_by(team: @training_program.team)
       training_membership = if membership
                               TrainingMembership.find_by(membership: membership,
@@ -134,47 +109,25 @@ if defined?(Api::V1::ApplicationController)
 
     # POST /api/v1/teams/:team_id/training_programs
     def create
-      # Ensure the team is loaded
-      unless @team
-        render json: { error: 'Team not found' }, status: :not_found
-        return
-      end
-
-      # Create a new training program
-      @training_program = @team.training_programs.build(training_program_params)
-
       if @training_program.save
-        render json: @training_program, status: :created
+        render :show, status: :created, location: [:api, :v1, @training_program]
       else
-        render json: { errors: @training_program.errors }, status: :unprocessable_entity
+        render json: @training_program.errors, status: :unprocessable_entity
       end
     end
 
     # PATCH/PUT /api/v1/training_programs/:id
     def update
-      # Ensure the training program is loaded
-      unless @training_program
-        render json: { error: 'Training program not found' }, status: :not_found
-        return
-      end
-
       if @training_program.update(training_program_params)
-        render json: @training_program
+        render :show
       else
-        render json: { errors: @training_program.errors }, status: :unprocessable_entity
+        render json: @training_program.errors, status: :unprocessable_entity
       end
     end
 
     # DELETE /api/v1/training_programs/:id
     def destroy
-      # Ensure the training program is loaded
-      unless @training_program
-        render json: { error: 'Training program not found' }, status: :not_found
-        return
-      end
-
       @training_program.destroy
-      head :ok
     end
 
     private
@@ -249,6 +202,6 @@ if defined?(Api::V1::ApplicationController)
     include StrongParameters
   end
 else
-  class Api::V1::TrainingProgramsControllerFixed
+  class Api::V1::TrainingProgramsController
   end
 end

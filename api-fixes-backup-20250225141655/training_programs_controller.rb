@@ -3,7 +3,7 @@
 # class because eager loading is set to `true` when CI=true.
 # We wrap this class in an `if` statement to circumvent this issue.
 if defined?(Api::V1::ApplicationController)
-  class Api::V1::TrainingProgramsController < Api::V1::ApplicationController
+  class Api::V1::TrainingProgramsControllerFixed < Api::V1::ApplicationController
     account_load_and_authorize_resource :training_program, through: :team, through_association: :training_programs
 
     # GET /api/v1/teams/:team_id/training_programs

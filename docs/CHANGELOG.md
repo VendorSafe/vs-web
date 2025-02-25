@@ -166,6 +166,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added tests for progress tracking and certificate generation
   - Created `bin/run-focused-api-tests.sh` script to run the focused tests
   - Added `README-focused-api-tests.md` with documentation on the testing approach
+  - Created fixed versions of API routes and controllers to address identified issues
+  - Added `bin/apply-api-fixes.sh` script to apply and test the fixes
+  - Created `docs/API-CONTROLLER-FIXES.md` with detailed explanation of the fixes
+  - Added new golden rule about non-interactive scripts to GOLDEN-RULES.md
 - Fixed training content validation issues in tests:
   - Updated training_player_test.rb to use proper factory traits (:video, :document, :quiz)
   - Ensured content_data includes required media URLs for video and document content

@@ -32,15 +32,12 @@ shallow do
       end
 
       resources :facilities, concerns: [:sortable]
-
-      # Training Programs routes
       resources :training_programs do
         member do
           put :update_progress
           get :certificate
           post :generate_certificate
         end
-
         resources :training_contents, concerns: [:sortable] do
           resources :training_questions
         end
@@ -49,20 +46,5 @@ shallow do
       resources :locations, concerns: [:sortable]
       resources :pricing_models
     end
-
-    # Non-nested routes for direct access
-    resources :training_programs, only: %i[show update destroy] do
-      member do
-        put :update_progress
-        get :certificate
-        post :generate_certificate
-      end
-    end
-
-    resources :training_contents, only: %i[show update destroy]
-    resources :training_questions, only: %i[show update destroy]
-    resources :facilities, only: %i[show update destroy]
-    resources :locations, only: %i[show update destroy]
-    resources :pricing_models, only: %i[show update destroy]
   end
 end
