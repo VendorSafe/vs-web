@@ -23,40 +23,25 @@ The Locations model is better suited for our needs as it already supports hierar
 3. Add geospatial capabilities through GeoJSON
 4. Consolidate redundant models
 5. Document best practices for Bullet Train super-scaffolding
+6. Create a reusable gem for GeoJSON fields that can be contributed back to the Bullet Train project
 
 ## Technical Implementation Plan
 
-### 1. Database Changes
+### 1. Create GeoJSON Fields Gem
 
-#### 1.1 Data Migration
+We've created a new gem `bullet_train-fields-geojson` that provides:
 
-Create a migration to transfer data from Facilities to Locations:
+- A `has_geojson_field` method for models
+- Validation and helper methods for GeoJSON data
+- Map-based input and display components
+- Stimulus controllers for interactive maps
+- View helpers and partials following Bullet Train conventions
 
-```ruby
-class ConsolidateFacilitiesToLocations < ActiveRecord::Migration[7.2]
-  def up
-    # Copy data from facilities to locations
-    Facility.find_each do |facility|
-      Location.create!(
-        team_id: facility.team_id,
-        name: facility.name,
-        location_type: facility.other_attribute,
-        address: facility.url,
-        parent_id: nil
-      )
-    end
-    
-    # Update any references to facilities
-    # This would depend on your specific associations
-  end
-  
-  def down
-    # Rollback logic if needed
-  end
-end
-```
+This gem follows Bullet Train naming conventions and directory structure, making it easy to contribute back to the open source project.
 
-#### 1.2 Add GeoJSON Support
+### 2. Database Changes
+
+#### 2.1 Add GeoJSON Support
 
 Create a migration to add GeoJSON capabilities:
 
@@ -78,213 +63,222 @@ class AddGeometryToLocations < ActiveRecord::Migration[7.2]
 end
 ```
 
-#### 1.3 Update Model
+#### 2.2 Data Migration
 
-Enhance the Location model with GeoJSON validation and geospatial methods:
+Create a migration to transfer data from Facilities to Locations:
+
+```ruby
+class ConsolidateFacilitiesToLocations < ActiveRecord::Migration[7.2]
+  def up
+    # Create a mapping table to track the relationship between facilities and locations
+    create_table :facility_location_mappings do |t|
+      t.references :facility, null: false, foreign_key: true
+      t.references :location, null: false, foreign_key: true
+      t.timestamps
+    end
+    
+    # Copy data from facilities to locations
+    execute <<-SQL
+      INSERT INTO locations (team_id, name, location_type, address, created_at, updated_at)
+      SELECT 
+        team_id, 
+        name, 
+        other_attribute AS location_type, 
+        url AS address, 
+        created_at, 
+        updated_at
+      FROM facilities
+    SQL
+    
+    # Create the mapping records
+    # ...
+  end
+  
+  def down
+    # Rollback logic
+  end
+end
+```
+
+### 3. Model Updates
+
+#### 3.1 Update Location Model
+
+Enhance the Location model with GeoJSON support:
 
 ```ruby
 class Location < ApplicationRecord
+  # Use the GeoJSON field from our gem
+  has_geojson_field :geometry, validate_format: true
+  
+  # Existing code...
   belongs_to :team
-  belongs_to :parent, class_name: 'Location', optional: true
-  has_many :children, class_name: 'Location', foreign_key: 'parent_id'
+  belongs_to :parent, class_name: "Location", optional: true
+  has_many :children, class_name: "Location", foreign_key: "parent_id", dependent: :nullify
+  has_many :facility_location_mappings, dependent: :destroy
+  has_many :facilities, through: :facility_location_mappings
   
-  validates :geometry, json: { schema: -> { GeoJSON_SCHEMA } }, allow_blank: true
-  
-  def self.GeoJSON_SCHEMA
-    {
-      type: "object",
-      required: ["type", "coordinates"],
-      properties: {
-        type: { type: "string", enum: ["Point", "LineString", "Polygon", "MultiPoint", "MultiLineString", "MultiPolygon"] },
-        coordinates: { type: "array" }
-      }
-    }
+  # Methods for hierarchical navigation
+  def ancestors
+    # ...
   end
   
-  # Find locations within a radius of a point
-  scope :near, ->(lat, lng, radius_km) {
-    # Implementation using PostGIS
-  }
+  def descendants
+    # ...
+  end
   
-  # Get GeoJSON representation
-  def to_geojson
-    return nil if geometry.blank?
-    
-    {
-      type: "Feature",
-      geometry: geometry,
-      properties: {
-        id: id,
-        name: name,
-        location_type: location_type
-      }
-    }
+  def full_path
+    # ...
   end
 end
 ```
 
-### 2. API Controller Updates
+#### 3.2 Create Mapping Model
 
-#### 2.1 Rename Controllers
-
-Rename and update all Facility-related controllers to use Locations:
-
-1. Rename `facilities_controller_fixed.rb` to `locations_controller_fixed.rb`
-2. Update controller class names and references
-3. Add support for GeoJSON in the controllers
-
-Example controller with GeoJSON support:
+Create a model for the facility_location_mappings table:
 
 ```ruby
-class Api::V1::LocationsController < Api::V1::ApplicationController
-  account_load_and_authorize_resource :location, through: :team, through_association: :locations
-
-  # GET /api/v1/teams/:team_id/locations
-  def index
-    # Support for geospatial filtering
-    if params[:lat] && params[:lng] && params[:radius]
-      @locations = @locations.near(params[:lat].to_f, params[:lng].to_f, params[:radius].to_f)
-    end
-    
-    render json: @locations
-  end
+class FacilityLocationMapping < ApplicationRecord
+  belongs_to :facility
+  belongs_to :location
   
-  # Other actions...
+  validates :facility_id, uniqueness: { scope: :location_id }
   
-  # GET /api/v1/locations/:id/geojson
-  def geojson
-    render json: @location.to_geojson
-  end
+  # Ensure the facility and location belong to the same team
+  validate :validate_same_team
   
   private
   
-  def location_params
-    params.require(:location).permit(
-      :name, 
-      :address, 
-      :location_type, 
-      :parent_id,
-      geometry: {}
-    )
-  end
-end
-```
-
-#### 2.2 Update Routes
-
-Update routes to support Locations and geospatial queries:
-
-```ruby
-# config/routes/api/v1_locations_fixed.rb
-namespace :v1 do
-  resources :teams do
-    resources :locations, concerns: [:sortable] do
-      collection do
-        get :nearby
-      end
-      
-      member do
-        get :geojson
-        get :children
-      end
-    end
-  end
-  
-  resources :locations, only: [:show, :update, :destroy] do
-    member do
-      get :geojson
-      get :children
+  def validate_same_team
+    if facility&.team_id != location&.team_id
+      errors.add(:base, "Facility and Location must belong to the same team")
     end
   end
 end
 ```
 
-#### 2.3 Update Tests
+#### 3.3 Update Facility Model
 
-Update all test files to use Locations instead of Facilities and add tests for GeoJSON functionality:
+Update the Facility model to add the relationship to Location:
 
 ```ruby
-test "should return location as geojson" do
-  @location.update(geometry: {
-    type: "Point",
-    coordinates: [-122.4194, 37.7749]
-  })
+class Facility < ApplicationRecord
+  # Existing code...
   
-  get "/api/v1/locations/#{@location.id}/geojson", headers: @headers
-  assert_response :success
+  has_many :facility_location_mappings, dependent: :destroy
+  has_many :locations, through: :facility_location_mappings
   
-  json_response = JSON.parse(response.body)
-  assert_equal "Feature", json_response["type"]
-  assert_equal "Point", json_response["geometry"]["type"]
-  assert_equal [-122.4194, 37.7749], json_response["geometry"]["coordinates"]
-  assert_equal @location.id, json_response["properties"]["id"]
+  # Deprecated facilities that have been migrated to locations
+  scope :migrated, -> { where.not(migrated_to_location_id: nil) }
+  
+  # Facilities that haven't been migrated yet
+  scope :not_migrated, -> { where(migrated_to_location_id: nil) }
+  
+  # Migration methods
+  def migrated_location
+    # ...
+  end
+  
+  def migrated?
+    # ...
+  end
+  
+  def migrate_to_location(location = nil)
+    # ...
+  end
 end
 ```
 
-### 3. UI Implementation
+### 4. UI Implementation
 
-#### 3.1 Form Components
+#### 4.1 Map Input Component
 
-Create UI components for GeoJSON input:
-
-1. Map-based input component using Mapbox or Leaflet
-2. Drawing tools for points, lines, and polygons
-3. Simple coordinate input for basic locations
-4. Preview of the defined area
-
-Example implementation:
+We've created a Stimulus controller for map-based input:
 
 ```javascript
-// app/javascript/controllers/map_input_controller.js
+// app/javascript/controllers/bullet_train/fields/geojson/map_input_controller.js
 import { Controller } from "@hotwired/stimulus"
-import mapboxgl from 'mapbox-gl'
-import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 export default class extends Controller {
-  static targets = ["map", "input"]
+  static targets = ["map", "input", "coordinates"]
   
-  connect() {
-    this.initializeMap()
-    this.initializeDrawTools()
-    this.loadExistingGeometry()
+  static values = {
+    apiKey: String,
+    initial: Object,
+    center: { type: Array, default: [-122.4194, 37.7749] },
+    zoom: { type: Number, default: 12 }
   }
   
-  initializeMap() {
-    // Initialize Mapbox map
-  }
-  
-  initializeDrawTools() {
-    // Initialize drawing tools
-  }
-  
-  updateGeometry(event) {
-    const data = this.draw.getAll()
-    if (data.features.length > 0) {
-      // Get the first feature's geometry
-      const geometry = data.features[0].geometry
-      this.inputTarget.value = JSON.stringify(geometry)
-    } else {
-      this.inputTarget.value = ""
-    }
-  }
-  
-  loadExistingGeometry() {
-    // Load existing geometry from input
-  }
+  // Methods for map interaction
+  // ...
 }
 ```
 
-#### 3.2 Display Components
+#### 4.2 Map Display Component
 
-Create components for displaying location data:
+We've created a Stimulus controller for map-based display:
 
-1. Map view of location boundaries
-2. Hierarchical tree view of locations
-3. Toggle between map and list views
+```javascript
+// app/javascript/controllers/bullet_train/fields/geojson/map_display_controller.js
+import { Controller } from "@hotwired/stimulus"
 
-### 4. Documentation Updates
+export default class extends Controller {
+  static targets = ["map", "info"]
+  
+  static values = {
+    apiKey: String,
+    geojson: Object,
+    center: { type: Array, default: [-122.4194, 37.7749] },
+    zoom: { type: Number, default: 12 }
+  }
+  
+  // Methods for map display
+  // ...
+}
+```
 
-#### 4.1 Update Existing Documentation
+#### 4.3 View Partials
+
+We've created a view partial for the GeoJSON field:
+
+```erb
+<%# app/views/fields/geojson/_field.html.erb %>
+<div class="field">
+  <% if form %>
+    <%# Form context - editable field %>
+    <%= form.label method, class: "label" %>
+    
+    <div data-controller="bullet-train--fields--geojson--map-input"
+         data-bullet-train--fields--geojson--map-input-api-key-value="<%= api_key %>"
+         data-bullet-train--fields--geojson--map-input-center-value="<%= center.to_json %>"
+         data-bullet-train--fields--geojson--map-input-zoom-value="<%= zoom %>">
+      
+      <div data-bullet-train--fields--geojson--map-input-target="map" 
+           style="height: <%= map_height %>; width: 100%; border-radius: 0.375rem; margin-bottom: 0.5rem;"></div>
+      
+      <%= form.hidden_field method, 
+                           data: { "bullet-train--fields--geojson--map-input-target": "input" },
+                           class: "input" %>
+      
+      <div data-bullet-train--fields--geojson--map-input-target="coordinates" 
+           class="text-sm text-gray-500 mt-1"></div>
+    </div>
+  <% else %>
+    <%# Show context - display only %>
+    <%# ... %>
+  <% end %>
+</div>
+```
+
+### 5. API Controller Updates
+
+Update all Facility-related controllers to use Locations:
+
+1. Rename and update controllers
+2. Update routes to support Locations and geospatial queries
+3. Add support for GeoJSON in the controllers
+
+### 6. Documentation Updates
 
 Update all relevant documentation files:
 
@@ -295,101 +289,32 @@ Update all relevant documentation files:
 5. INTEGRATION-PLAN.md
 6. DIRECTORY-STRUCTURE.md
 
-#### 4.2 Add New Golden Rule
-
-Add a new rule to GOLDEN-RULES.md about super-scaffolding:
-
-```markdown
-## Super-Scaffolding Best Practices
-
-### When to Use Super-Scaffolding
-
-**Rule**: Use super-scaffolding at the beginning of model development, before making manual modifications to generated files.
-
-**Why It's Good**:
-- Ensures consistency across the application
-- Saves development time
-- Follows Bullet Train conventions
-- Generates tests and UI components automatically
-
-**When to Avoid**:
-- After making manual modifications to controllers, views, or tests
-- When you need custom behavior that deviates significantly from Bullet Train patterns
-- For temporary or experimental features
-
-### Adding Fields After Manual Modifications
-
-**Rule**: You can still use super-scaffolding to add new fields to models even after manual modifications, but with caution.
-
-**Process**:
-1. Back up all manually modified files before running super-scaffolding
-2. Run the super-scaffolding command to add the new field
-3. Compare the newly generated files with your backups
-4. Manually merge your custom code with the newly generated code
-5. Run tests to ensure everything still works
-
-**Example**:
-```bash
-# 1. Back up your modified files
-cp app/controllers/api/v1/locations_controller.rb app/controllers/api/v1/locations_controller.rb.bak
-
-# 2. Run super-scaffolding to add a new field
-bin/super-scaffold field Location map_url:text
-
-# 3. Compare and merge changes
-diff app/controllers/api/v1/locations_controller.rb app/controllers/api/v1/locations_controller.rb.bak
-
-# 4. Run tests
-bin/rails test test/controllers/api/v1/locations_controller_test.rb
-```
-
-### Preserving Custom Code
-
-**Rule**: Use the designated "safe areas" in generated files for custom code.
-
-**Example**:
-```ruby
-# 🚅 super scaffolding will insert new fields above this line.
-# Add your custom code below this line to preserve it during regeneration.
-def custom_method
-  # Your custom code here
-end
-```
-
-**Why It's Good**:
-- Allows you to use super-scaffolding throughout the development lifecycle
-- Preserves custom functionality during regeneration
-- Maintains a balance between automation and customization
-- Follows Bullet Train conventions
-```
-
 ## Implementation Timeline
 
-### Phase 1: Database Changes (Week 1)
+### Phase 1: Gem Creation and Database Changes (Week 1)
 
-1. Create migration for adding GeoJSON support
-2. Update Location model with GeoJSON validation
+1. Create the `bullet_train-fields-geojson` gem
+2. Create migration for adding GeoJSON support
 3. Create migration for transferring data from Facilities to Locations
 
-### Phase 2: API Updates (Week 2)
+### Phase 2: Model and UI Updates (Week 2)
 
-1. Rename and update controllers
-2. Update routes
-3. Update tests
-4. Add geospatial query support
+1. Update Location model with GeoJSON support
+2. Create FacilityLocationMapping model
+3. Update Facility model with migration capabilities
+4. Create map input and display components
 
-### Phase 3: UI Implementation (Week 3)
+### Phase 3: API and Documentation Updates (Week 3)
 
-1. Create map-based input component
-2. Create location display components
-3. Update forms to include GeoJSON input
+1. Update API controllers and routes
+2. Update documentation
+3. Create tests for the new functionality
 
-### Phase 4: Documentation and Testing (Week 4)
+### Phase 4: Testing and Deployment (Week 4)
 
-1. Update all documentation
-2. Add new golden rule about super-scaffolding
-3. Comprehensive testing
-4. Finalize the consolidation
+1. Comprehensive testing
+2. Finalize the consolidation
+3. Deploy to production
 
 ## Risks and Mitigations
 
@@ -401,8 +326,19 @@ end
 | Breaking changes to API | Version the API and provide migration path |
 | Super-scaffolding conflicts | Follow the new golden rule and back up files before using super-scaffolding |
 
+## Contribution to Bullet Train
+
+The `bullet_train-fields-geojson` gem has been designed to be contributed back to the Bullet Train open source project. It follows all Bullet Train conventions and provides a valuable addition to the ecosystem.
+
+Benefits of contributing:
+
+1. Helps other Bullet Train users with geospatial needs
+2. Increases the visibility of our team in the Bullet Train community
+3. Allows us to benefit from community improvements to the gem
+4. Demonstrates our commitment to open source
+
 ## Conclusion
 
 This consolidation plan will simplify our data model while enhancing its capabilities with geospatial features. By leveraging the existing hierarchical structure of the Locations model and adding GeoJSON support, we'll provide a more flexible and powerful way for customers to organize their training programs.
 
-The addition of the super-scaffolding golden rule will help ensure that we can continue to use Bullet Train's powerful scaffolding features even as we make custom modifications to our codebase.
+The creation of the `bullet_train-fields-geojson` gem ensures that we follow Bullet Train conventions and can contribute our work back to the community.

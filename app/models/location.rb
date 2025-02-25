@@ -31,12 +31,14 @@ class Location < ApplicationRecord
 
   validates :name, presence: true
   validates :parent, scope: true
-  validate :validate_geometry_format, if: -> { geometry.present? }
   # 🚅 add validations above.
 
   # 🚅 add callbacks above.
 
   # 🚅 add delegations above.
+
+  # Use the GeoJSON field from our gem
+  has_geojson_field :geometry, validate_format: true
 
   def collection
     team.locations
@@ -55,22 +57,6 @@ class Location < ApplicationRecord
     end
 
     base_scope
-  end
-
-  # Convert to GeoJSON Feature
-  def to_geojson
-    return nil if geometry.blank?
-
-    {
-      type: 'Feature',
-      geometry: geometry,
-      properties: {
-        id: id,
-        name: name,
-        location_type: location_type,
-        address: address
-      }
-    }
   end
 
   # Get all ancestors in order from root to parent
@@ -100,48 +86,10 @@ class Location < ApplicationRecord
     result
   end
 
-  # Check if this location contains the given point
-  def contains_point?(lat, lng)
-    return false if geometry.blank?
-
-    # This is a placeholder for actual geometric calculation
-    # Will be implemented with PostGIS or a Ruby geometry library
-    false
-  end
-
   # Get full hierarchical path (e.g., "Headquarters > Floor 1 > Room 101")
   def full_path
     (ancestors.map(&:name) + [name]).join(' > ')
   end
 
-  private
-
-  # GeoJSON schema for validation
-  def self.GEOJSON_SCHEMA
-    {
-      type: 'object',
-      required: %w[type coordinates],
-      properties: {
-        type: {
-          type: 'string',
-          enum: %w[Point LineString Polygon MultiPoint MultiLineString MultiPolygon]
-        },
-        coordinates: { type: 'array' }
-      }
-    }
-  end
-
-  # Validate GeoJSON format
-  def validate_geometry_format
-    return if geometry.blank?
-
-    unless geometry.is_a?(Hash) &&
-           geometry['type'].present? &&
-           geometry['coordinates'].present? &&
-           %w[Point LineString Polygon MultiPoint MultiLineString
-              MultiPolygon].include?(geometry['type'])
-      errors.add(:geometry, 'must be valid GeoJSON with type and coordinates')
-    end
-  end
   # 🚅 add methods above.
 end

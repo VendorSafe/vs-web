@@ -39,3 +39,13 @@
   - Explained how to safely add fields after manual modifications
   - Included examples of preserving custom code during regeneration
   - Established a clear workflow to prevent conflicts between manual changes and scaffolding
+
+- Created new Bullet Train gem for GeoJSON fields:
+  - Implemented `bullet_train-fields-geojson` gem following Bullet Train conventions
+  - Created proper gem structure with version, engine, and gemspec files
+  - Added `has_geojson_field` concern for ActiveRecord models
+  - Created Stimulus controllers for map-based input and display
+  - Added view helpers and partials for GeoJSON fields
+  - Designed for contribution back to the Bullet Train open source project
+  - Addressed test failures related to location data by providing proper validation and helper methods
+  - Prepared for PostGIS integration for advanced geospatial queries

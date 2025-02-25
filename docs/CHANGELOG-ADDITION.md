@@ -35,8 +35,12 @@
   - Provides implementation timeline and risk mitigation strategies
   - Enhances customer experience by simplifying signup while enabling flexible organization
 
-- Added new golden rule about Bullet Train super-scaffolding:
-  - Updated GOLDEN-RULES.md with best practices for using super-scaffolding
-  - Provides guidance on when to use super-scaffolding in the development lifecycle
-  - Explains how to add fields after manual modifications
-  - Includes examples of preserving custom code during regeneration
+- Created new Bullet Train gem for GeoJSON fields:
+  - Implemented `bullet_train-fields-geojson` gem following Bullet Train conventions
+  - Added `has_geojson_field` method for ActiveRecord models
+  - Created Stimulus controllers for map-based input and display
+  - Added view helpers and partials for GeoJSON fields
+  - Designed for contribution back to the Bullet Train open source project
+  - Follows proper gem structure with versioning, documentation, and tests
+  - Integrates with Mapbox for interactive maps
+  - Prepared for PostGIS integration for advanced geospatial queries

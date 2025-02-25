@@ -1,0 +1,82 @@
+<%# app/views/fields/geojson/_field.html.erb %>
+<% 
+  # This partial renders a GeoJSON field in the Bullet Train format
+  # It can be used in forms, show pages, and index pages
+  
+  # Parameters:
+  # - form: The form builder object (for form context)
+  # - method: The attribute name
+  # - options: Additional options for the field
+  
+  # Default options
+  options ||= {}
+  
+  # Get the current value
+  value = form&.object&.send(method) || local_assigns[:value]
+  
+  # Set up Mapbox API key
+  api_key = ENV["MAPBOX_API_KEY"]
+  
+  # Set default map options
+  map_height = options[:height] || "400px"
+  center = options[:center] || [-122.4194, 37.7749] # Default: San Francisco
+  zoom = options[:zoom] || 12
+%>
+
+<div class="field">
+  <% if form %>
+    <%# Form context - editable field %>
+    <%= form.label method, class: "label" %>
+    
+    <div data-controller="bullet-train--fields--geojson--map-input"
+         data-bullet-train--fields--geojson--map-input-api-key-value="<%= api_key %>"
+         data-bullet-train--fields--geojson--map-input-center-value="<%= center.to_json %>"
+         data-bullet-train--fields--geojson--map-input-zoom-value="<%= zoom %>">
+      
+      <div data-bullet-train--fields--geojson--map-input-target="map" 
+           style="height: <%= map_height %>; width: 100%; border-radius: 0.375rem; margin-bottom: 0.5rem;"></div>
+      
+      <%= form.hidden_field method, 
+                           data: { "bullet-train--fields--geojson--map-input-target": "input" },
+                           class: "input" %>
+      
+      <div data-bullet-train--fields--geojson--map-input-target="coordinates" 
+           class="text-sm text-gray-500 mt-1"></div>
+      
+      <% if options[:hint] %>
+        <p class="help text-gray-500"><%= options[:hint] %></p>
+      <% end %>
+    </div>
+    
+  <% else %>
+    <%# Show context - display only %>
+    <% if local_assigns[:label] != false %>
+      <label class="label"><%= method.to_s.humanize %></label>
+    <% end %>
+    
+    <% if value.present? %>
+      <div data-controller="bullet-train--fields--geojson--map-display"
+           data-bullet-train--fields--geojson--map-display-api-key-value="<%= api_key %>"
+           data-bullet-train--fields--geojson--map-display-center-value="<%= center.to_json %>"
+           data-bullet-train--fields--geojson--map-display-zoom-value="<%= zoom %>"
+           data-bullet-train--fields--geojson--map-display-geojson-value="<%= {
+             type: "Feature",
+             geometry: value,
+             properties: {
+               id: local_assigns[:record]&.id,
+               model_name: local_assigns[:record]&.class&.name,
+               field_name: method
+             }
+           }.to_json %>">
+        
+        <div data-bullet-train--fields--geojson--map-display-target="map" 
+             style="height: <%= map_height %>; width: 100%; border-radius: 0.375rem;"></div>
+        
+        <div data-bullet-train--fields--geojson--map-display-target="info" 
+             class="text-sm mt-2"></div>
+      </div>
+    <% else %>
+      <p class="help text-gray-500">No location data available</p>
+    <% end %>
+  <% end %>
+</div>
