@@ -5,6 +5,9 @@
 class Membership < ApplicationRecord
   include Memberships::Base
   include Roles::Support
+  # TODO: Re-enable after fixing activities table
+  # include PublicActivity::Model
+  # tracked owner: :team
 
   # Restrict available roles if needed
   # roles_only :admin, :vendor, :employee
@@ -16,6 +19,12 @@ class Membership < ApplicationRecord
     employee: 3,
     vendor: 4
   }.freeze
+
+  ROLES.each_key do |role|
+    define_method :"#{role}?" do
+      role_ids.to_a.include?(ROLES[role])
+    end
+  end
   # 🚅 add concerns above.
 
   # 🚅 add belongs_to associations above.

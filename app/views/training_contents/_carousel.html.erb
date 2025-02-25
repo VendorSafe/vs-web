@@ -1,16 +1,27 @@
 <%# app/views/training_contents/_carousel.html.erb %>
-<div data-controller="carousel"
-     id="content-carousel-<%= training_content.id %>"
-     class="relative w-full">
+<div class="space-y-4">
+  <div class="flex justify-between items-center">
+    <%= link_to "Back to Training Program",
+                account_training_program_path(training_content.training_program),
+                class: "text-primary hover:text-primary-dark" %>
+    <%= link_to "Resume Training",
+                account_training_content_path(training_content),
+                class: "text-primary hover:text-primary-dark" %>
+  </div>
+
+  <div data-controller="carousel"
+       id="content-carousel-<%= training_content.id %>"
+       class="carousel relative w-full">
 
   <%# Carousel Container %>
   <div data-carousel-target="container"
+       data-carousel="static"
        class="relative h-96 overflow-hidden rounded-lg">
 
     <%# Slides %>
     <% training_content.content_data["slides"].each_with_index do |slide, index| %>
       <div data-carousel-target="slide"
-           class="hidden duration-700 ease-in-out"
+           class="<%= index == 0 ? 'active' : 'hidden' %> duration-700 ease-in-out"
            data-slide-index="<%= index %>">
         <div class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
           <div class="p-8">
@@ -23,18 +34,20 @@
 
   <%# Navigation Controls %>
   <button data-carousel-target="prev"
+          data-carousel-prev
           data-action="click->carousel#prev"
           class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
     <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-      <%= heroicon "chevron-left", options: { class: "w-6 h-6 text-white" } %>
+      <i class="ti ti-angle-left w-6 h-6 text-white"></i>
     </span>
   </button>
 
   <button data-carousel-target="next"
+          data-carousel-next
           data-action="click->carousel#next"
           class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
     <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-      <%= heroicon "chevron-right", options: { class: "w-6 h-6 text-white" } %>
+      <i class="ti ti-angle-right w-6 h-6 text-white"></i>
     </span>
   </button>
 
@@ -42,7 +55,7 @@
   <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
     <% training_content.content_data["slides"].each_with_index do |_, index| %>
       <button data-carousel-target="indicator"
-              data-slide-to="<%= index %>"
+              data-carousel-slide-to="<%= index %>"
               class="w-3 h-3 rounded-full bg-gray-300"
               aria-label="Slide <%= index + 1 %>">
       </button>

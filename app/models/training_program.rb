@@ -75,11 +75,10 @@
 
 class TrainingProgram < ApplicationRecord
   # 🚅 add concerns above.
-  include PublicActivity::Model
-  tracked owner: :team
+  # TODO: Re-enable after fixing activities table
+  # include PublicActivity::Model
+  # tracked owner: :team
   include Workflow
-  include Roles::Support
-
   workflow_column :state
 
   workflow do

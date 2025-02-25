@@ -26,4 +26,13 @@ class User < ApplicationRecord
   # 🚅 add delegations above.
 
   # 🚅 add methods above.
+
+  def role_in?(roles)
+    roles = Array(roles)
+    memberships.any? do |membership|
+      roles.any? do |role|
+        membership.send(:"#{role}?")
+      end
+    end
+  end
 end

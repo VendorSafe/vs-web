@@ -1,7 +1,8 @@
 class TrainingContent < ApplicationRecord
   include Sortable
-  include PublicActivity::Model
-  tracked owner: :team
+  # TODO: Re-enable after fixing activities table
+  # include PublicActivity::Model
+  # tracked owner: :team
   # 🚅 add concerns above.
 
   # Content types available
@@ -25,6 +26,7 @@ class TrainingContent < ApplicationRecord
   # 🚅 add scopes above.
   scope :required, -> { where(is_required: true) }
   scope :by_position, -> { order(:position) }
+  default_scope { order(:position) }
   scope :by_type, ->(type) { where(content_type: type) }
 
   validates :title, presence: true

@@ -1,10 +1,10 @@
 class TrainingMembership < ApplicationRecord
   # 🚅 add concerns above.
-  include Roles::Support
-  include PublicActivity::Model
-  tracked owner: :team
+  # TODO: Re-enable after fixing activities table
+  # include PublicActivity::Model
+  # tracked owner: :team
 
-  roles_only :employee, :vendor, :customer
+  delegate :admin?, :editor?, :coordinator?, :employee?, :vendor?, to: :membership
 
   # 🚅 add attribute accessors above.
   attr_accessor :role_ids
@@ -12,6 +12,7 @@ class TrainingMembership < ApplicationRecord
   belongs_to :training_program
   belongs_to :membership
   has_one :team, through: :membership
+  has_one :user, through: :membership
   # 🚅 add belongs_to associations above.
 
   # Scopes for team-based access
@@ -56,9 +57,9 @@ class TrainingMembership < ApplicationRecord
   end
 
   def can_access_training?
-    return true if membership.can?(:manage_training, training_program)
-    return true if membership.can?(:manage_team_access, training_program)
-    return true if membership.can?(:do_training, training_program) && training_program.published?
+    return true if membership.admin?
+    return true if membership.editor?
+    return true if membership.employee? && training_program.published?
     false
   end
 
@@ -80,9 +81,9 @@ class TrainingMembership < ApplicationRecord
   def can_access_content?(content)
     return false unless content && can_access_training?
 
-    # Admins and team managers can access any content
-    return true if membership.can?(:manage_training, training_program)
-    return true if membership.can?(:manage_team_access, training_program)
+    # Admins and editors can access any content
+    return true if membership.admin?
+    return true if membership.editor?
 
     # For regular participants, enforce sequential progression
     return true if content == first_content

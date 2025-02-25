@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_24_233110) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_25_004536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -302,8 +302,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_233110) do
     t.integer "dependencies", default: [], array: true
     t.integer "time_limit"
     t.boolean "is_required", default: true, null: false
+    t.integer "position", default: 0, null: false
     t.index ["dependencies"], name: "index_training_contents_on_dependencies", using: :gin
     t.index ["is_required"], name: "index_training_contents_on_is_required"
+    t.index ["training_program_id", "position"], name: "index_training_contents_on_training_program_id_and_position"
     t.index ["training_program_id"], name: "index_training_contents_on_training_program_id"
   end
 

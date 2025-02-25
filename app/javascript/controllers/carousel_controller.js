@@ -6,10 +6,30 @@ export default class extends Controller {
 
   initialize() {
     // Ensure Flowbite is available
-    if (!window.Flowbite) {
-      console.error("Flowbite not found. Check application.js initialization.");
+    if (!window.Flowbite?.Carousel) {
+      console.error("Flowbite Carousel not found. Check application.js initialization.");
+      // Initialize basic carousel functionality without Flowbite
+      this.initializeBasicCarousel();
       return;
     }
+  }
+
+  initializeBasicCarousel() {
+    this.currentIndex = 0;
+    this.updateSlideVisibility();
+    this.updateProgress();
+  }
+
+  updateSlideVisibility() {
+    this.slideTargets.forEach((slide, index) => {
+      if (index === this.currentIndex) {
+        slide.classList.remove('hidden');
+        slide.classList.add('active');
+      } else {
+        slide.classList.add('hidden');
+        slide.classList.remove('active');
+      }
+    });
   }
   static values = {
     interval: { type: Number, default: 5000 },
@@ -29,47 +49,19 @@ export default class extends Controller {
   }
 
   initializeCarousel() {
-    if (!window.FlowbiteCarousel) return;
-
-    // Create items array from slides
-    const items = this.slideTargets.map((slide, index) => ({
-      position: index,
-      el: slide
-    }));
-
-    // Create indicators array
-    const indicators = this.indicatorTargets.map((indicator, index) => ({
-      position: index,
-      el: indicator
-    }));
-
-    const options = {
-      defaultPosition: 0,
-      interval: this.hasIntervalValue ? this.intervalValue : 5000,
-      indicators: {
-        items: indicators,
-        activeClasses: "bg-primary",
-        inactiveClasses: "bg-gray-300 hover:bg-gray-400"
-      },
-      onNext: () => this.handleSlideChange(),
-      onPrev: () => this.handleSlideChange(),
-      onChange: () => this.handleSlideChange()
-    };
-
-    // Instance options for Flowbite
-    const instanceOptions = {
-      id: this.element.id || `carousel-${Date.now()}`,
-      override: true
-    };
+    if (!window.Flowbite?.Carousel) return;
 
     try {
-      const { Carousel } = window.Flowbite;
-      this.carousel = new Carousel(
-        this.containerTarget,
-        items,
-        options,
-        instanceOptions
-      );
+      const options = {
+        defaultPosition: 0,
+        interval: this.hasIntervalValue ? this.intervalValue : 5000,
+        indicators: {
+          activeClasses: "bg-primary active",
+          inactiveClasses: "bg-gray-300 hover:bg-gray-400"
+        }
+      };
+
+      this.carousel = new window.Flowbite.Carousel(this.containerTarget, options);
 
       // Store initial state for Turbo navigation
       this.storeState();
@@ -96,11 +88,23 @@ export default class extends Controller {
   }
 
   next() {
-    this.carousel?.next()
+    if (this.carousel) {
+      this.carousel.next()
+    } else {
+      this.currentIndex = (this.currentIndex + 1) % this.slideTargets.length
+      this.updateSlideVisibility()
+      this.updateProgress()
+    }
   }
 
   prev() {
-    this.carousel?.prev()
+    if (this.carousel) {
+      this.carousel.prev()
+    } else {
+      this.currentIndex = (this.currentIndex - 1 + this.slideTargets.length) % this.slideTargets.length
+      this.updateSlideVisibility()
+      this.updateProgress()
+    }
   }
 
   handleSlideChange() {
