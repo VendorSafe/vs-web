@@ -186,8 +186,61 @@ Implementation: `app/models/pricing_model.rb`
 1. Improve database query efficiency for progress tracking
 2. Enhance end-to-end test coverage
 3. Update API documentation with new endpoints
-4. Implement caching strategy for training content
-5. Add monitoring and alerting
-6. Support offline completion of training programs
-7. Optimize assets for CDN delivery
-8. Add performance monitoring for user interactions
+4. Fix test failures (see docs/TEST_FAILURES.md for details)
+5. Implement caching strategy for training content
+6. Add monitoring and alerting
+7. Support offline completion of training programs
+8. Optimize assets for CDN delivery
+9. Add performance monitoring for user interactions
+
+## Fixed Issues
+
+### Role System Fixes
+- Fixed the Role class by explicitly defining class methods for each role type (admin, vendor, employee, etc.)
+- Ensured proper role object creation and comparison
+- Implementation: `app/models/role.rb`
+
+### Database Schema Fixes
+- Added missing `expires_at` column to the TrainingCertificate table
+- Fixed schema inconsistencies between model and database
+- Implementation: `db/migrate/20250225061107_add_expires_at_to_training_certificates.rb`
+
+### Model Method Access Fixes
+- Made the `enroll_student` method public in TrainingProgram model
+- Added proper documentation for the method
+- Implementation: `app/models/training_program.rb`
+
+### API Controller Fixes
+- Fixed association access in TrainingProgramsController
+- Corrected the way training memberships are accessed through user memberships
+- Implementation: `app/controllers/api/v1/training_programs_controller.rb`
+
+## Remaining Issues
+
+### API Controller Issues
+- Multiple API controllers returning 404 errors (Training Programs, Questions, Contents, Facilities, etc.)
+- Serialization issues in various controllers
+- Authentication and authorization problems
+
+### Account Controller Issues
+- Authentication problems in account controllers
+- Users being redirected to sign-in page unexpectedly
+
+### Application Controller Issues
+- Locale handling issues in application controller
+- Improper fallback for locales
+
+### PDF Generation Issues
+- Missing OpenSans-Regular.ttf font in app/assets/fonts/
+- Issues with Prawn::Document.stub method for testing
+
+### Ability Test Issues
+- Incorrect ability definitions for team admins
+- Authorization rule problems
+
+### Training Programs Controller Issues
+- Missing training_programs_url helper
+- Controller handling issues
+
+### API Documentation Issues
+- OpenAPI document warnings

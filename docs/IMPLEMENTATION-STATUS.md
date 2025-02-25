@@ -156,6 +156,14 @@ Team: DevOps
 ## Next Steps
 
 1. Immediate Priority (Next 2 Weeks):
+   - Fix remaining test failures (see docs/TEST_FAILURES.md)
+     - API Controller Issues
+     - Account Controller Issues
+     - Application Controller Issues
+     - PDF Generation Issues
+     - Ability Test Issues
+     - Training Programs Controller Issues
+     - API Documentation Issues
    - Complete Vue.js Training Player
    - Start API Documentation
    - Begin Performance Optimization
@@ -174,3 +182,35 @@ Team: DevOps
    - Add Machine Learning Features
    - Implement Advanced Integrations
    - Add White Label Support
+
+## Recently Fixed Issues
+
+### Role System Fixes
+✅ Fixed the Role class by explicitly defining class methods for each role type
+- Added explicit class methods for admin, vendor, employee, etc.
+- Ensured proper role object creation and comparison
+- Implementation: `app/models/role.rb`
+
+### Database Schema Fixes
+✅ Added missing `expires_at` column to the TrainingCertificate table
+- Created migration to add the column
+- Added index for performance
+- Implementation: `db/migrate/20250225061107_add_expires_at_to_training_certificates.rb`
+
+### Model Method Access Fixes
+✅ Made the `enroll_student` method public in TrainingProgram model
+- Fixed method visibility issue
+- Added proper documentation
+- Implementation: `app/models/training_program.rb`
+
+### API Controller Fixes
+✅ Fixed association access in TrainingProgramsController
+- Corrected the way training memberships are accessed through user memberships
+- Fixed the query to avoid undefined column errors
+- Implementation: `app/controllers/api/v1/training_programs_controller.rb`
+
+### Test Documentation
+✅ Created comprehensive test failures documentation
+- Categorized all failing tests
+- Added detailed TODOs for each issue
+- Implementation: `docs/TEST_FAILURES.md`
