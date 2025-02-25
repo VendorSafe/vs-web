@@ -3,7 +3,7 @@ require 'test_helper'
 class GenerateCertificatePdfJobTest < ActiveJob::TestCase
   setup do
     @program = create(:training_program, :with_contents, :published)
-    @user = create(:user, :student)
+    @user = create(:user, :trainee)
     @team = create(:team)
     @membership = create(:membership, user: @user, team: @team)
     @certificate = create(:training_certificate,

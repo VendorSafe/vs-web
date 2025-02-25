@@ -38,7 +38,7 @@ FactoryBot.define do
     end
   end
 
-  trait :student do
-    # Student is equivalent to a regular user with no special roles
+  trait :trainee do
+    # Trainee is equivalent to a regular user with no special roles
   end
 end

@@ -300,11 +300,11 @@ class TrainingProgram < ApplicationRecord
 
   # Public methods
 
-  # Enrolls a student in the training program
-  # @param student [User] the student to enroll
+  # Enrolls a trainee in the training program
+  # @param trainee [User] the trainee to enroll
   # @return [TrainingMembership] the created training membership
-  def enroll_student(student)
-    membership = student.memberships.find_by(team: team)
+  def enroll_trainee(trainee)
+    membership = trainee.memberships.find_by(team: team)
     return nil unless membership
 
     training_memberships.find_or_create_by(

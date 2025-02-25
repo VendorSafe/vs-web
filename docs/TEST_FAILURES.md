@@ -227,7 +227,7 @@ AbilityTest::TeamAdminScenarios#test_can_manage_membership
 ```
 TrainingProgramsControllerTest#test_should_get_index
 TrainingProgramsControllerTest#test_should_create_program_when_admin
-TrainingProgramsControllerTest#test_should_not_create_program_when_student
+TrainingProgramsControllerTest#test_should_not_create_program_when_trainee
 ```
 
 **TODO:**

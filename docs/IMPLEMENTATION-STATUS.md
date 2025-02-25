@@ -198,7 +198,7 @@ Team: DevOps
 - Implementation: `db/migrate/20250225061107_add_expires_at_to_training_certificates.rb`
 
 ### Model Method Access Fixes
-✅ Made the `enroll_student` method public in TrainingProgram model
+✅ Made the `enroll_trainee` method public in TrainingProgram model
 - Fixed method visibility issue
 - Added proper documentation
 - Implementation: `app/models/training_program.rb`

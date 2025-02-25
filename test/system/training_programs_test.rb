@@ -5,10 +5,10 @@ class TrainingProgramsTest < ApplicationSystemTestCase
     @admin = create(:user, :admin)
     @training_manager = create(:user, :training_manager)
     @instructor = create(:user, :instructor)
-    @student = create(:user, :student)
+    @trainee = create(:user, :trainee)
     @program = create(:training_program, :with_contents)
-    @student_program = create(:training_program, :with_contents, :published)
-    @student.training_enrollments.create!(training_program: @student_program)
+    @trainee_program = create(:training_program, :with_contents, :published)
+    @trainee.training_enrollments.create!(training_program: @trainee_program)
   end
 
   test 'admin can create and manage training programs' do
@@ -62,8 +62,8 @@ class TrainingProgramsTest < ApplicationSystemTestCase
     assert_text 'Updated Content Title'
   end
 
-  test 'student can only view and access assigned programs' do
-    sign_in_as(@student)
+  test 'trainee can only view and access assigned programs' do
+    sign_in_as(@trainee)
     visit training_programs_path
 
     # Verify management buttons are not visible
@@ -72,11 +72,11 @@ class TrainingProgramsTest < ApplicationSystemTestCase
     assert_no_text 'Delete'
 
     # Verify only assigned program is visible
-    assert_text @student_program.name
+    assert_text @trainee_program.name
     assert_no_text @program.name
 
     # Verify can access assigned program content
-    click_on @student_program.name
+    click_on @trainee_program.name
     wait_for_ajax
 
     assert_text 'Start Training'

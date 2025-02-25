@@ -32,13 +32,13 @@ class TrainingProgramTest < ActiveSupport::TestCase
 
   test 'should track completion status' do
     program = create(:training_program, :with_contents)
-    student = create(:user, :student)
+    trainee = create(:user, :trainee)
 
-    program.enroll_student(student)
-    assert_equal 0, program.completion_percentage_for(student)
+    program.enroll_trainee(trainee)
+    assert_equal 0, program.completion_percentage_for(trainee)
 
-    program.training_contents.first.mark_complete_for(student)
+    program.training_contents.first.mark_complete_for(trainee)
     expected = (1.0 / program.training_contents.count * 100).round
-    assert_equal expected, program.completion_percentage_for(student)
+    assert_equal expected, program.completion_percentage_for(trainee)
   end
 end

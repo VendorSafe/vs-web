@@ -3,11 +3,11 @@ require 'application_system_test_case'
 class TrainingCertificatesTest < BaseSystemTestCase
   setup do
     @admin = create(:user, :admin)
-    @student = create(:user, :student)
+    @trainee = create(:user, :trainee)
     @program = create(:training_program, :with_contents, :published)
-    # Create a membership for the student in the program's team
+    # Create a membership for the trainee in the program's team
     @team = @program.team
-    @membership = create(:membership, user: @student, team: @team)
+    @membership = create(:membership, user: @trainee, team: @team)
 
     @certificate = create(:training_certificate,
                           membership: @membership,
@@ -23,7 +23,7 @@ class TrainingCertificatesTest < BaseSystemTestCase
     visit team_training_program_path(@program.team, @program)
 
     click_on 'Generate Certificate'
-    fill_in 'Student Email', with: @student.email
+    fill_in 'Student Email', with: @trainee.email
     fill_in 'Grade', with: '85'
     select 'Passed', from: 'Status'
 
@@ -37,7 +37,7 @@ class TrainingCertificatesTest < BaseSystemTestCase
 
     # Verify certificate details
     within('.certificate-details') do
-      assert_text @student.name
+      assert_text @trainee.name
       assert_text @program.title
       assert_text '85%'
       assert_text 'Passed'
@@ -75,9 +75,9 @@ class TrainingCertificatesTest < BaseSystemTestCase
     end
   end
 
-  test 'student can view and download their certificates' do
-    sign_in_as(@student)
-    visit team_training_certificates_path(@student.current_team)
+  test 'trainee can view and download their certificates' do
+    sign_in_as(@trainee)
+    visit team_training_certificates_path(@trainee.current_team)
     wait_for_ajax
 
     within('.certificates-list') do
@@ -93,7 +93,7 @@ class TrainingCertificatesTest < BaseSystemTestCase
 
     within('.certificate-detail') do
       assert_text 'Certificate of Completion'
-      assert_text @student.name
+      assert_text @trainee.name
       assert_text @program.name
       assert_text 'has successfully completed'
       assert_text 'with a grade of 95%' # Text in the view might still say "grade" even though the field is "score"
@@ -124,11 +124,11 @@ class TrainingCertificatesTest < BaseSystemTestCase
     end
   end
 
-  test 'student sees expiry warning for certificates' do
+  test 'trainee sees expiry warning for certificates' do
     @certificate.update!(expires_at: 2.weeks.from_now)
 
-    sign_in_as(@student)
-    visit team_training_certificates_path(@student.current_team)
+    sign_in_as(@trainee)
+    visit team_training_certificates_path(@trainee.current_team)
     wait_for_ajax
 
     within('.certificate-warning') do
@@ -141,7 +141,7 @@ class TrainingCertificatesTest < BaseSystemTestCase
   test 'handles PDF generation errors gracefully' do
     @certificate.update!(pdf_status: 'failed', pdf_error: 'PDF generation failed')
 
-    sign_in_as(@student)
+    sign_in_as(@trainee)
     visit team_training_certificates_path(@team)
     wait_for_ajax
 

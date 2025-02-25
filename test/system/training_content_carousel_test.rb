@@ -3,7 +3,7 @@ require 'application_system_test_case'
 class TrainingContentCarouselTest < ApplicationSystemTestCase
   setup do
     @team = create(:team)
-    @user = create(:user, :student)
+    @user = create(:user, :trainee)
     @team.memberships.create(user: @user)
 
     @program = create(:training_program, :published, team: @team)
