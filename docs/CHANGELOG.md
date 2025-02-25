@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Focused testing approach for debugging complex issues
   - Documentation on using bin-wrapped commands (bin/rails, bin/rake)
   - 10-step systematic testing process for methodical problem-solving
+  - One-step-one-test rule for structured test organization
 - Comprehensive role-based system:
   - Administrator role with full system access
   - Training Manager role with program management
@@ -146,6 +147,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated `after_initialize` callback to use `self.state` instead of `self.workflow_state`
   - Updated factory definition to use `state` instead of `workflow_state`
   - Created GOLDEN-RULES.md to document naming convention best practices
+- Fixed completion percentage calculation in TrainingProgram model:
+  - Implemented the `completion_percentage_for` method to calculate completion percentage based on completed content
+  - Added support for handling edge cases like programs with no content and non-enrolled trainees
+  - Implemented the `mark_complete_for` method in TrainingContent model to properly update completion percentage
+  - Created focused tests for completion percentage calculation
+  - Added a new golden rule about creating datetime-stamped completion reports
 - Fixed training content validation issues in tests:
   - Updated training_player_test.rb to use proper factory traits (:video, :document, :quiz)
   - Ensured content_data includes required media URLs for video and document content

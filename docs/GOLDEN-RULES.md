@@ -289,6 +289,97 @@ end
 - Integration issues may be discovered late
 - Documentation may be incomplete or outdated
 
+### 6. One Step, One Test
+
+**Rule**: Each step in the 10-step process should correspond to a focused test.
+
+**Example**:
+```ruby
+# Step 1: Identify the Scope - Create a test file with clear scope
+# test/system/training_program_state_test.rb
+class TrainingProgramStateTest < ApplicationSystemTestCase
+  # This test suite focuses on TrainingProgram state transitions
+end
+
+# Step 4: Test Happy Path - Create a specific test for the happy path
+test "publishes a draft program successfully" do
+  program = create(:training_program, state: 'draft')
+  program.publish!
+  assert_equal 'published', program.state
+end
+
+# Step 6: Test Error Conditions - Create a specific test for error handling
+test "prevents invalid state transitions" do
+  program = create(:training_program, state: 'draft')
+  assert_raises(Workflow::NoTransitionAllowed) do
+    program.archive!
+  end
+end
+```
+
+**Why It's Good**:
+- Creates a clear mapping between process steps and tests
+- Ensures each aspect of the feature is tested
+- Makes it easier to track progress
+- Provides a structured approach to test creation
+- Improves test organization and readability
+
+**Why It's Bad When Violated**:
+- Tests may not cover all aspects of the feature
+- Process steps may be skipped or overlooked
+- Progress becomes harder to track
+- Test organization becomes less structured
+- Test coverage may have gaps
+
+### 7. Document Completion Reports
+
+**Rule**: When completing a significant task or fixing a complex issue, create a datetime-stamped completion report.
+
+**Example**:
+```markdown
+# Completion Report: 10-Step Testing Process for TrainingProgram Completion Percentage
+
+**Date: February 25, 2025**
+**Time: 1:58 PM PST**
+
+## Summary
+
+I've successfully applied the 10-step testing process to address the TrainingProgram completion percentage issues. This report documents the steps taken, findings, and recommendations for future work.
+
+## Steps Completed
+
+1. **Identified the Scope**: Focused on the TrainingProgram completion percentage calculation functionality.
+2. **Created a Focused Test File**: Created `training_program_completion_test.rb` to isolate and test the completion percentage functionality.
+...
+
+## Key Implementations
+
+...
+
+## Remaining Issues
+
+...
+
+## Recommendations for Next Steps
+
+...
+```
+
+**Why It's Good**:
+- Creates a clear record of what was accomplished
+- Provides context for future developers
+- Documents the decision-making process
+- Makes knowledge transfer more effective
+- Serves as a reference for similar issues in the future
+- Facilitates handoffs between different developers or teams
+
+**Why It's Bad When Violated**:
+- Knowledge about complex fixes may be lost over time
+- Future developers may not understand why certain decisions were made
+- Similar issues may be approached inconsistently
+- Makes it harder to track progress on complex issues
+- Reduces the effectiveness of knowledge sharing
+
 ## API Design Principles
 
 ### 1. Consistent Response Formats

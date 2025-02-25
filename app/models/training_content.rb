@@ -98,6 +98,27 @@ class TrainingContent < ApplicationRecord
     membership.roles.can_perform_role?(:training_participant)
   end
 
+  # Marks this content as complete for a trainee
+  # @param trainee [User] the trainee to mark completion for
+  # @return [Boolean] whether the operation was successful
+  def mark_complete_for(trainee)
+    return false unless trainee
+
+    # Find the membership for the trainee
+    membership = trainee.memberships.find_by(team: training_program.team)
+    return false unless membership
+
+    # Find the training membership
+    training_membership = training_program.training_memberships.find_by(membership: membership)
+    return false unless training_membership
+
+    # Mark the content as completed
+    training_membership.mark_content_completed(id)
+
+    # Return true to indicate success
+    true
+  end
+
   private
 
   def validate_content_data_format

@@ -313,5 +313,41 @@ class TrainingProgram < ApplicationRecord
     )
   end
 
+  # Calculates the completion percentage for a trainee
+  # @param trainee [User] the trainee to calculate completion for
+  # @return [Integer, nil] the completion percentage or nil if not enrolled
+  def completion_percentage_for(trainee)
+    return nil unless trainee
+
+    # Find the membership for the trainee
+    membership = if trainee.is_a?(User)
+                   trainee.memberships.find_by(team: team)
+                 elsif trainee.is_a?(Membership)
+                   trainee
+                 else
+                   nil
+                 end
+    return nil unless membership
+
+    # Find the training membership
+    training_membership = training_memberships.find_by(membership: membership)
+    return nil unless training_membership
+
+    # If the training membership has a completion percentage, use it
+    return training_membership.completion_percentage if training_membership.completion_percentage.present?
+
+    # Otherwise, calculate it based on completed content
+    return 0 if training_contents.empty?
+
+    # Get the progress from the training membership
+    progress = training_membership.progress || {}
+
+    # Count completed content
+    completed_count = progress.count { |_, value| value.to_i >= 100 }
+
+    # Calculate percentage
+    (completed_count.to_f / training_contents.count * 100).round
+  end
+
   # 🚅 add methods above.
 end
