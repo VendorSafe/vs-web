@@ -620,7 +620,56 @@ echo "RESULT: OPERATION_COMPLETED"
 - Creates bottlenecks in development processes
 - Interrupts AI-assisted development workflows
 
-### 2. Explicit Over Implicit
+### 2. Super-Scaffolding Best Practices
+
+**Rule**: Use super-scaffolding at the beginning of model development, before making manual modifications to generated files.
+
+**Example**:
+```bash
+# GOOD PRACTICE
+# 1. Create the model first
+bin/super-scaffold model Location team:references name:string address:string location_type:string parent:references
+
+# 2. Add fields using super-scaffolding
+bin/super-scaffold field Location geometry:jsonb
+
+# 3. Make manual modifications after scaffolding is complete
+```
+
+**Why It's Good**:
+- Ensures consistency across the application
+- Saves development time
+- Follows Bullet Train conventions
+- Generates tests and UI components automatically
+
+**When to Avoid**:
+- After making manual modifications to controllers, views, or tests
+- When you need custom behavior that deviates significantly from Bullet Train patterns
+- For temporary or experimental features
+
+**Adding Fields After Manual Modifications**:
+
+You can still use super-scaffolding to add new fields to models even after manual modifications, but with caution:
+
+1. Back up all manually modified files before running super-scaffolding
+2. Run the super-scaffolding command to add the new field
+3. Compare the newly generated files with your backups
+4. Manually merge your custom code with the newly generated code
+5. Run tests to ensure everything still works
+
+**Preserving Custom Code**:
+
+Use the designated "safe areas" in generated files for custom code:
+
+```ruby
+# 🚅 super scaffolding will insert new fields above this line.
+# Add your custom code below this line to preserve it during regeneration.
+def custom_method
+  # Your custom code here
+end
+```
+
+### 3. Explicit Over Implicit
 
 **Rule**: Prefer explicit, clear code over clever, implicit code.
 
@@ -655,7 +704,7 @@ end
 - Increases the learning curve for new developers
 - Can lead to unexpected behavior
 
-### 2. Consistent Error Handling
+### 4. Consistent Error Handling
 
 **Rule**: Handle errors consistently throughout the application.
 
