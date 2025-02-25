@@ -41,7 +41,6 @@ shallow do
           post :generate_certificate
         end
 
-        # Training Contents routes - nested under training_programs
         resources :training_contents, concerns: [:sortable] do
           # Training Questions routes - nested under training_contents
           resources :training_questions
