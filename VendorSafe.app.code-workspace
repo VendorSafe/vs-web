@@ -18,7 +18,11 @@
 		"github.copilot.chat.codeGeneration.useInstructionFiles": true,
 		"github.copilot.chat.codeGeneration.instructions": [
 			{
-				"text": "Before suggesting any solution, first check if there is a documented or undocumented Bullet Train solution available.
+				"text": "
+				Use this format to branch your work before you start each significant feature or task:
+				feat-issue_number-description-of-the-changes
+
+				Before suggesting any solution, first check if there is a documented or undocumented Bullet Train solution available.
 
 When executing commands:
 1. Always use the vs-web root directory as the working directory
