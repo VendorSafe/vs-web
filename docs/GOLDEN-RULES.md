@@ -140,16 +140,18 @@ end
 ```bash
 # INEFFICIENT
 # Running the entire test suite when debugging a specific issue
-rails test
+bin/rails test
 
 # EFFICIENT
 # Running a specific test file
-rails test test/models/training_program_test.rb
+bin/rails test test/models/training_program_test.rb
 
 # MOST EFFICIENT
 # Running a specific test case
-rails test test/models/training_program_test.rb -n test_state_transitions
+bin/rails test test/models/training_program_test.rb -n test_state_transitions
 ```
+
+> **IMPORTANT**: Always use `bin/rails` instead of `rails` directly to ensure proper environment setup and gem loading.
 
 **Why It's Good**:
 - Saves time and computational resources
