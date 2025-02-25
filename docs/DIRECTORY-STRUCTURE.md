@@ -2,7 +2,7 @@
 
 This document provides an overview of the project's directory structure.
 
-Generated on: Tue Feb 25 01:02:13 PST 2025
+Generated on: Tue Feb 25 01:30:22 PST 2025
 
 ## Full Directory Tree
 
@@ -355,6 +355,7 @@ Generated on: Tue Feb 25 01:02:13 PST 2025
 │       └── training_invitations
 ├── app.json
 ├── bin
+│   ├── README-demo-script.md
 │   ├── bump-core
 │   ├── configure
 │   ├── configure-scripts
@@ -373,6 +374,7 @@ Generated on: Tue Feb 25 01:02:13 PST 2025
 │   │   └── utils.rb
 │   ├── create-milestones.js
 │   ├── db_schema_check
+│   ├── demo-script.js
 │   ├── dev
 │   ├── directory-structure
 │   ├── hack
@@ -700,6 +702,7 @@ Generated on: Tue Feb 25 01:02:13 PST 2025
 │   └── seeds.rb
 ├── docs
 │   ├── CHANGELOG.md
+│   ├── DEMO_SCRIPT.md
 │   ├── DEMO_WORKFLOW.md
 │   ├── DEVELOPMENT-NOTES.md
 │   ├── DIRECTORY-STRUCTURE.md
@@ -882,6 +885,7 @@ Generated on: Tue Feb 25 01:02:13 PST 2025
 │   ├── icon.svg
 │   └── robots.txt
 ├── render.yaml
+├── screenshots
 ├── tailwind.config.js
 ├── test
 │   ├── application_system_test_case.rb
@@ -11703,6 +11707,7 @@ Generated on: Tue Feb 25 01:02:13 PST 2025
 │   │   ├── mp_timers_zvtcj5n2c4rzb9k6t843
 │   │   └── mp_views_127.0.0.1
 │   ├── pids
+│   │   └── server.pid
 │   ├── restart.txt
 │   ├── sockets
 │   └── storage
@@ -41651,7 +41656,7 @@ Generated on: Tue Feb 25 01:02:13 PST 2025
     │   └── scaffolding_completely_concrete_tangible_thing_created.js
     └── yarn.lock
 
-6492 directories, 35151 files
+6493 directories, 35155 files
 ```
 ## Key Directories
 

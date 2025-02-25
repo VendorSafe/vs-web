@@ -145,3 +145,6 @@ Desktop.ini
 
 # 🚅 add your files to ignore here.
 .aider*
+
+# Demo script screenshots
+/screenshots/

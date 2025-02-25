@@ -33,7 +33,8 @@ cp `bundle show bullet_train-outgoing_webhooks`/db/migrate/* db/migrate/
 ```bash
 rails db:migrate
 ```
-Do we really need to These migrations will:
+
+These migrations will:
 - Create webhooks_outgoing_endpoints table
 - Create webhooks_outgoing_events table
 - Create webhooks_outgoing_deliveries table

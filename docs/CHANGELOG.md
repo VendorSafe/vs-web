@@ -92,6 +92,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Improved formatting and organization
   - Added last updated timestamps
   - Removed redundant symbols and checkmarks
+- Added automated demo script:
+  - Created `bin/demo-script.js` for Puppeteer-based workflow demonstration
+  - Implemented complete workflow from admin to employee
+  - Added comprehensive documentation in `docs/DEMO_SCRIPT.md`
 
 ### Removed
 

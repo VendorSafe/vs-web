@@ -147,6 +147,7 @@ Core application code following Rails MVC structure and Bullet Train conventions
 - `setup` - Project setup script
 - `dev` - Development server launcher
 - `directory-structure` - Generates directory structure documentation
+- `demo-script.js` - Automated demo workflow script using Puppeteer
 - `resolve` - Bullet Train's file resolution tool
 - `theme` - Theme management tool
 - `super-scaffold` - Bullet Train's scaffolding tool
@@ -155,6 +156,8 @@ Core application code following Rails MVC structure and Bullet Train conventions
 
 - `README.md` - Documentation overview
 - `CHANGELOG.md` - Version history and changes
+- `DEMO_SCRIPT.md` - Documentation for the automated demo script
+- `DEMO_WORKFLOW.md` - Manual demo workflow guide
 - `DEVELOPMENT-NOTES.md` - Development notes and known issues
 - `DIRECTORY_STRUCTURE.md` - This file
 - `IMPLEMENTATION-STATUS.md` - Current implementation status
