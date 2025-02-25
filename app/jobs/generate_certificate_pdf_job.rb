@@ -45,7 +45,7 @@ class GenerateCertificatePdfJob < ApplicationJob
         doc.text "Valid until: #{certificate.expires_at.strftime('%B %d, %Y')}", size: 14, align: :center
 
         # Add QR code for verification
-        qr_code = RQRCode::QRCode.new(verify_training_certificate_url(certificate.verification_code))
+        qr_code = RQRCode::QRCode.new(certificate.verification_url)
         doc.image StringIO.new(qr_code.as_png.to_s), at: [450, 100], width: 100
       end
 
@@ -67,11 +67,4 @@ class GenerateCertificatePdfJob < ApplicationJob
   end
 
   private
-
-  def verify_training_certificate_url(code)
-    # Use the correct route helper based on your routes configuration
-    # This assumes you have a route like: get '/certificates/verify/:code', to: 'training_certificates#verify', as: :verify_training_certificate
-    Rails.application.routes.url_helpers.verify_training_certificate_url(code,
-                                                                         host: Rails.application.config.action_mailer.default_url_options[:host] || 'example.com')
-  end
 end

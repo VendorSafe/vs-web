@@ -46,17 +46,7 @@
             <p class="text-sm text-gray-500 mt-1"><%= t('training_certificates.new.score_help') %></p>
           </div>
           
-          <div class="mb-6">
-            <%= form.label :completion_status, t('training_certificates.fields.completion_status'), class: "form-label" %>
-            <%= form.select :completion_status, 
-                           options_for_select([
-                             [t('training_certificates.completion_status.passed'), 'passed'],
-                             [t('training_certificates.completion_status.failed'), 'failed'],
-                             [t('training_certificates.completion_status.in_progress'), 'in_progress']
-                           ]),
-                           { prompt: t('training_certificates.new.select_status') },
-                           class: "form-select w-full" %>
-          </div>
+          <!-- Removed unused completion_status field -->
           
           <div class="mb-6">
             <%= form.label :issued_at, t('training_certificates.fields.issued_at'), class: "form-label" %>

@@ -97,3 +97,11 @@
 *   Resolved user confirmation email issues
 *   Fixed activity tracking in training programs
 *   Fixed training program workflow state management to properly handle state transitions and validations
+*   Fixed inconsistencies in the training certificate system:
+    - Added verification code generation to the TrainingCertificate model
+    - Fixed verification URL generation to use verification_code consistently
+    - Updated PDF generation job to use the model's verification_url method
+    - Removed unused completion_status field from certificate creation form
+    - Fixed field naming inconsistencies in system tests (expiry_date vs expires_at, grade vs score)
+    - Fixed user reference inconsistencies in system tests (user vs membership)
+    - Fixed route helper inconsistencies in system tests

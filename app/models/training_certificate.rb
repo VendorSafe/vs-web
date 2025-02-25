@@ -30,6 +30,7 @@ class TrainingCertificate < ApplicationRecord
   # 🚅 add validations above.
 
   before_validation :generate_certificate_number, on: :create
+  before_validation :generate_verification_code, on: :create
   before_validation :set_expiration_date, on: :create
   # 🚅 add callbacks above.
 
@@ -63,7 +64,7 @@ class TrainingCertificate < ApplicationRecord
   # @return [String] the verification URL
   def verification_url
     Rails.application.routes.url_helpers.verify_training_certificate_url(
-      certificate_number,
+      verification_code,
       host: Rails.application.config.action_mailer.default_url_options[:host],
       protocol: Rails.application.config.force_ssl ? 'https' : 'http'
     )
@@ -174,5 +175,19 @@ class TrainingCertificate < ApplicationRecord
     self.expires_at = validity_period ? issued_at + validity_period : nil
   end
 
+  def generate_verification_code
+    return if verification_code.present?
+
+    loop do
+      # Generate a random verification code
+      code = SecureRandom.hex(10)
+      unless self.class.exists?(verification_code: code)
+        self.verification_code = code
+        break
+      end
+    end
+  end
+
+  # 🚅 add methods above.
   # 🚅 add methods above.
 end

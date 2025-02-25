@@ -5,13 +5,16 @@ class TrainingCertificatesTest < BaseSystemTestCase
     @admin = create(:user, :admin)
     @student = create(:user, :student)
     @program = create(:training_program, :with_contents, :published)
+    # Create a membership for the student in the program's team
+    @team = @program.team
+    @membership = create(:membership, user: @student, team: @team)
+
     @certificate = create(:training_certificate,
-                          user: @student,
+                          membership: @membership,
                           training_program: @program,
                           issued_at: Time.current,
-                          expiry_date: 1.year.from_now,
-                          completion_status: 'passed',
-                          grade: 95,
+                          expires_at: 1.year.from_now,
+                          score: 95,
                           verification_code: SecureRandom.hex(10))
   end
 
@@ -78,11 +81,10 @@ class TrainingCertificatesTest < BaseSystemTestCase
     wait_for_ajax
 
     within('.certificates-list') do
-      assert_text @program.title
-      assert_text "Issued: #{@certificate.issue_date.strftime('%B %d, %Y')}"
-      assert_text "Expires: #{@certificate.expiry_date.strftime('%B %d, %Y')}"
-      assert_text 'Grade: 95%'
-      assert_text 'Status: Passed'
+      assert_text @program.name
+      assert_text "Issued: #{@certificate.issued_at.strftime('%B %d, %Y')}"
+      assert_text "Expires: #{@certificate.expires_at.strftime('%B %d, %Y')}"
+      assert_text 'Score: 95%'
     end
 
     # View certificate details
@@ -92,9 +94,9 @@ class TrainingCertificatesTest < BaseSystemTestCase
     within('.certificate-detail') do
       assert_text 'Certificate of Completion'
       assert_text @student.name
-      assert_text @program.title
+      assert_text @program.name
       assert_text 'has successfully completed'
-      assert_text 'with a grade of 95%'
+      assert_text 'with a grade of 95%' # Text in the view might still say "grade" even though the field is "score"
     end
 
     # Verify PDF generation status
@@ -140,7 +142,7 @@ class TrainingCertificatesTest < BaseSystemTestCase
     @certificate.update!(pdf_status: 'failed', pdf_error: 'PDF generation failed')
 
     sign_in_as(@student)
-    visit certificates_path
+    visit team_training_certificates_path(@team)
     wait_for_ajax
 
     click_on 'View Certificate'
