@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../vs-training-program-viewer"
+		},
+		{
+			"path": "../VendorSafe Docs/vendor-safe-marketing-site-design"
+		}
+	],
+	"settings": {
+		"github.copilot.advanced": {
+			"useLanguageServer": false
+		},
+		"github.copilot.editor.enableCodeActions": true,
+		"github.copilot.chat.codeGeneration.useInstructionFiles": true,
+		"github.copilot.chat.codeGeneration.instructions": [
+			{
+				"text": "Always consider the bullet train rails boilerplate's approach first."
+			}
+		],
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "Vendorsafe Development",
+				"database": "vendorsafe_development",
+				"username": "sarda"
+			}
+		]
+	}
+}

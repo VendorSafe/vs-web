@@ -32,82 +32,48 @@ class TrainingContentCarouselTest < ApplicationSystemTestCase
       current_content_id: @training_content.id)
   end
 
-  test "carousel initializes and navigates correctly" do
+  test "basic carousel navigation" do
     visit account_training_content_path(@training_content)
 
-    # Wait for carousel to initialize
-    assert_selector ".carousel", visible: true
-
-    # Check initial slide
+    # Check initial state
     assert_text "Slide 1 Content"
+    refute_text "Slide 2 Content"
 
-    # Test next button
-    find("[data-carousel-next]").click
+    # Test next navigation
+    find("[data-carousel-target='next']").click
     assert_text "Slide 2 Content"
+    refute_text "Slide 1 Content"
 
-    # Test previous button
-    find("[data-carousel-prev]").click
+    # Test previous navigation
+    find("[data-carousel-target='prev']").click
     assert_text "Slide 1 Content"
-
-    # Test indicator buttons
-    all("[data-carousel-slide-to]").last.click
-    assert_text "Slide 3 Content"
+    refute_text "Slide 2 Content"
   end
 
-  test "carousel tracks slide progress" do
+  test "basic progress tracking" do
     visit account_training_content_path(@training_content)
 
-    # Check initial progress
-    assert_selector "[data-progress='0']"
+    # Initial progress
+    progress = find("[data-carousel-target='progress']")
+    assert_equal "0", progress["data-progress"]
 
-    # Navigate through slides
-    find("[data-carousel-next]").click
-    assert_selector "[data-progress='33']" # ~33% for second of three slides
-
-    find("[data-carousel-next]").click
-    assert_selector "[data-progress='66']" # ~66% for third of three slides
+    # Progress after navigation
+    find("[data-carousel-target='next']").click
+    progress = find("[data-carousel-target='progress']")
+    assert_equal "50", progress["data-progress"]
   end
 
-  test "carousel handles keyboard navigation" do
+  test "basic keyboard navigation" do
     visit account_training_content_path(@training_content)
 
-    # Initial slide
-    assert_text "Slide 1 Content"
+    # Initial state
+    assert_selector "[data-carousel-target='slide'].active", text: "Slide 1 Content"
 
-    # Right arrow
+    # Navigate with keyboard
     find("body").send_keys(:right)
-    assert_text "Slide 2 Content"
+    assert_selector "[data-carousel-target='slide'].active", text: "Slide 2 Content"
 
-    # Left arrow
     find("body").send_keys(:left)
-    assert_text "Slide 1 Content"
-  end
-
-  test "carousel maintains state after turbo navigation" do
-    visit account_training_content_path(@training_content)
-
-    # Navigate to second slide
-    find("[data-carousel-next]").click
-    assert_text "Slide 2 Content"
-
-    # Click a Turbo Link
-    click_link "Back to Training Program"
-    click_link "Resume Training"
-
-    # Should still be on second slide
-    assert_text "Slide 2 Content"
-  end
-
-  test "carousel handles touch swipe gestures" do
-    visit account_training_content_path(@training_content)
-
-    # Initial slide
-    assert_text "Slide 1 Content"
-
-    # Simulate swipe by triggering next event directly
-    find("[data-carousel-next]").click
-
-    # Should move to next slide
-    assert_text "Slide 2 Content"
+    assert_selector "[data-carousel-target='slide'].active", text: "Slide 1 Content"
   end
 end

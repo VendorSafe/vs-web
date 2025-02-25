@@ -25,11 +25,26 @@ export default class extends Controller {
       if (index === this.currentIndex) {
         slide.classList.remove('hidden');
         slide.classList.add('active');
+        slide.style.opacity = '1';
+        slide.style.position = 'relative';
       } else {
         slide.classList.add('hidden');
         slide.classList.remove('active');
+        slide.style.opacity = '0';
+        slide.style.position = 'absolute';
       }
     });
+    this.updateProgress();
+  }
+
+  updateProgress() {
+    if (!this.hasProgressTarget) return;
+
+    const totalSlides = this.slideTargets.length;
+    const progress = Math.round((this.currentIndex / (totalSlides - 1)) * 100);
+
+    this.progressTarget.setAttribute('data-progress', progress.toString());
+    this.progressTarget.style.width = `${progress}%`;
   }
   static values = {
     interval: { type: Number, default: 5000 },
@@ -38,9 +53,16 @@ export default class extends Controller {
   }
 
   connect() {
-    this.initializeCarousel()
-    this.setupKeyboardNavigation()
-    this.updateProgress()
+    this.currentIndex = 0;
+    this.setupKeyboardNavigation();
+    this.updateSlideVisibility();
+    this.updateProgress();
+    
+    // Debug logging
+    console.log('Carousel connected');
+    console.log('Slides:', this.slideTargets);
+    console.log('Next button:', this.nextTarget);
+    console.log('Prev button:', this.prevTarget);
   }
 
   disconnect() {
@@ -80,31 +102,26 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    if (event.key === "ArrowRight") {
-      this.next()
-    } else if (event.key === "ArrowLeft") {
-      this.prev()
+    const key = event.key.toLowerCase();
+    if (key === "right" || key === "arrowright") {
+      event.preventDefault();
+      this.next();
+    } else if (key === "left" || key === "arrowleft") {
+      event.preventDefault();
+      this.prev();
     }
   }
 
   next() {
-    if (this.carousel) {
-      this.carousel.next()
-    } else {
-      this.currentIndex = (this.currentIndex + 1) % this.slideTargets.length
-      this.updateSlideVisibility()
-      this.updateProgress()
-    }
+    this.currentIndex = (this.currentIndex + 1) % this.slideTargets.length;
+    this.updateSlideVisibility();
+    this.updateProgress();
   }
 
   prev() {
-    if (this.carousel) {
-      this.carousel.prev()
-    } else {
-      this.currentIndex = (this.currentIndex - 1 + this.slideTargets.length) % this.slideTargets.length
-      this.updateSlideVisibility()
-      this.updateProgress()
-    }
+    this.currentIndex = (this.currentIndex - 1 + this.slideTargets.length) % this.slideTargets.length;
+    this.updateSlideVisibility();
+    this.updateProgress();
   }
 
   handleSlideChange() {
