@@ -1,325 +1,206 @@
-# Training Program Player w/ Vue.js
+# Project Milestones
 
-This guide details the custom enhancements needed to integrate a Training Program Viewer into your Bullet Train Rails application. Built on top of Bullet Train's out-of-the-box authentication, API, and asset configuration, the following steps focus on the VendorSafe application's unique requirements.
+This document outlines the key milestones for the VendorSafe training platform development.
 
----
+Last updated: February 24, 2025
 
-## Overall Steps
+## Milestone 1: Core Infrastructure (Completed)
 
-1. **Backend Enhancements (Rails)**
-   - Add custom actions for retrieving and updating training progress
-   - Extend existing models/migrations as needed
-   - Implement role-based access controls
-   - Add certificate generation integration
+**Objective**: Establish the foundational architecture and core models for the training platform.
 
-2. **Frontend Enhancements (Vue.js)**
-   - Create training program viewer in `app/javascript/training-program-viewer`
-   - Leverage Tailwind CSS, Vue, and Pinia stores
-   - Implement role-specific UI components
-   - Add certificate viewing/downloading
+**Deliverables**:
+- Basic training program model
+- Team-based multitenancy
+- User authentication with Devise
+- Role-based access control
+- Initial test infrastructure
+- Basic API endpoints
 
-3. **API Integration**
-   - Use Bullet Train's built-in API patterns
-   - Implement role-based endpoint access
-   - Add progress tracking endpoints
-   - Add certificate endpoints
+**Completion Criteria**:
+- All core models implemented and tested
+- Authentication system working
+- Role-based permissions functioning
+- Basic API endpoints responding correctly
 
-4. **Design System Integration**
-   - Implement shared design tokens and Tailwind configuration
-   - Create reusable component styles
-   - Add animation and transition system
-   - Ensure consistent typography and spacing
-   - Implement responsive design patterns
+**Timeline**: January 15, 2025
 
-5. **Component Implementation**
-   - Build core components with design system:
-     - VideoPlayer: Video content with custom controls, loading states, and progress tracking
-     - QuestionsPanel: Interactive quiz system with real-time feedback and animations
-     - StepProgress: Visual progression tracking with tooltips and completion indicators
-     - CertificateViewer: Certificate management with modern UI
+## Milestone 2: Training Content Management (Completed)
 
-5. **Progress Management**
-   - Track content-specific progress
-   - Implement sequential progression
-   - Handle quiz submissions
-   - Manage certificate generation
+**Objective**: Implement the training content management system with support for various content types.
 
-6. **Integration and Testing**
-   - Implement comprehensive test suite
-   - Test role-specific access
-   - Verify progress tracking
-   - Validate certificate generation
+**Deliverables**:
+- Training content model with multiple content types
+- Content sequencing and dependencies
+- Progress tracking system
+- Quiz and assessment functionality
+- Content management interface
 
----
+**Completion Criteria**:
+- Content creation and management working
+- Support for video, text, and quiz content types
+- Sequential progression system functioning
+- Progress tracking accurately recording completion
 
-## Step 1: Backend Enhancements (Rails)
+**Timeline**: January 30, 2025
 
-### 1.1 Custom Controller Actions
+## Milestone 3: Certificate System (Completed)
 
-Add role-aware training progress logic in `app/controllers/api/v1/training_programs_controller.rb`:
+**Objective**: Implement the certificate generation and verification system.
 
-```ruby
-before_action :authenticate_user!
-before_action :authorize_training_access!
+**Deliverables**:
+- Certificate model and controller
+- PDF generation with custom styling
+- QR code verification system
+- Certificate expiration handling
+- Revocation capabilities
 
-def show
-  training_membership = current_user.training_memberships.find_by(training_program: @training_program)
-  progress_data = training_membership&.progress || {}
-  
-  render json: @training_program.as_json(
-    include: [:training_contents, training_contents: [:training_questions]],
-    methods: [:certificate_status]
-  ).merge(
-    progress: progress_data,
-    role_capabilities: current_user_capabilities
-  )
-end
+**Completion Criteria**:
+- Automatic certificate generation working
+- PDF certificates generating correctly
+- Verification system functioning
+- Expiration and revocation working as expected
 
-def update_progress
-  training_membership = current_user.training_memberships.find_by(training_program: @training_program)
-  if training_membership&.can_update_progress?
-    training_membership.update_progress(params[:progress])
-    head :ok
-  else
-    render json: { error: 'Unauthorized or invalid membership' }, status: :unauthorized
-  end
-end
+**Timeline**: February 10, 2025
 
-private
+## Milestone 4: Vue.js Training Player (In Progress)
 
-def authorize_training_access!
-  unless current_user.can_access_training?(@training_program)
-    render json: { error: 'Unauthorized' }, status: :unauthorized
-  end
-end
+**Objective**: Develop an interactive training player for content consumption.
 
-def current_user_capabilities
-  {
-    can_edit: current_user.can_edit_training?(@training_program),
-    can_invite: current_user.can_invite_to_training?(@training_program),
-    can_generate_certificate: current_user.can_generate_certificate?(@training_program)
-  }
-end
-```
+**Deliverables**:
+- Vue.js-based training player
+- Interactive video player with progress tracking
+- Quiz system with real-time feedback
+- Progress visualization
+- Certificate generation integration
 
-### 1.2 Progress Tracking Schema
+**Completion Criteria**:
+- Training player functioning for all content types
+- Progress tracking working in real-time
+- Quiz system providing immediate feedback
+- Seamless integration with certificate system
 
-The progress tracking schema is already implemented in `db/schema.rb`:
+**Timeline**: February 28, 2025 (Expected)
 
-```ruby
-create_table "training_progress", force: :cascade do |t|
-  t.bigint "membership_id", null: false
-  t.bigint "training_program_id", null: false
-  t.bigint "training_content_id", null: false
-  t.string "status", default: "not_started", null: false
-  t.integer "score"
-  t.integer "time_spent", default: 0
-  t.datetime "last_accessed_at"
-  t.timestamps
-  t.index ["membership_id", "training_program_id", "training_content_id"],
-    name: "idx_training_progress_unique_membership_program_content",
-    unique: true
-end
-```
+## Milestone 5: Payment Processing (Planned)
 
-### 1.3 API Routes
+**Objective**: Implement payment processing and subscription management.
 
-Configure role-aware API routes in `config/routes.rb`:
+**Deliverables**:
+- Integration with payment provider (Stripe)
+- Subscription management system
+- Usage tracking and billing
+- Invoice generation
+- Payment reporting
 
-```ruby
-namespace :api do
-  namespace :v1 do
-    resources :training_programs, only: [:show] do
-      member do
-        put :update_progress
-        post :submit_quiz
-        get :generate_certificate
-      end
-    end
-  end
-end
-```
+**Completion Criteria**:
+- Payment processing working end-to-end
+- Subscription management functioning
+- Usage tracking accurately recording data
+- Invoice generation producing correct PDFs
 
----
+**Timeline**: March 15, 2025 (Expected)
 
-## Step 2: Frontend Enhancements (Vue.js)
+## Milestone 6: Analytics Dashboard (Planned)
 
-### 2.1 Project Structure
+**Objective**: Develop comprehensive analytics for tracking training performance.
 
-```
-app/javascript/training-program-viewer/
-├── components/
-│   ├── VideoPlayer.vue
-│   ├── QuestionsPanel.vue
-│   ├── StepProgress.vue
-│   └── CertificateViewer.vue
-├── stores/
-│   ├── useTrainingProgramStore.js
-│   ├── useProgressStore.js
-│   └── useCertificateStore.js
-└── TrainingProgramViewer.vue
-```
+**Deliverables**:
+- Role-specific dashboards
+- Training completion analytics
+- Certificate status tracking
+- Team performance metrics
+- Compliance reporting
 
-### 2.2 Pinia Stores
+**Completion Criteria**:
+- Dashboards displaying accurate data
+- Analytics providing actionable insights
+- Reports generating correctly
+- Performance metrics tracking properly
 
-Example training program store with role capabilities:
+**Timeline**: March 30, 2025 (Expected)
 
-```js
-// stores/useTrainingProgramStore.js
-import { defineStore } from 'pinia';
-import axios from 'axios';
+## Milestone 7: Production Deployment (Planned)
 
-export const useTrainingProgramStore = defineStore('trainingProgram', {
-  state: () => ({
-    trainingProgram: null,
-    isLoading: false,
-    error: null,
-    capabilities: {
-      canEdit: false,
-      canInvite: false,
-      canGenerateCertificate: false
-    }
-  }),
-  
-  actions: {
-    async fetchTrainingProgram(id) {
-      this.isLoading = true;
-      try {
-        const response = await axios.get(`/api/v1/training_programs/${id}`);
-        this.trainingProgram = response.data;
-        this.capabilities = response.data.role_capabilities;
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.isLoading = false;
-      }
-    },
+**Objective**: Prepare and deploy the application to production.
 
-    async updateProgress(progressData) {
-      try {
-        await axios.put(
-          `/api/v1/training_programs/${this.trainingProgram.id}/update_progress`,
-          { progress: progressData }
-        );
-      } catch (error) {
-        this.error = error;
-      }
-    },
+**Deliverables**:
+- Production environment configuration
+- Performance optimization
+- Security hardening
+- Monitoring and alerting setup
+- Backup and recovery procedures
 
-    async generateCertificate() {
-      if (!this.capabilities.canGenerateCertificate) return;
-      try {
-        const response = await axios.get(
-          `/api/v1/training_programs/${this.trainingProgram.id}/generate_certificate`
-        );
-        return response.data;
-      } catch (error) {
-        this.error = error;
-      }
-    }
-  }
-});
-```
+**Completion Criteria**:
+- Application deployed to production
+- Performance meeting benchmarks
+- Security measures implemented
+- Monitoring and alerting functioning
+- Backup and recovery procedures tested
 
-### 2.3 Main Component
+**Timeline**: April 15, 2025 (Expected)
 
-```vue
-<!-- TrainingProgramViewer.vue -->
-<template>
-  <div v-if="trainingProgram">
-    <StepProgress
-      :contents="trainingProgram.training_contents"
-      :current-progress="progress"
-    />
-    
-    <component
-      :is="currentContentComponent"
-      :content="currentContent"
-      @progress-update="handleProgressUpdate"
-      @complete="handleContentComplete"
-    />
+## Milestone 8: Advanced Features (Planned)
 
-    <CertificateViewer
-      v-if="capabilities.canGenerateCertificate"
-      :training-program="trainingProgram"
-      @generate="generateCertificate"
-    />
-  </div>
-</template>
+**Objective**: Implement advanced features to enhance the platform.
 
-<script setup>
-import { ref, computed } from 'vue';
-import { useTrainingProgramStore } from './stores/useTrainingProgramStore';
-import VideoPlayer from './components/VideoPlayer.vue';
-import QuestionsPanel from './components/QuestionsPanel.vue';
-import StepProgress from './components/StepProgress.vue';
-import CertificateViewer from './components/CertificateViewer.vue';
+**Deliverables**:
+- Offline support for training completion
+- Advanced search with filters
+- Machine learning recommendations
+- White label support
+- Advanced integrations
 
-const store = useTrainingProgramStore();
-const currentContent = ref(null);
+**Completion Criteria**:
+- Offline support functioning
+- Search providing relevant results
+- Recommendations generating useful suggestions
+- White label support working for multiple brands
+- Integrations connecting with external systems
 
-const currentContentComponent = computed(() => {
-  if (!currentContent.value) return null;
-  switch (currentContent.value.content_type) {
-    case 'video': return VideoPlayer;
-    case 'quiz': return QuestionsPanel;
-    default: return null;
-  }
-});
+**Timeline**: May 15, 2025 (Expected)
 
-onMounted(async () => {
-  await store.fetchTrainingProgram(props.programId);
-});
-</script>
-```
+## Progress Tracking
 
----
+### Milestone 1: Core Infrastructure
+- **Status**: Completed
+- **Actual Completion**: January 15, 2025
+- **Notes**: All deliverables completed on schedule
 
-## Step 3: Testing Strategy
+### Milestone 2: Training Content Management
+- **Status**: Completed
+- **Actual Completion**: January 30, 2025
+- **Notes**: All deliverables completed on schedule
 
-### Unit Tests
+### Milestone 3: Certificate System
+- **Status**: Completed
+- **Actual Completion**: February 10, 2025
+- **Notes**: All deliverables completed on schedule
 
-```ruby
-# test/models/training_program_test.rb
-class TrainingProgramTest < ActiveSupport::TestCase
-  test "tracks progress correctly" do
-    program = create(:training_program)
-    membership = create(:training_membership, training_program: program)
-    
-    membership.update_progress(content_id: 1, status: "completed")
-    assert_equal "completed", membership.content_status(1)
-  end
-end
-```
+### Milestone 4: Vue.js Training Player
+- **Status**: In Progress (75% complete)
+- **Expected Completion**: February 28, 2025
+- **Remaining Tasks**:
+  - Complete advanced filtering
+  - Implement offline support
+  - Finalize certificate integration
+  - Add performance optimizations
 
-### System Tests
+### Milestone 5: Payment Processing
+- **Status**: Not Started
+- **Expected Completion**: March 15, 2025
+- **Dependencies**: Selection of payment provider
 
-```ruby
-# test/system/training_player_test.rb
-class TrainingPlayerTest < ApplicationSystemTestCase
-  test "completes video module" do
-    sign_in_as users(:employee)
-    visit training_program_path(@program)
-    
-    click_on "Start Video"
-    assert_text "Video Progress: 0%"
-    
-    # Simulate video completion
-    page.execute_script("window.completeVideo()")
-    assert_text "Video Progress: 100%"
-  end
+### Milestone 6: Analytics Dashboard
+- **Status**: Not Started
+- **Expected Completion**: March 30, 2025
+- **Dependencies**: Completion of Vue.js Training Player
 
-  test "generates certificate upon completion" do
-    sign_in_as users(:employee)
-    complete_training(@program)
-    
-    assert_text "Generate Certificate"
-    click_on "Generate Certificate"
-    assert_text "Certificate generated successfully"
-  end
-end
-```
+### Milestone 7: Production Deployment
+- **Status**: Not Started
+- **Expected Completion**: April 15, 2025
+- **Dependencies**: Completion of Payment Processing
 
----
-
-Remember: Rely on Bullet Train's built-in patterns for authentication, API versioning, and asset management. This guide focuses only on the changes required beyond the standard boilerplate.
+### Milestone 8: Advanced Features
+- **Status**: Not Started
+- **Expected Completion**: May 15, 2025
+- **Dependencies**: Completion of Production Deployment

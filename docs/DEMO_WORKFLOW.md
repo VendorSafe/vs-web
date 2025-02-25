@@ -1,5 +1,9 @@
 # VendorSafe CEMS Training Demo Workflow
 
+This document outlines the demonstration workflow for the VendorSafe Continuous Emissions Monitoring System (CEMS) training and certification platform.
+
+Last updated: February 24, 2025
+
 ## Overview
 
 This demo showcases a Continuous Emissions Monitoring System (CEMS) training and certification platform. The workflow demonstrates interactions between power plant operators, CEMS vendors, and technicians, ensuring compliance with EPA regulations.
@@ -141,5 +145,29 @@ This demo showcases a Continuous Emissions Monitoring System (CEMS) training and
 - Training Materials: docs.vendorsafe.com
 - EPA Regulations: epa.gov/cems
 - Certification Guide: cert.vendorsafe.com
+
+## Demo Setup Instructions
+
+### 1. Environment Preparation
+- Ensure the application is running on the demo server
+- Reset the database to the demo state using `bin/setup-demo`
+- Verify all demo accounts are properly configured
+
+### 2. Account Access
+- Plant Manager: manager@demo.vendorsafe.com / password: demo-manager
+- CEMS Supervisor: supervisor@demo.vendorsafe.com / password: demo-supervisor
+- CEMS Technician: technician@demo.vendorsafe.com / password: demo-technician
+
+### 3. Demo Flow
+1. Start with the Plant Manager account to show the overview
+2. Switch to the CEMS Supervisor to demonstrate team management
+3. Finally, use the CEMS Technician account to show the training experience
+4. Return to the Plant Manager to show the completed certifications
+
+### 4. Key Talking Points
+- Emphasize compliance with EPA regulations
+- Highlight the certification verification system
+- Demonstrate the progress tracking features
+- Show the reporting capabilities for audits
 
 Remember to log out between role testing to ensure a clean testing environment. Each demo environment includes pre-configured data for comprehensive feature testing.

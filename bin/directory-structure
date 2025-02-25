@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Script to generate a directory structure tree and save it to docs/DIRECTORY-STRUCTURE.md
+# Excludes files and directories listed in .gitignore
+
+# Set the output file
+OUTPUT_FILE="docs/DIRECTORY-STRUCTURE.md"
+
+# Create the header for the markdown file
+echo "# Directory Structure" > $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+echo "This document provides an overview of the project's directory structure." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+echo "Generated on: $(date)" >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# Check if tree command is available
+if command -v tree &> /dev/null; then
+    echo "## Full Directory Tree" >> $OUTPUT_FILE
+    echo "" >> $OUTPUT_FILE
+    echo '```' >> $OUTPUT_FILE
+    
+    # Use tree command with gitignore patterns
+    # Create a temporary file with gitignore patterns
+    TEMP_IGNORE_FILE=$(mktemp)
+    
+    # Add patterns from .gitignore
+    if [ -f .gitignore ]; then
+        cat .gitignore > $TEMP_IGNORE_FILE
+    fi
+    
+    # Add some common patterns that might not be in .gitignore
+    echo "node_modules" >> $TEMP_IGNORE_FILE
+    echo ".git" >> $TEMP_IGNORE_FILE
+    
+    # Run tree command with ignore patterns
+    tree -I "$(cat $TEMP_IGNORE_FILE | grep -v '^#' | grep -v '^\s*$' | paste -sd '|' -)" >> $OUTPUT_FILE
+    
+    # Clean up temporary file
+    rm $TEMP_IGNORE_FILE
+    
+    echo '```' >> $OUTPUT_FILE
+else
+    echo "## Directory Structure" >> $OUTPUT_FILE
+    echo "" >> $OUTPUT_FILE
+    echo "The 'tree' command is not available. Using 'find' as a fallback." >> $OUTPUT_FILE
+    echo "" >> $OUTPUT_FILE
+    echo '```' >> $OUTPUT_FILE
+    
+    # Use find as a fallback
+    find . -type d -not -path "*/\.*" -not -path "*/node_modules/*" | sort | sed -e 's/[^-][^\/]*\//  |/g' -e 's/|\([^ ]\)/|-\1/' >> $OUTPUT_FILE
+    
+    echo '```' >> $OUTPUT_FILE
+    
+    echo "" >> $OUTPUT_FILE
+    echo "## Files by Directory" >> $OUTPUT_FILE
+    echo "" >> $OUTPUT_FILE
+    
+    # List files by directory
+    for dir in $(find . -type d -not -path "*/\.*" -not -path "*/node_modules/*" | sort); do
+        if [ "$dir" != "." ]; then
+            echo "### $dir" >> $OUTPUT_FILE
+            echo "" >> $OUTPUT_FILE
+            echo '```' >> $OUTPUT_FILE
+            find "$dir" -maxdepth 1 -type f -not -path "*/\.*" | sort >> $OUTPUT_FILE
+            echo '```' >> $OUTPUT_FILE
+            echo "" >> $OUTPUT_FILE
+        fi
+    done
+fi
+
+# Add sections for key directories
+echo "## Key Directories" >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# App directory
+echo "### app/" >> $OUTPUT_FILE
+echo "Contains the core application code following the Rails MVC pattern." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# Config directory
+echo "### config/" >> $OUTPUT_FILE
+echo "Contains configuration files for the application, routes, database, etc." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# DB directory
+echo "### db/" >> $OUTPUT_FILE
+echo "Contains database migrations, schema, and seed data." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# Docs directory
+echo "### docs/" >> $OUTPUT_FILE
+echo "Contains project documentation." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# Public directory
+echo "### public/" >> $OUTPUT_FILE
+echo "Contains static files that are served directly by the web server." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+# Test directory
+echo "### test/" >> $OUTPUT_FILE
+echo "Contains test files for the application." >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+echo "Directory structure has been generated and saved to $OUTPUT_FILE"

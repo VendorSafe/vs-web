@@ -1,5 +1,9 @@
 # Testing Guide
 
+This document provides comprehensive guidance for testing the VendorSafe training platform, following Bullet Train conventions.
+
+Last updated: February 24, 2025
+
 ## Setup and Maintenance
 
 ### Resetting Dependencies
@@ -273,3 +277,31 @@ test:
 - Coverage reports
 - Test logs
 - Performance metrics
+
+## Bullet Train Integration
+
+The testing approach follows Bullet Train conventions:
+
+### 1. System Test Helpers
+- Uses Bullet Train's system test helpers
+- Leverages authentication helpers
+- Uses factory definitions
+- Follows test organization patterns
+
+### 2. Test Data Generation
+- Uses FactoryBot for test data
+- Follows Bullet Train's factory patterns
+- Leverages traits for variations
+- Uses realistic test data
+
+### 3. Test Organization
+- Tests are organized by type
+- System tests verify user workflows
+- Model tests verify business logic
+- Controller tests verify API endpoints
+
+### 4. CI/CD Integration
+- Tests run on every pull request
+- Coverage reports are generated
+- Screenshots are saved for failures
+- Performance metrics are tracked

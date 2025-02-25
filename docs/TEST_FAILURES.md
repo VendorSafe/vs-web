@@ -2,6 +2,22 @@
 
 This document outlines the current test failures and provides notes on how to fix them.
 
+Last updated: February 24, 2025
+
+## Fixed Issues
+
+**TrainingProgram Method Access**
+- Fixed the `enroll_trainee` method in TrainingProgram by making it explicitly public.
+
+**Route Helpers**
+- Fixed the route helpers in TrainingProgramsControllerTest to use the correct namespaced paths.
+
+**PDF Generation**
+- Added the missing OpenSans-Regular.ttf font file and fixed the PDF generation tests by replacing the unsupported `stub` method with proper method replacement.
+
+**Terminology**
+- Renamed all instances of "student" to "trainee" throughout the codebase for consistency.
+
 ## API Controller Issues
 
 Most API controller tests are failing with 404 errors. This is likely due to routing issues or authentication problems.
@@ -242,3 +258,54 @@ Api::OpenApiControllerTest#test_OpenAPI_document_is_valid
 
 **TODO:**
 - Fix the OpenAPI document warnings
+
+## Troubleshooting Strategies
+
+### Authentication Issues
+1. Check if the test is properly setting up authentication
+2. Verify that the controller is using the correct authentication method
+3. Ensure that the test is using the correct user factory
+4. Check for any changes in the authentication flow
+
+### Authorization Issues
+1. Verify that the user has the correct role
+2. Check if the ability definitions are correct
+3. Ensure that the controller is checking for the correct permissions
+4. Verify that the test is setting up the correct permissions
+
+### Routing Issues
+1. Check if the routes are properly defined
+2. Verify that the controller is using the correct routes
+3. Ensure that the test is using the correct route helpers
+4. Check for any changes in the routing configuration
+
+### Serialization Issues
+1. Verify that the serializer is correctly defined
+2. Check if the controller is using the correct serializer
+3. Ensure that the test is expecting the correct JSON structure
+4. Check for any changes in the serialization configuration
+
+## Test Execution Tips
+
+### Running Specific Tests
+```bash
+# Run a specific test file
+rails test test/controllers/api/v1/training_programs_controller_test.rb
+
+# Run a specific test
+rails test test/controllers/api/v1/training_programs_controller_test.rb:42
+
+# Run tests with a specific name pattern
+rails test -n /training_program/
+```
+
+### Debugging Tests
+```bash
+# Run tests with verbose output
+rails test -v
+
+# Run tests with debugging
+rails test --debug
+
+# Run system tests with browser
+OPEN_BROWSER=1 rails test:system

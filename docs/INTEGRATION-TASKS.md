@@ -1,10 +1,14 @@
 # Integration Tasks Breakdown
 
+This document provides a detailed breakdown of integration tasks for the VendorSafe training platform.
+
+Last updated: February 24, 2025
+
 ## Frontend Components (Vue.js)
 
 ### 1. Content Viewer Components
-Priority: High
-Status: In Progress
+**Priority**: High  
+**Status**: In Progress
 
 #### Tasks
 1. Base Content Viewer
@@ -34,8 +38,8 @@ Status: In Progress
    - Add verification display
 
 ### 2. State Management
-Priority: High
-Status: Not Started
+**Priority**: High  
+**Status**: Not Started
 
 #### Tasks
 1. Training Program Store
@@ -58,8 +62,8 @@ Status: Not Started
 ## Backend Integration
 
 ### 1. API Endpoints
-Priority: High
-Status: In Progress
+**Priority**: High  
+**Status**: In Progress
 
 #### Tasks
 1. Training Program Endpoints
@@ -75,8 +79,8 @@ Status: In Progress
    - Manage certificates
 
 ### 2. Database Updates
-Priority: Medium
-Status: Partially Complete
+**Priority**: Medium  
+**Status**: Partially Complete
 
 #### Tasks
 1. Progress Tracking
@@ -94,8 +98,8 @@ Status: Partially Complete
 ## Testing Strategy
 
 ### 1. Frontend Tests
-Priority: High
-Status: Not Started
+**Priority**: High  
+**Status**: Not Started
 
 #### Tasks
 1. Component Tests
@@ -111,8 +115,8 @@ Status: Not Started
    - Validate certificates
 
 ### 2. Backend Tests
-Priority: High
-Status: In Progress
+**Priority**: High  
+**Status**: In Progress
 
 #### Tasks
 1. API Tests
@@ -130,8 +134,8 @@ Status: In Progress
 ## Deployment Strategy
 
 ### 1. Frontend Deployment
-Priority: Medium
-Status: Not Started
+**Priority**: Medium  
+**Status**: Not Started
 
 #### Tasks
 1. Asset Pipeline
@@ -147,8 +151,8 @@ Status: Not Started
    - Monitor metrics
 
 ### 2. Backend Deployment
-Priority: Medium
-Status: Not Started
+**Priority**: Medium  
+**Status**: Not Started
 
 #### Tasks
 1. Server Configuration
@@ -163,7 +167,7 @@ Status: Not Started
    - Configure pooling
    - Set up replication
 
-## Timeline
+## Implementation Timeline
 
 ### Phase 1 (Weeks 1-2)
 - Complete base content viewer
@@ -228,3 +232,29 @@ Status: Not Started
    - Secure certificates
    - Protected content
    - Audit logging
+
+## Bullet Train Integration Points
+
+### 1. Authentication System
+- Leverage Bullet Train's Devise integration
+- Use team-based multitenancy
+- Implement role-based permissions
+- Follow Bullet Train's invitation workflow
+
+### 2. API Infrastructure
+- Follow Bullet Train's versioned API approach
+- Use Jbuilder for JSON serialization
+- Implement Doorkeeper for OAuth2 authentication
+- Maintain API documentation
+
+### 3. View Components
+- Use Bullet Train's field partials
+- Leverage theme components
+- Follow Bullet Train's naming conventions
+- Implement responsive design patterns
+
+### 4. Testing Framework
+- Use Bullet Train's system test helpers
+- Leverage factory definitions
+- Follow test organization patterns
+- Implement CI/CD integration

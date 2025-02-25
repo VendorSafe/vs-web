@@ -1,175 +1,179 @@
 # Integration Plan
 
-## 1. Database Schema Updates ✅ Complete
+This document outlines the integration plan for the VendorSafe training platform with Bullet Train.
+
+Last updated: February 24, 2025
+
+## 1. Database Schema Updates (Complete)
 
 ### Completed Tables/Fields
-- [x] Progress fields in training_memberships
+- Progress fields in training_memberships
   - Added completion tracking
   - Added sequential progression support
   - Added team-based access control
-- [x] State in training_programs
+- State in training_programs
   - Added workflow states (draft, published, archived)
   - Added state transition guards
-- [x] Question type in training_questions
+- Question type in training_questions
   - Added support for different question formats
-- [x] Content fields in training_contents
+- Content fields in training_contents
   - Added type-specific content storage
   - Added completion criteria
   - Added dependencies tracking
 
-## 2. Model Enhancements ✅ Complete
+## 2. Model Enhancements (Complete)
 
 ### TrainingProgram Model
-- [x] Added validations for new fields
-- [x] Added completion deadline calculations
-- [x] Added methods for progress tracking
-- [x] Added certificate generation
-- [x] Replaced custom invitations with Bullet Train system
-- [x] Implemented workflow state management
+- Added validations for new fields
+- Added completion deadline calculations
+- Added methods for progress tracking
+- Added certificate generation
+- Replaced custom invitations with Bullet Train system
+- Implemented workflow state management
 
 ### TrainingContent Model
-- [x] Added content type specific validations
-- [x] Added time tracking methods
-- [x] Added progress calculation
-- [x] Added media handling
-- [x] Implemented sequential content progression
+- Added content type specific validations
+- Added time tracking methods
+- Added progress calculation
+- Added media handling
+- Implemented sequential content progression
 
 ### User Model
-- [x] Added training program associations
-- [x] Added certificate associations
-- [x] Added progress tracking methods
-- [x] Added invitation handling
+- Added training program associations
+- Added certificate associations
+- Added progress tracking methods
+- Added invitation handling
 
-## 3. NextJS Integration 🔄 In Progress
+## 3. Vue.js Integration (In Progress)
 
 ### Setup (90% Complete)
-- [x] Created new NextJS application in `/client`
-- [x] Configured proxy for API requests
-- [x] Set up authentication integration
-- [ ] Configure shared types between Rails/NextJS
+- Created Vue.js components in `/app/javascript/training-program-viewer`
+- Configured asset pipeline integration
+- Set up authentication integration
+- Need to configure shared types between Rails/Vue.js
 
 ### Core Features (75% Complete)
-- [x] Training dashboard
-- [x] Content viewer components
-- [ ] Content management system
-- [x] Progress tracking and analytics
-- [x] Certificate generation and management
-- [ ] Invitation and access management
+- Training dashboard
+- Content viewer components
+- Content management system (in progress)
+- Progress tracking and analytics
+- Certificate generation and management
+- Invitation and access management (in progress)
 
-## 4. Authentication & Authorization ✅ Complete
+## 4. Authentication & Authorization (Complete)
 
 ### Authentication Flow
-- [x] Leveraging Bullet Train's authentication system
-- [x] Team-based multitenancy
-- [x] Built-in invitation system
+- Leveraging Bullet Train's authentication system
+- Team-based multitenancy
+- Built-in invitation system
 
 ### Authorization
-- [x] Implemented role system with custom roles
-- [x] Role-based workflow restrictions
-- [x] Content access restrictions
-- [x] Certificate management
+- Implemented role system with custom roles
+- Role-based workflow restrictions
+- Content access restrictions
+- Certificate management
 
-## 5. Design System Integration ✅ Complete
+## 5. Design System Integration (Complete)
 
-### Implementation Strategy ✅ Complete
-- [x] Use Bullet Train's existing tools
-- [x] Leverage Turbo for page updates
-- [x] Use Stimulus for interactive components
-- [x] Extend Bullet Train's view components
+### Implementation Strategy
+- Use Bullet Train's existing tools
+- Leverage Turbo for page updates
+- Use Stimulus for interactive components
+- Extend Bullet Train's view components
 
-### Color System ✅ Complete
-- [x] Primary Colors defined
-- [x] Secondary Colors defined
-- [x] Gradient Patterns implemented
+### Color System
+- Primary Colors defined
+- Secondary Colors defined
+- Gradient Patterns implemented
 
-### Typography ✅ Complete
-- [x] Fonts Selected
-- [x] Text Styles Implementation
-- [x] Responsive Typography
+### Typography
+- Fonts Selected
+- Text Styles Implementation
+- Responsive Typography
 
-### Component Styles ✅ Complete
-- [x] Navigation
-- [x] Buttons
-- [x] Cards
-- [x] Forms
+### Component Styles
+- Navigation
+- Buttons
+- Cards
+- Forms
 
-### Animation System ✅ Complete
-- [x] Transitions
-- [x] Gradients
-- [x] Loading States
+### Animation System
+- Transitions
+- Gradients
+- Loading States
 
-## 6. Frontend Components ⏳ In Progress
+## 6. Frontend Components (In Progress)
 
 ### Dashboard (70% Complete)
-- [x] Training program list
-- [x] Progress tracking
-- [x] Certificate showcase
-- [ ] Advanced filtering
+- Training program list
+- Progress tracking
+- Certificate showcase
+- Advanced filtering (in progress)
 
-### Content Viewer ✅ Complete
-- [x] Sequential navigation
-- [x] Content type viewers with animations
-- [x] Interactive progress tracking
-- [x] Video player with custom controls
-- [x] Question panel with real-time feedback
+### Content Viewer (Complete)
+- Sequential navigation
+- Content type viewers with animations
+- Interactive progress tracking
+- Video player with custom controls
+- Question panel with real-time feedback
 
-### Certificate Management ✅ Complete
-- [x] Certificate template
-- [x] PDF generation system
-- [x] Management interface
-- [x] Bug fixes and improvements
+### Certificate Management (Complete)
+- Certificate template
+- PDF generation system
+- Management interface
+- Bug fixes and improvements
 
-## 7. Testing Strategy ✅ Complete
+## 7. Testing Strategy (Complete)
 
 ### System Tests
-- [x] Training player integration tests
-- [x] User interaction simulations
-- [x] Browser compatibility tests
-- [x] Responsive design tests
+- Training player integration tests
+- User interaction simulations
+- Browser compatibility tests
+- Responsive design tests
 
 ### Model Tests
-- [x] Training program business logic
-- [x] Progress tracking
-- [x] Certificate generation
-- [x] State management
+- Training program business logic
+- Progress tracking
+- Certificate generation
+- State management
 
 ### Controller Tests
-- [x] API endpoints
-- [x] Progress updates
-- [x] Authorization checks
+- API endpoints
+- Progress updates
+- Authorization checks
 
-## 8. Deployment Strategy ⏳ In Progress
+## 8. Deployment Strategy (In Progress)
 
 ### CI/CD Pipeline (90% Complete)
-- [x] GitHub Actions workflow
-- [x] Automated test execution
-- [x] Asset compilation
-- [ ] Performance monitoring
+- GitHub Actions workflow
+- Automated test execution
+- Asset compilation
+- Performance monitoring (in progress)
 
 ### Production Environment (75% Complete)
-- [x] Server configuration
-- [x] Database optimization
-- [ ] CDN setup
-- [ ] Monitoring implementation
+- Server configuration
+- Database optimization
+- CDN setup (in progress)
+- Monitoring implementation (in progress)
 
-## Timeline
+## Implementation Timeline
 
-### Phase 1: Core Features (Weeks 1-2) ✅ Complete
-- [x] Complete NextJS integration
-- [x] Finish content viewer components
-- [x] Implement design system components
+### Phase 1: Core Features (Weeks 1-2) (Complete)
+- Complete Vue.js integration
+- Finish content viewer components
+- Implement design system components
 
-### Phase 2: Polish & Performance (Weeks 3-4) ⏳ In Progress
-- [x] Complete animation system
-- [ ] Implement advanced filtering
-- [ ] Add offline support
-- [ ] Set up CDN and monitoring
+### Phase 2: Polish & Performance (Weeks 3-4) (In Progress)
+- Complete animation system
+- Implement advanced filtering
+- Add offline support
+- Set up CDN and monitoring
 
-### Phase 3: Launch Preparation (Week 5) 🔄 To Start
-- [ ] Final testing and bug fixes
-- [ ] Performance optimization
-- [ ] Documentation updates
-- [ ] Production deployment
+### Phase 3: Launch Preparation (Week 5) (To Start)
+- Final testing and bug fixes
+- Performance optimization
+- Documentation updates
+- Production deployment
 
 ## Success Metrics
 
@@ -218,3 +222,30 @@
    - Help documentation
    - Training videos
    - Live chat support
+
+## Bullet Train Integration Points
+
+### 1. Team-Based Multitenancy
+- Leveraging Bullet Train's team model for organization management
+- Using memberships for role-based access control
+- Implementing team-scoped resources for training programs
+
+### 2. Authentication System
+- Using Bullet Train's Devise integration
+- Leveraging invitation system
+- Implementing OAuth for API access
+
+### 3. Role-Based Access Control
+- Using Bullet Train's role system
+- Implementing custom roles for training-specific permissions
+- Leveraging CanCanCan integration
+
+### 4. API Infrastructure
+- Following Bullet Train's versioned API approach
+- Using Jbuilder for JSON serialization
+- Implementing Doorkeeper for OAuth2 authentication
+
+### 5. View Components
+- Using Bullet Train's field partials
+- Leveraging theme components
+- Following Bullet Train's naming conventions

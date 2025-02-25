@@ -33,8 +33,7 @@ cp `bundle show bullet_train-outgoing_webhooks`/db/migrate/* db/migrate/
 ```bash
 rails db:migrate
 ```
-
-These migrations will:
+Do we really need to These migrations will:
 - Create webhooks_outgoing_endpoints table
 - Create webhooks_outgoing_events table
 - Create webhooks_outgoing_deliveries table
@@ -231,3 +230,183 @@ To maintain a record of commands executed during development and testing, we've 
      - Install the correct bundler version
      - Run certificate job tests
      - Run certificate system tests
+
+## Original Udoras Specifications Analysis
+
+After reviewing the documentation in the `docs/old-udoras-secifications/` folder, I've analyzed what the original quote was based on years ago:
+
+### Original System Concept
+
+The original Udoras system was designed as a training management platform with a multi-role architecture focused on:
+
+1. **Role-Based Access Control**: Four distinct user roles with hierarchical permissions:
+   - **Admin**: System administrators with full access
+   - **Customer**: Organizations creating and managing training programs
+   - **Vendor**: Team managers with employee management capabilities
+   - **Employee**: Individual team members taking training
+
+2. **Training Management Workflow**:
+   - Customers could create training requests
+   - Vendors could assign training to employees
+   - Employees could complete training and earn certificates
+   - Admins could oversee the entire process
+
+3. **Certificate Management System**:
+   - Generation of certificates upon training completion
+   - Verification and sharing capabilities
+   - Expiration tracking
+
+4. **User Interface Design**:
+   - Simple, form-based interfaces
+   - Table-based data presentation
+   - Basic search and pagination
+
+### Key Features in Original Specifications
+
+Based on the wireframes and documentation:
+
+1. **User Registration and Profile Management**:
+   - Role-specific registration flows
+   - Profile management with contact information
+   - Address management (up to 5 addresses for vendors)
+
+2. **Training Content Management**:
+   - Basic training information display
+   - Training status tracking
+   - Simple pricing model ($20 per training)
+
+3. **Certificate System**:
+   - Certificate viewing
+   - Download and sharing options
+   - Basic certificate design
+
+4. **Employee Management**:
+   - Adding/editing employees
+   - Viewing employee certificates
+   - Managing employee training requests
+
+5. **Training Request System**:
+   - Customers could request training
+   - Vendors could view and respond to requests
+   - Payment options (vendor pays or employee pays)
+
+### Comparison with Current Implementation
+
+The current implementation has significantly expanded on the original concept:
+
+1. **Enhanced Role System**:
+   - More sophisticated role-based permissions
+   - Team-based access control
+   - Integration with Bullet Train's built-in team system
+
+2. **Advanced Training Program Features**:
+   - State management with workflow transitions (draft, published, archived)
+   - Progress tracking with completion percentage
+   - Sequential content progression
+
+3. **Sophisticated Certificate System**:
+   - PDF generation with custom styling
+   - QR code verification
+   - Expiration handling
+   - Revocation capabilities
+
+4. **Modern Frontend**:
+   - Vue.js training program player
+   - Interactive content viewer
+   - Progress visualization
+   - Responsive design
+
+5. **Additional Features Not in Original Spec**:
+   - Activity tracking system
+   - API endpoints for integration
+   - Comprehensive test infrastructure
+   - Advanced reporting capabilities
+
+### Development Progress
+
+The current implementation is built on the Bullet Train framework, which provides:
+- Team-based multitenancy
+- Built-in authentication and authorization
+- API infrastructure
+- Testing framework
+
+The project has evolved from a simple training management system to a comprehensive platform with advanced features for training delivery, progress tracking, and certification management.
+
+### Next Steps
+
+Based on the implementation status documents, the following areas still need work:
+
+1. **Vue.js Training Player**: In progress but not fully implemented
+2. **Payment Processing**: Not started
+3. **Analytics Dashboard**: Not started
+4. **API Documentation**: Partially complete
+5. **Performance Optimization**: Not started
+
+## Current Development Focus
+
+Based on the analysis of the original specifications, current implementation status, and project priorities, I'm focusing on the following areas:
+
+### 1. Vue.js Training Player Completion
+
+The Vue.js Training Player is a critical component that's currently at approximately 75% completion. The remaining work includes:
+
+1. **Content Management System**:
+   - Implement the interface for managing training content
+   - Add content type selection (video, quiz, text)
+   - Create content editing capabilities
+   - Implement content ordering and sequencing
+
+2. **Advanced Filtering**:
+   - Add filtering by content type
+   - Implement search functionality
+   - Add sorting options
+   - Create filter persistence
+
+3. **UI Enhancements**:
+   - Improve responsive design
+   - Add loading states and animations
+   - Enhance accessibility features
+   - Implement error handling and recovery
+
+### 2. API Documentation
+
+The API documentation is partially complete but needs significant work:
+
+1. **Endpoint Documentation**:
+   - Document all existing API endpoints
+   - Include request/response examples
+   - Add authentication requirements
+   - Document error responses
+
+2. **Getting Started Guide**:
+   - Create comprehensive onboarding documentation
+   - Add authentication setup instructions
+   - Include example workflows
+   - Provide SDK examples if applicable
+
+3. **Role-Specific Documentation**:
+   - Document endpoints available to each role
+   - Include role-specific examples
+   - Add permission requirements
+   - Document role-based limitations
+
+Progress on these areas will be tracked here, with regular updates as features are completed or issues are encountered.
+
+## Documentation Updates
+
+### Standardization to Bullet Train Conventions
+
+As part of our alignment with Bullet Train conventions, the following documentation updates have been made:
+
+1. **Directory Structure Documentation**:
+   - Updated `docs/DIRECTORY_STRUCTURE.md` with comprehensive directory information
+   - Deprecated `docs/DIRECTORY-STRUCTURE.md` (with hyphen) in favor of the underscore version
+   - Added more detailed descriptions of key files and directories
+   - Organized structure to match Bullet Train's conventions
+   - Added information about namespaced controllers and views
+
+2. **Documentation Format**:
+   - Standardized markdown formatting across documentation files
+   - Added last updated timestamps
+   - Improved readability with consistent headings and lists
+   - Removed redundant checkmarks and symbols in favor of clean text
