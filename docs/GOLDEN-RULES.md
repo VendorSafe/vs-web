@@ -196,6 +196,99 @@ end
 - Reduces confidence in the solution
 - Makes it harder for others to understand the issue and solution
 
+### 5. Systematic Testing Process
+
+**Rule**: Follow a systematic 10-step process for testing and fixing issues.
+
+**10-Step Testing Process**:
+
+1. **Identify the Scope**: Define exactly what feature or component you're testing.
+   ```bash
+   # Document the scope in a comment at the top of your test file
+   # This test suite covers the TrainingProgram state transitions
+   ```
+
+2. **Create a Focused Test File**: Create a dedicated test file for the specific feature.
+   ```bash
+   # Create a focused test file
+   bin/rails generate test_unit:system feature_name
+   ```
+
+3. **Isolate Dependencies**: Mock or stub external dependencies to focus on the component under test.
+   ```ruby
+   # Use stubs to isolate dependencies
+   TrainingProgram.any_instance.stubs(:generate_certificate).returns(true)
+   ```
+
+4. **Test Happy Path First**: Verify the feature works under normal conditions.
+   ```ruby
+   test "publishes a draft program successfully" do
+     program = create(:training_program, state: 'draft')
+     program.publish!
+     assert_equal 'published', program.state
+   end
+   ```
+
+5. **Test Edge Cases**: Identify and test boundary conditions and edge cases.
+   ```ruby
+   test "handles empty content gracefully" do
+     program = create(:training_program, state: 'draft')
+     program.training_contents.destroy_all
+     program.publish!
+     assert_equal 'published', program.state
+   end
+   ```
+
+6. **Test Error Conditions**: Verify the system handles errors appropriately.
+   ```ruby
+   test "prevents invalid state transitions" do
+     program = create(:training_program, state: 'draft')
+     assert_raises(Workflow::NoTransitionAllowed) do
+       program.archive!
+     end
+   end
+   ```
+
+7. **Fix One Issue at a Time**: Address issues sequentially, running tests after each fix.
+   ```bash
+   # Fix one issue
+   bin/rails test test/system/feature_test.rb -n test_specific_case
+   ```
+
+8. **Refactor with Confidence**: Refactor code with the safety net of tests.
+   ```ruby
+   # Refactor with tests to ensure functionality is preserved
+   def publish
+     # Refactored implementation
+   end
+   ```
+
+9. **Document Findings**: Update documentation with insights from testing.
+   ```markdown
+   # Add to CHANGELOG.md or documentation
+   - Fixed issue with state transitions in TrainingProgram
+   ```
+
+10. **Verify in Integration**: Ensure the fix works in the broader system context.
+    ```bash
+    # Run integration tests
+    bin/rails test:system
+    ```
+
+**Why It's Good**:
+- Provides a structured approach to testing
+- Ensures comprehensive test coverage
+- Makes complex issues more manageable
+- Creates a clear path for fixing issues
+- Builds confidence in the solution
+
+**Why It's Bad When Violated**:
+- Testing becomes ad-hoc and inconsistent
+- Important edge cases may be missed
+- Fixes may address symptoms rather than root causes
+- Integration issues may be discovered late
+- Documentation may be incomplete or outdated
+
 ## API Design Principles
 
 ### 1. Consistent Response Formats

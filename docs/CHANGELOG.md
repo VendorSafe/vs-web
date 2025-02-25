@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - BULLET-TRAIN-GOLDEN-RULES.md for Bullet Train specific conventions
   - Focused testing approach for debugging complex issues
   - Documentation on using bin-wrapped commands (bin/rails, bin/rake)
+  - 10-step systematic testing process for methodical problem-solving
 - Comprehensive role-based system:
   - Administrator role with full system access
   - Training Manager role with program management
