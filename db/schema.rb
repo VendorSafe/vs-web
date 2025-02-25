@@ -69,6 +69,25 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_004536) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "activities", force: :cascade do |t|
+    t.string "trackable_type"
+    t.bigint "trackable_id"
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.string "key"
+    t.jsonb "parameters", default: {}, null: false
+    t.string "recipient_type"
+    t.bigint "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
+    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner"
+    t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
+    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient"
+    t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable"
+  end
+
   create_table "addresses", force: :cascade do |t|
     t.string "addressable_type", null: false
     t.bigint "addressable_id", null: false
@@ -367,15 +386,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_004536) do
     t.integer "passing_percentage"
     t.integer "time_limit"
     t.boolean "is_published"
-    t.string "state", default: "draft", null: false
+    t.string "workflow_state", default: "draft", null: false
     t.integer "certificate_validity_period", comment: "Number of days the certificate is valid for"
     t.string "certificate_template", comment: "Template identifier for certificate generation"
     t.jsonb "custom_certificate_fields", default: {}, null: false, comment: "Custom fields to display on certificates"
     t.index ["certificate_template"], name: "index_training_programs_on_certificate_template"
     t.index ["custom_certificate_fields"], name: "index_training_programs_on_custom_certificate_fields", using: :gin
     t.index ["pricing_model_id"], name: "index_training_programs_on_pricing_model_id"
-    t.index ["state"], name: "index_training_programs_on_state"
     t.index ["team_id"], name: "index_training_programs_on_team_id"
+    t.index ["workflow_state"], name: "index_training_programs_on_workflow_state"
   end
 
   create_table "training_progress", force: :cascade do |t|

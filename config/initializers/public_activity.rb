@@ -1,8 +1,5 @@
 # Configure PublicActivity to use unquoted table names
 PublicActivity::Activity.table_name = 'activities'
 
-# Disable parameters serialization warning and silence deprecation warnings in test environment
-if Rails.env.test?
-  PublicActivity.enabled = false
-  ActiveSupport::Deprecation.silenced = true if defined?(ActiveSupport::Deprecation)
-end
+# Disable activity tracking in test environment
+PublicActivity.enabled = false if Rails.env.test?

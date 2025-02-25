@@ -1,13 +1,13 @@
-# VendorSafe Web Application
+# VendorSafe CEMS Training Platform
 
-VendorSafe is a comprehensive training and compliance management platform built on Ruby on Rails with Bullet Train and Vue.js.
+A comprehensive Continuous Emissions Monitoring System (CEMS) training and certification platform built on Ruby on Rails with Bullet Train and Vue.js.
 
 ## Features
 
-- Role-based access control (Customer, Vendor, Employee)
-- Interactive training program viewer
-- Certificate generation and management
-- Progress tracking and analytics
+- Role-based access for Plant Managers, CEMS Supervisors, and Technicians
+- Interactive CEMS training modules and certification tracking
+- EPA compliance management and reporting
+- Part 40 CFR 75 certification management
 - Team-based organization structure
 
 ## Getting Started
@@ -45,34 +45,32 @@ bin/dev
 
 ## Demo Environment
 
-We provide a complete demo environment to explore all features across different user roles.
+The platform includes a comprehensive demo environment that simulates interactions between power plants and CEMS service providers.
 
-### Setting Up Demo
+### Setting Up Demo Environments
 
-1. Run the demo setup script:
+Create one or more demo environments with the setup script:
+
 ```bash
+# Create a single demo environment
 bin/setup-demo
+
+# Create multiple demo environments
+bin/setup-demo 3  # Creates 3 separate environments
 ```
 
-2. Start the server:
-```bash
-bin/dev
-```
-
-3. Access the application at http://localhost:3000
-
-### Demo Accounts
-
-- Customer: `demo.customer@vendorsafe.app` / `customer123`
-- Vendor: `demo.vendor@vendorsafe.app` / `vendor123`
-- Employee: `demo.employee@vendorsafe.app` / `employee123`
+Each environment includes:
+- A power generation company
+- A CEMS service provider
+- Pre-configured training programs
+- Demo accounts for all roles
 
 ### Demo Workflows
 
-See [DEMO_WORKFLOW.md](docs/DEMO_WORKFLOW.md) for detailed workflows for each user role, including:
-- Customer: Managing vendors and training programs
-- Vendor: Managing employees and tracking compliance
-- Employee: Completing training and accessing certificates
+See [DEMO_WORKFLOW.md](docs/DEMO_WORKFLOW.md) for detailed workflows including:
+- Plant Manager: Managing CEMS compliance and vendor certifications
+- CEMS Supervisor: Managing technician training and certifications
+- CEMS Technician: Completing required training and maintaining qualifications
 
 ## Documentation
 
@@ -86,10 +84,10 @@ See [DEMO_WORKFLOW.md](docs/DEMO_WORKFLOW.md) for detailed workflows for each us
 
 ### Key Components
 
-- **Training Program Viewer**: Vue.js-based interactive viewer with video player and quiz system
-- **Certificate Generator**: PDF generation with custom templates and QR verification
-- **Progress Tracking**: Real-time progress tracking with analytics
-- **Role Management**: Comprehensive role-based access control
+- **CEMS Training Module**: Vue.js-based interactive training system
+- **Certification Manager**: EPA-compliant certificate generation with verification
+- **Progress Tracking**: Real-time certification progress monitoring
+- **Compliance Reports**: Automated compliance reporting and alerts
 
 ### Running Tests
 

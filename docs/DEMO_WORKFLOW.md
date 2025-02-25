@@ -1,187 +1,145 @@
-# VendorSafe Demo Workflow
+# VendorSafe CEMS Training Demo Workflow
 
-## Demo Accounts
+## Overview
 
-### Customer Account
-- Email: demo.customer@vendorsafe.app
-- Password: customer123
-- Organization: Demo Corp
+This demo showcases a Continuous Emissions Monitoring System (CEMS) training and certification platform. The workflow demonstrates interactions between power plant operators, CEMS vendors, and technicians, ensuring compliance with EPA regulations.
 
-### Vendor Account
-- Email: demo.vendor@vendorsafe.app
-- Password: vendor123
-- Organization: Food Service Co.
+## Role Descriptions
 
-### Employee Account
-- Email: demo.employee@vendorsafe.app
-- Password: employee123
-- Organization: Food Service Co.
+### Plant Manager (Customer)
+- Oversees CEMS compliance for the power plant
+- Manages vendor relationships
+- Reviews training progress
+- Ensures regulatory compliance
+
+### CEMS Supervisor (Vendor)
+- Manages CEMS technician team
+- Assigns training programs
+- Monitors certification status
+- Ensures team compliance
+
+### CEMS Technician (Employee)
+- Completes required certifications
+- Takes training modules
+- Maintains CEMS qualifications
+- Tracks personal progress
 
 ## Demo Workflows
 
-### 1. Customer Workflow
+### 1. Plant Manager Workflow
 
-1. **Login & Dashboard**
-   - Login using customer credentials
-   - View organization dashboard
-   - Check active vendor compliance stats
-   - Review training program analytics
+1. **Dashboard Overview**
+   - View facility compliance status
+   - Monitor CEMS vendor certifications
+   - Track training completion rates
+   - Review upcoming certification deadlines
 
 2. **Vendor Management**
-   - Navigate to "Vendors" section
-   - View list of active vendors
-   - Check vendor compliance status
-   - Review vendor training progress
+   - Review CEMS vendor qualifications
+   - Check technician certification status
+   - Monitor maintenance compliance
    - Download compliance reports
 
 3. **Training Program Management**
-   - Go to "Training Programs"
-   - Create new training program:
-     - Add video content
-     - Create quiz questions
-     - Set completion requirements
-     - Configure certificate template
-   - Assign program to vendors
-   - Monitor completion rates
+   - Review CEMS certification programs
+   - Monitor Part 40 CFR 75 compliance
+   - Track vendor training progress
+   - Generate compliance reports
 
-4. **Certificate Management**
-   - Navigate to "Certificates"
-   - View all issued certificates
-   - Verify certificate authenticity
-   - Download certificate reports
-   - Check expiration dates
+4. **Certification Management**
+   - View active certifications
+   - Check certification validity
+   - Download qualification records
+   - Monitor expiration dates
 
-### 2. Vendor Workflow
+### 2. CEMS Supervisor Workflow
 
-1. **Login & Dashboard**
-   - Login using vendor credentials
-   - View assigned training programs
-   - Check employee compliance status
-   - Review completion deadlines
+1. **Team Management**
+   - View technician roster
+   - Track certification status
+   - Monitor training progress
+   - Manage qualification renewals
 
-2. **Employee Management**
-   - Go to "Employees" section
-   - Add new employee:
-     - Enter basic information
-     - Set role and permissions
-     - Assign training programs
-   - Monitor employee progress
-   - Send training reminders
-
-3. **Training Assignment**
-   - Navigate to "Training Programs"
-   - View assigned programs
-   - Assign programs to employees
+2. **Training Assignment**
+   - Assign certification programs
    - Set completion deadlines
-   - Monitor progress by department
+   - Monitor progress by team
+   - Send certification reminders
 
-4. **Reports & Analytics**
-   - Access "Reports" section
-   - View completion statistics
-   - Download progress reports
-   - Check compliance status
-   - Review expired certificates
+3. **Compliance Monitoring**
+   - Track team certifications
+   - Review completion rates
+   - Monitor expiration dates
+   - Generate team reports
 
-### 3. Employee Workflow
+4. **Documentation Management**
+   - Access training materials
+   - Review certification records
+   - Download team reports
+   - Maintain compliance documentation
 
-1. **Login & Dashboard**
-   - Login using employee credentials
-   - View assigned training programs
-   - Check completion deadlines
-   - Review progress statistics
+### 3. CEMS Technician Workflow
 
-2. **Training Completion**
-   - Select active training program
-   - Watch training videos:
-     - Content automatically marks as complete
-     - Progress saves automatically
-   - Take quizzes:
-     - Answer multiple-choice questions
-     - Get immediate feedback
-     - Retake if needed
+1. **Training Dashboard**
+   - View assigned certifications
+   - Check completion requirements
+   - Monitor progress status
+   - Review due dates
 
-3. **Progress Tracking**
-   - View personal progress dashboard
-   - Check completion percentage
-   - Review quiz scores
-   - See remaining requirements
+2. **Certification Process**
+   - Complete CEMS training modules
+   - Take certification quizzes
+   - Review training materials
+   - Track completion progress
 
-4. **Certificate Management**
-   - View earned certificates
-   - Download PDF certificates
-   - Check certificate validity
-   - View expiration dates
+3. **Knowledge Assessment**
+   - Complete module quizzes
+   - Review correct answers
+   - Track quiz scores
+   - Monitor certification progress
 
-## Testing Specific Features
+4. **Certification Management**
+   - Access earned certificates
+   - Download certification PDFs
+   - Check renewal dates
+   - Review qualification status
 
-### Video Player Testing
-1. Login as employee
-2. Start any training program
-3. Play video content
-4. Test pause/resume
-5. Verify progress tracking
-6. Check completion marking
+## Testing Features
 
-### Quiz System Testing
-1. Login as employee
-2. Navigate to quiz section
-3. Answer questions
-4. Test correct/incorrect responses
-5. Verify progress saving
-6. Check completion status
+### CEMS Training Modules
+1. Start certification program
+2. Watch installation videos
+3. Complete calibration training
+4. Take maintenance quizzes
+5. Review EPA requirements
+6. Track module completion
 
-### Certificate Generation
-1. Login as employee
-2. Complete a training program
-3. Wait for certificate generation
-4. Download certificate
-5. Verify QR code scanning
-6. Check certificate validity
+### Certification Process
+1. Complete required modules
+2. Pass knowledge assessments
+3. Review certification status
+4. Download certificates
+5. Verify credentials
+6. Check compliance status
 
-### Analytics Testing
-1. Login as customer
-2. Navigate to analytics
-3. Test different date ranges
-4. Export reports
-5. Check real-time updates
-6. Verify data accuracy
-
-## Troubleshooting Common Issues
-
-### Login Issues
-- Clear browser cache
-- Check email spelling
-- Verify organization selection
-- Contact support if persistent
-
-### Video Playback
-- Check internet connection
-- Try different browsers
-- Clear browser cache
-- Disable ad blockers
-
-### Quiz Submission
-- Ensure all questions answered
-- Check internet connection
-- Take screenshots of errors
-- Contact support if needed
-
-### Certificate Generation
-- Allow up to 5 minutes for generation
-- Check email for notification
-- Verify program completion
-- Contact support if delayed
+### Progress Tracking
+1. Monitor completion rates
+2. Review quiz scores
+3. Check time spent
+4. View certification status
+5. Track team progress
+6. Generate reports
 
 ## Support Information
 
-### Technical Support
-- Email: support@vendorsafe.app
-- Phone: 1-800-SAFE-123
-- Hours: 24/7
+### Technical Assistance
+- Email: support@vendorsafe.com
+- Hours: 24/7 Support
+- Emergency: 1-800-SAFE-123
 
 ### Documentation
-- User Guides: docs.vendorsafe.app
-- API Documentation: api.vendorsafe.app
-- Training Videos: training.vendorsafe.app
+- Training Materials: docs.vendorsafe.com
+- EPA Regulations: epa.gov/cems
+- Certification Guide: cert.vendorsafe.com
 
-Remember to log out between different role testing to ensure a clean testing environment. All demo accounts have pre-loaded data for testing various features and scenarios.
+Remember to log out between role testing to ensure a clean testing environment. Each demo environment includes pre-configured data for comprehensive feature testing.

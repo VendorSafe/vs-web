@@ -1,5 +1,5 @@
 class TrainingCertificatesController < ApplicationController
-  include Sortable
+  include SortableController
 
   load_and_authorize_resource :team
   load_and_authorize_resource :training_program, through: :team, optional: true

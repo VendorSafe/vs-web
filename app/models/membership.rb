@@ -17,7 +17,8 @@ class Membership < ApplicationRecord
     editor: 1,
     coordinator: 2,
     employee: 3,
-    vendor: 4
+    vendor: 4,
+    customer: 5
   }.freeze
 
   ROLES.each_key do |role|

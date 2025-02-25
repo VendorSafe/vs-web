@@ -79,7 +79,7 @@ class TrainingProgram < ApplicationRecord
   # include PublicActivity::Model
   # tracked owner: :team
   include Workflow
-  workflow_column :state
+  workflow_column :workflow_state
 
   workflow do
     state :draft do
@@ -97,7 +97,7 @@ class TrainingProgram < ApplicationRecord
   end
 
   after_initialize do
-    self.state ||= "draft"
+    self.workflow_state ||= 'draft'
   end
 
   # 🚅 add attribute accessors above.
@@ -160,9 +160,11 @@ class TrainingProgram < ApplicationRecord
   # @return [Boolean] whether a certificate can be generated
   def can_generate_certificate?(membership)
     return false unless membership
+
     training_membership = training_memberships.find_by(membership: membership)
     return false unless training_membership&.completed?
     return false if has_valid_certificate?(membership)
+
     true
   end
 
@@ -171,18 +173,20 @@ class TrainingProgram < ApplicationRecord
   # @return [Boolean] whether the membership has a valid certificate
   def has_valid_certificate?(membership)
     return false unless certificate_validity_period
+
     cutoff_date = certificate_validity_period.days.ago
     training_certificates.where(membership: membership)
-      .where("issued_at > ?", cutoff_date)
-      .exists?
+                         .where('issued_at > ?', cutoff_date)
+                         .exists?
   end
 
   # Gets all valid certificates for this program
   # @return [ActiveRecord::Relation] valid certificates
   def valid_certificates
     return training_certificates unless certificate_validity_period
+
     cutoff_date = certificate_validity_period.days.ago
-    training_certificates.where("issued_at > ?", cutoff_date)
+    training_certificates.where('issued_at > ?', cutoff_date)
   end
 
   private
@@ -213,16 +217,19 @@ class TrainingProgram < ApplicationRecord
   # Role-based validation methods
   def can_be_published_by?(membership)
     return false unless membership
+
     membership.can?(:manage_training, self)
   end
 
   def can_be_archived_by?(membership)
     return false unless membership
+
     membership.can?(:manage_training, self)
   end
 
   def can_be_edited_by?(membership)
     return false unless membership
+
     membership.can?(:manage_training, self)
   end
 
@@ -231,38 +238,46 @@ class TrainingProgram < ApplicationRecord
     return true if membership.can?(:manage_training, self)
     return true if membership.can?(:manage_team_access, self)
     return true if has_team_access?(membership) && published?
+
     false
   end
 
   # Team access methods
   def has_team_access?(membership)
     return false unless membership && published?
+
     training_memberships.exists?(membership: membership) ||
       membership.can?(:manage_team_access, self)
   end
 
   def can_invite_team_members?(membership)
     return false unless membership
+
     membership.can?(:manage_team_access, self)
   end
 
   def can_manage_team_progress?(membership)
     return false unless membership
+
     membership.can?(:manage_team_progress, self)
   end
 
   # Sequential progression methods
   def next_content_for(membership)
     return nil unless has_team_access?(membership)
+
     training_membership = training_memberships.find_by(membership: membership)
     return first_content unless training_membership&.current_content
+
     training_membership.next_available_content
   end
 
   def can_access_content?(membership, content)
     return false unless has_team_access?(membership)
+
     training_membership = training_memberships.find_by(membership: membership)
     return false unless training_membership
+
     training_membership.can_access_content?(content)
   end
 
