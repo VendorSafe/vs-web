@@ -13,7 +13,7 @@ HEADLESS_MODE = !ENV["OPEN_BROWSER"]
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, {
     window_size: [1400, 1400],
-    browser_options: { 'no-sandbox': nil },
+    browser_options: {"no-sandbox": nil},
     headless: HEADLESS_MODE
   })
 end
@@ -70,6 +70,41 @@ class ActionDispatch::SystemTestCase
     page.evaluate_script("jQuery.active").zero?
   end
 
+  # Carousel test helpers
+  def wait_for_carousel
+    find("[data-controller='carousel']", visible: true)
+    wait_for_ajax
+  end
+
+  def assert_current_slide(content)
+    within("[data-controller='carousel']") do
+      assert_text content
+    end
+  end
+
+  def navigate_carousel(direction)
+    find("[data-carousel-#{direction}]").click
+    wait_for_ajax
+  end
+
+  def assert_carousel_progress(percentage)
+    assert_selector "[data-progress='#{percentage}']"
+  end
+
+  def simulate_swipe(direction)
+    carousel = find("[data-controller='carousel']")
+    x_offset = (direction == :left) ? -200 : 200
+
+    page.driver.browser.action
+      .move_to(carousel.native)
+      .click_and_hold
+      .move_by(x_offset, 0)
+      .release
+      .perform
+
+    wait_for_ajax
+  end
+
   def toggle_browser_mode(open_browser)
     ENV["OPEN_BROWSER"] = open_browser ? "1" : nil
     Capybara.current_driver = Capybara.javascript_driver
@@ -93,9 +128,9 @@ VCR.configure do |config|
 
   # Allow ChromeDriver downloads
   config.ignore_hosts(
-    'chromedriver.storage.googleapis.com',
-    'github.com',
-    'objects.githubusercontent.com'
+    "chromedriver.storage.googleapis.com",
+    "github.com",
+    "objects.githubusercontent.com"
   )
 end
 

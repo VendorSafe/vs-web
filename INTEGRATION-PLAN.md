@@ -181,7 +181,18 @@ Note: Role system has been updated to align with business requirements:
 - Added team-based access control
 - Integrated with activity tracking
 
-## 5. Design System Integration ⏳ In Progress
+## 5. Design System Integration with Bullet Train ⏳ In Progress
+
+### Implementation Strategy
+- [x] Use Bullet Train's existing tools:
+  - [x] Leverage Turbo for page updates
+  - [x] Use Stimulus for interactive components
+  - [x] Extend Bullet Train's view components
+- [ ] Modify generated pages:
+  - [ ] Update Bullet Train scaffolds with design system
+  - [ ] Customize light theme with new color scheme
+  - [ ] Add custom animations through Stimulus
+  - [ ] Extend existing component styles
 
 ### Color System ✅ Defined
 - [x] Primary Colors:
@@ -244,45 +255,56 @@ Note: Design system implementation will follow Bullet Train's theming approach:
 - Extending Bullet Train's light theme
 - Implementing custom components through view components
 
-## 6. Frontend Components
+## 6. Frontend Components with Bullet Train Integration
 
-### Dashboard
-- Training program list
-- Progress tracking
-- Certificate showcase
-- Upcoming deadlines
+### Dashboard (Using Bullet Train Components)
+- [ ] Training program list:
+  - [ ] Extend Bullet Train's index table component
+  - [ ] Add custom card view with gradients
+  - [ ] Implement Stimulus controller for sorting/filtering
+  - [ ] Add Turbo Frame for live updates
+- [ ] Progress tracking:
+  - [ ] Use Bullet Train's progress indicators
+  - [ ] Add custom animations via Stimulus
+  - [ ] Implement real-time updates with Turbo Streams
+- [ ] Certificate showcase:
+  - [ ] Extend Bullet Train's card components
+  - [ ] Add design system gradients and animations
+  - [ ] Implement hover effects with Stimulus
 
-### Content Viewer
-- Sequential content navigation system:
-  - Next/Previous content controls
-  - Content type-specific viewers:
-    - Slide carousel with navigation controls
-    - Video player with progress tracking
-    - Audio player with timestamps
-    - Text viewer with scroll tracking
-    - Interactive quiz interface with instant feedback
-  - Progress indicators:
-    - Overall training program progress
-    - Current content item progress
-    - Required vs optional content indicators
-  - Time tracking features:
-    - Content-specific time limits
-    - Auto-save progress
-    - Resume from last position
-  - Learning aids:
-    - Notes and annotations
-    - Bookmarking capability
-    - Content search (if allowed)
-  - Technical features:
-    - Offline content caching
-    - Mobile-responsive design
-    - Accessibility compliance
+### Content Viewer (Turbo-Enhanced)
+- [ ] Sequential navigation:
+  - [ ] Use Turbo Frames for content loading
+  - [ ] Add Stimulus controller for progression
+  - [ ] Implement design system transitions
+- [ ] Content type viewers:
+  - [ ] Extend Bullet Train's base components
+  - [ ] Add type-specific Stimulus controllers:
+    - [ ] Slide carousel with animations
+    - [ ] Video player with progress tracking
+    - [ ] Audio player with waveform display
+    - [ ] Text viewer with scroll tracking
+    - [ ] Quiz interface with instant feedback
+- [ ] Progress tracking:
+  - [ ] Use Turbo Streams for real-time updates
+  - [ ] Add animated progress indicators
+  - [ ] Implement completion notifications
 
-### Certificate Management
-- Certificate template
-- Download options
-- Sharing interface
-- Verification system
+### Certificate Management (Bullet Train Extended)
+- [ ] Certificate template:
+  - [ ] Use Bullet Train's PDF components
+  - [ ] Add custom design system styling
+- [ ] Management interface:
+  - [ ] Extend Bullet Train's CRUD views
+  - [ ] Add custom animations and transitions
+  - [ ] Implement Turbo Drive for navigation
+
+Note: All components will:
+- Use Bullet Train's existing structure
+- Leverage Turbo for page updates
+- Use Stimulus for interactivity
+- Incorporate design system styles
+- Follow accessibility guidelines
 
 ## 6. API Development
 

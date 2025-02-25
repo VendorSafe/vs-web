@@ -1,0 +1,82 @@
+<%# app/views/training_contents/_carousel.html.erb %>
+<div data-controller="carousel"
+     id="content-carousel-<%= training_content.id %>"
+     class="relative w-full">
+
+  <%# Carousel Container %>
+  <div data-carousel-target="container"
+       class="relative h-96 overflow-hidden rounded-lg">
+
+    <%# Slides %>
+    <% training_content.content_data["slides"].each_with_index do |slide, index| %>
+      <div data-carousel-target="slide"
+           class="hidden duration-700 ease-in-out"
+           data-slide-index="<%= index %>">
+        <div class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+          <div class="p-8">
+            <%= slide["content"] %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Navigation Controls %>
+  <button data-carousel-target="prev"
+          data-action="click->carousel#prev"
+          class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
+      <%= heroicon "chevron-left", options: { class: "w-6 h-6 text-white" } %>
+    </span>
+  </button>
+
+  <button data-carousel-target="next"
+          data-action="click->carousel#next"
+          class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
+      <%= heroicon "chevron-right", options: { class: "w-6 h-6 text-white" } %>
+    </span>
+  </button>
+
+  <%# Indicators %>
+  <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+    <% training_content.content_data["slides"].each_with_index do |_, index| %>
+      <button data-carousel-target="indicator"
+              data-slide-to="<%= index %>"
+              class="w-3 h-3 rounded-full bg-gray-300"
+              aria-label="Slide <%= index + 1 %>">
+      </button>
+    <% end %>
+  </div>
+
+  <%# Progress Bar %>
+  <div class="absolute bottom-0 left-0 w-full h-1 bg-gray-200">
+    <div data-carousel-target="progress"
+         class="h-full bg-primary transition-all duration-300 ease-in-out"
+         style="width: 0%"
+         data-progress="0">
+    </div>
+  </div>
+</div>
+
+<%# Touch Event Handling %>
+<%= tag.script do %>
+  document.addEventListener("turbo:load", () => {
+    const carousel = document.getElementById("content-carousel-<%= training_content.id %>");
+    let touchStartX = 0;
+
+    carousel.addEventListener("touchstart", (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    carousel.addEventListener("touchend", (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) {
+        const event = new CustomEvent(diff > 0 ? "next" : "prev");
+        carousel.dispatchEvent(event);
+      }
+    });
+  });
+<% end %>
