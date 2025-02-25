@@ -8,7 +8,7 @@
 
 ## ASCII Representation
 
-```
+```plaintext
 +------------------------------------------------------+
 |  +------+   +----------------+   +------------+   +-+ |
 |  | Logo |   |Training Requests|   |Certificates|   |U| |
@@ -51,16 +51,19 @@ This wireframe displays the "Training Requests" interface from the vendor perspe
 ## UI Components
 
 ### Navigation Header
+
 - **Logo**: Organization or application logo in the top-left corner
 - **Main Navigation**: Horizontal menu with options for Training Requests (currently selected) and Certificates
 - **User Profile**: Icon in the top-right corner for accessing user account options
 - **Navigation Arrow**: Button in the top-right corner for additional navigation options
 
 ### Search and Filter
+
 - **Search Bar**: Full-width search field at the top of the content area
 - **Search Button**: Button to execute the search query
 
 ### Training Requests Table
+
 - **Table Headers**:
   - Title: Name of the training program
   - Customer: Name of the customer who requested the training
@@ -72,10 +75,12 @@ This wireframe displays the "Training Requests" interface from the vendor perspe
   - Action button: "Start" for initiating the training
 
 ### Pagination Controls
+
 - **Page Navigation**: Controls at the bottom of the table with first («), previous, numbered pages (1-5), next, and last (») buttons
 - **Current Page**: Page 1 is currently selected
 
 ### Additional Information
+
 - **Privacy Policy**: Link at the bottom-left of the page
 
 ## Functionality

@@ -8,7 +8,7 @@
 
 ## ASCII Representation
 
-```
+```plaintext
 +------------------------------------------------------+
 |  +------+   +---------+   +---------+   +---------+  |
 |  | Logo |   | Vendors |   |Trainings|   | Reports |  |
@@ -46,12 +46,14 @@ This wireframe displays the "Training Info" interface, showing detailed informat
 ## UI Components
 
 ### Navigation Header
+
 - **Logo**: Organization or application logo in the top-left corner
 - **Main Navigation**: Horizontal menu with options for Vendors, Trainings, and Reports
 - **User Profile**: Icon in the top-right corner for accessing user account options (not shown in ASCII but likely present in the actual wireframe)
 - **Navigation Arrow**: Button in the top-right corner for additional navigation options (not shown in ASCII but likely present in the actual wireframe)
 
 ### Training Information
+
 - **Title Field**: Label and value showing the training program title ("Some training title")
 - **Passing % Field**: Label and value showing the required passing percentage (75%)
 - **Price Field**: Label and value showing the cost of the training ($20)
@@ -59,6 +61,7 @@ This wireframe displays the "Training Info" interface, showing detailed informat
 - **Training Access**: Label and "Open" button to launch the training content
 
 ### Additional Information
+
 - **Privacy Policy**: Link at the bottom-left of the page
 
 ## Functionality

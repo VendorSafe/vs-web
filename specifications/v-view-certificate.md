@@ -8,7 +8,7 @@
 
 ## ASCII Representation
 
-```
+```plaintext
 +------------------------------------------------------+
 |                                                      |
 |  +----+   +---------+   +----------------+           |
@@ -46,18 +46,22 @@ This wireframe displays the "View Certificate" interface from the vendor perspec
 ## UI Components
 
 ### Action Controls
+
 - **Back Button**: Button in the top-left corner to return to the previous screen
 - **Download Button**: Button to download the certificate as a file (likely PDF)
 - **Share with email Button**: Button to share the certificate via email
 
 ### Certificate Display
+
 - **Certificate Content**: Large central area displaying the actual certificate with its formal design
 - **Certificate Label**: Text in the center indicating "Certificate"
 
 ### Informational Note
+
 - **Yellow Sticky Note**: Contains important information about the certificate template (not visible in ASCII representation but likely present in the actual wireframe)
 
 ### Additional Information
+
 - **Privacy Policy**: Link at the bottom-left of the page
 
 ## Functionality

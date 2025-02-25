@@ -8,7 +8,7 @@
 
 ## ASCII Representation
 
-```
+```plaintext
 +------------------------------------------------------+
 |  +------+   +----------------+   +------------+   +-+ |
 |  | Logo |   |Training Requests|   |Certificates|   |U| |
@@ -63,20 +63,24 @@ This wireframe displays the "My Profile" interface from the vendor perspective. 
 ## UI Components
 
 ### Navigation Header
+
 - **Logo**: Organization or application logo in the top-left corner
 - **Main Navigation**: Horizontal menu with options for Training Requests and Certificates
 - **User Profile**: Icon in the top-right corner for accessing user account options
 - **Navigation Arrow**: Button in the top-right corner for additional navigation options
 
 ### Form Header
+
 - **Title**: "My Profile" heading centered at the top of the form
 
 ### Personal Information Section
+
 - **Name Field**: Required text input (marked with asterisk *) showing the vendor's current name
 - **Email Field**: Required text input (marked with asterisk *) showing the vendor's current email
 - **Phone Number Field**: Required text input (marked with asterisk *) showing the vendor's current phone number
 
 ### Address Section
+
 - **Address Label**: "Address 1" indicating this is the primary address
 - **Street Field**: Required text input (marked with asterisk *) for street address
 - **City Field**: Required text input (marked with asterisk *) for city
@@ -86,6 +90,7 @@ This wireframe displays the "My Profile" interface from the vendor perspective. 
 - **Add another Button**: Button with plus icon to add additional address entries
 
 ### Informational Note
+
 - **Yellow Sticky Note**: Contains important information about address management (not visible in ASCII representation but likely present in the actual wireframe)
 
 ## Functionality
