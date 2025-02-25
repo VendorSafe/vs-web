@@ -61,6 +61,31 @@ class Role
     included_roles.map { |role| find(role) }
   end
 
+  # Explicitly define class methods for each role
+  def self.admin
+    new(ROLES[:admin], :admin)
+  end
+
+  def self.editor
+    new(ROLES[:editor], :editor)
+  end
+
+  def self.coordinator
+    new(ROLES[:coordinator], :coordinator)
+  end
+
+  def self.employee
+    new(ROLES[:employee], :employee)
+  end
+
+  def self.vendor
+    new(ROLES[:vendor], :vendor)
+  end
+
+  def self.customer
+    new(ROLES[:customer], :customer)
+  end
+
   def key
     name
   end
@@ -106,11 +131,5 @@ class Role
     return false unless other.is_a?(Role)
 
     id == other.id && name == other.name
-  end
-
-  ROLES.each do |name, id|
-    define_singleton_method(name) do
-      new(id, name)
-    end
   end
 end

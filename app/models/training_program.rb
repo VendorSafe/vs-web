@@ -298,5 +298,19 @@ class TrainingProgram < ApplicationRecord
     can_be_published_by?(Current.membership)
   end
 
+  # Public methods
+
+  # Enrolls a student in the training program
+  # @param student [User] the student to enroll
+  # @return [TrainingMembership] the created training membership
+  def enroll_student(student)
+    membership = student.memberships.find_by(team: team)
+    return nil unless membership
+
+    training_memberships.find_or_create_by(
+      membership: membership
+    )
+  end
+
   # 🚅 add methods above.
 end

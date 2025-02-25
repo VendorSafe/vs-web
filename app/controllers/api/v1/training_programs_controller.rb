@@ -12,16 +12,28 @@ if defined?(Api::V1::ApplicationController)
 
     # GET /api/v1/training_programs/:id
     def show
-      training_membership = current_user.training_memberships.find_by(training_program: @training_program)
+      membership = current_user.memberships.find_by(team: @training_program.team)
+      training_membership = if membership
+                              TrainingMembership.find_by(membership: membership,
+                                                         training_program: @training_program)
+                            else
+                              nil
+                            end
       progress_data = training_membership&.progress || {}
       render json: @training_program.as_json(
-        include: [:training_contents, training_contents: [:training_questions]]
+        include: [:training_contents, { training_contents: [:training_questions] }]
       ).merge(progress: progress_data)
     end
 
     # PUT /api/v1/training_programs/:id/update_progress
     def update_progress
-      training_membership = current_user.training_memberships.find_by(training_program: @training_program)
+      membership = current_user.memberships.find_by(team: @training_program.team)
+      training_membership = if membership
+                              TrainingMembership.find_by(membership: membership,
+                                                         training_program: @training_program)
+                            else
+                              nil
+                            end
       if training_membership
         training_membership.update(progress: params[:progress])
         head :ok
@@ -72,7 +84,7 @@ if defined?(Api::V1::ApplicationController)
           :published_at,
           :pricing_model_id,
           # 🚅 super scaffolding will insert new fields above this line.
-          *permitted_arrays,
+          *permitted_arrays
           # 🚅 super scaffolding will insert new arrays above this line.
         )
 

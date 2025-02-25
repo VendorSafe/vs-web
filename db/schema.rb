@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_25_060754) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_25_061107) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -305,7 +305,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_060754) do
     t.text "pdf_error"
     t.string "verification_code"
     t.datetime "revoked_at"
+    t.datetime "expires_at"
     t.index ["certificate_number"], name: "index_training_certificates_on_certificate_number", unique: true
+    t.index ["expires_at"], name: "index_training_certificates_on_expires_at"
     t.index ["membership_id", "training_program_id"], name: "idx_training_certificates_unique_membership_program", unique: true
     t.index ["membership_id"], name: "index_training_certificates_on_membership_id"
     t.index ["revoked_at"], name: "index_training_certificates_on_revoked_at"
