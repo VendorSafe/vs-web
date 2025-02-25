@@ -10,6 +10,24 @@ class Role
     customer: 5
   }.freeze
 
+  ROLE_INCLUDES = {
+    admin: %i[editor coordinator employee vendor],
+    editor: [:employee],
+    coordinator: [:employee],
+    vendor: [],
+    employee: [],
+    customer: []
+  }.freeze
+
+  MANAGEABLE_ROLES = {
+    admin: %i[admin editor coordinator employee vendor],
+    editor: %i[editor employee],
+    coordinator: [:employee],
+    vendor: [],
+    employee: [],
+    customer: []
+  }.freeze
+
   attr_reader :id, :name
 
   def initialize(id, name)
@@ -39,7 +57,8 @@ class Role
   end
 
   def self.includes(role_key)
-    []
+    included_roles = ROLE_INCLUDES[role_key.to_sym] || []
+    included_roles.map { |role| find(role) }
   end
 
   def key
@@ -47,7 +66,8 @@ class Role
   end
 
   def key_plus_included_by_keys
-    [key]
+    included_by = ROLE_INCLUDES.select { |_, includes| includes.include?(key) }.keys
+    [key] + included_by
   end
 
   def assignable?
@@ -55,11 +75,31 @@ class Role
   end
 
   def manageable_roles
-    []
+    (MANAGEABLE_ROLES[key] || []).map { |role_key| Role.find(role_key) }
   end
 
   def admin?
     key == :admin
+  end
+
+  def vendor?
+    key == :vendor
+  end
+
+  def employee?
+    key == :employee
+  end
+
+  def coordinator?
+    key == :coordinator
+  end
+
+  def editor?
+    key == :editor
+  end
+
+  def customer?
+    key == :customer
   end
 
   def ==(other)

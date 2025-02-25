@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable,
-    :confirmable, :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :confirmable, :omniauthable
   # TODO: Set up required database columns before enabling token auth
   # include DeviseTokenAuth::Concerns::User
   include Users::Base
@@ -11,6 +11,10 @@ class User < ApplicationRecord
 
   # 🚅 add belongs_to associations above.
 
+  has_many :training_memberships, dependent: :destroy
+  has_many :training_programs, through: :training_memberships
+  has_many :training_completions, dependent: :destroy
+  has_many :completed_training_contents, through: :training_completions, source: :training_content
   # 🚅 add has_many associations above.
 
   # 🚅 add oauth providers above.

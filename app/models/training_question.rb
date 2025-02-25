@@ -2,6 +2,7 @@ class TrainingQuestion < ApplicationRecord
   # 🚅 add concerns above.
 
   # 🚅 add attribute accessors above.
+  attribute :options, :json, default: -> { {} }
 
   belongs_to :training_content
   # 🚅 add belongs_to associations above.
@@ -15,7 +16,7 @@ class TrainingQuestion < ApplicationRecord
   # 🚅 add scopes above.
 
   validates :title, presence: true
-  validates :question_type, presence: true, inclusion: {in: %w[multiple_choice true_false short_answer]}
+  validates :question_type, presence: true, inclusion: { in: %w[multiple_choice true_false short_answer] }
   # 🚅 add validations above.
 
   # 🚅 add callbacks above.

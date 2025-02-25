@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_25_004536) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_25_060754) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -423,6 +423,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_004536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "question_type", default: "multiple_choice", null: false
+    t.json "options", default: {}
     t.index ["training_content_id"], name: "index_training_questions_on_training_content_id"
   end
 
