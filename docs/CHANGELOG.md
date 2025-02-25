@@ -35,6 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Responsive design with Tailwind CSS
   - State management with Pinia
   - Comprehensive test coverage
+  - Advanced filtering for training content
+  - Offline support with service worker
+  - Certificate viewer component
+  - Performance optimizations
 - Training program state management
 - Certificate generation system with:
   - Automatic certificate number generation
@@ -43,6 +47,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Custom certificate fields support
   - Certificate verification endpoints
   - Certificate data serialization
+- Service worker for offline support:
+  - Caching of training program data
+  - Offline progress tracking
+  - Background synchronization
+  - Offline fallback page
+  - Network status indicators
+- Comprehensive documentation:
+  - GOLDEN-RULES.md for development best practices
+  - BULLET-TRAIN-GOLDEN-RULES.md for Bullet Train specific conventions
+  - Focused testing approach for debugging complex issues
 - Comprehensive role-based system:
   - Administrator role with full system access
   - Training Manager role with program management
@@ -96,6 +110,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Created `bin/demo-script.js` for Puppeteer-based workflow demonstration
   - Implemented complete workflow from admin to employee
   - Added comprehensive documentation in `docs/DEMO_SCRIPT.md`
+  - Added database reset functionality with `--reset-db` option
+  - Implemented multiple scenarios (basic and advanced)
+  - Created seed data for advanced scenario in `db/seeds/advanced.rb`
+  - Added Rake task for loading advanced scenario seed data
+  - Fixed database reset functionality to handle errors gracefully
+  - Updated advanced seed file to use correct workflow state management
+  - Added interactive prompt to continue without database reset if it fails
+  - Added onboarding process handling after login for all user roles
+  - Improved script resilience by handling team creation during first login
+  - Enhanced dashboard detection with multiple selector fallbacks
+  - Improved error handling for missing UI elements
+  - Fixed seed data to handle duplicate user records
+  - Added more robust form submission with fallback methods
 
 ### Removed
 
@@ -112,6 +139,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Resolved user confirmation email issues
 - Fixed activity tracking in training programs
 - Fixed training program workflow state management to properly handle state transitions and validations
+- Fixed column name mismatch in TrainingProgram model:
+  - Changed `workflow_column :workflow_state` to `workflow_column :state` to match the actual database column
+  - Updated `after_initialize` callback to use `self.state` instead of `self.workflow_state`
+  - Updated factory definition to use `state` instead of `workflow_state`
+  - Created GOLDEN-RULES.md to document naming convention best practices
+- Fixed training content validation issues in tests:
+  - Updated training_player_test.rb to use proper factory traits (:video, :document, :quiz)
+  - Ensured content_data includes required media URLs for video and document content
 - Fixed inconsistencies in the training certificate system:
   - Added verification code generation to the TrainingCertificate model
   - Fixed verification URL generation to use verification_code consistently

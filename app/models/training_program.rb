@@ -79,7 +79,7 @@ class TrainingProgram < ApplicationRecord
   # include PublicActivity::Model
   # tracked owner: :team
   include Workflow
-  workflow_column :workflow_state
+  workflow_column :state
 
   workflow do
     state :draft do
@@ -97,7 +97,7 @@ class TrainingProgram < ApplicationRecord
   end
 
   after_initialize do
-    self.workflow_state ||= 'draft'
+    self.state ||= 'draft'
   end
 
   # 🚅 add attribute accessors above.

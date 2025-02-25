@@ -1,6 +1,6 @@
 # See `config/routes.rb` for details.
-collection_actions = [:index, :new, :create] # standard:disable Lint/UselessAssignment
-extending = {only: []}
+collection_actions = %i[index new create] # standard:disable Lint/UselessAssignment
+extending = { only: [] }
 
 shallow do
   namespace :v1 do
@@ -35,6 +35,8 @@ shallow do
       resources :training_programs do
         member do
           put :update_progress
+          get :certificate
+          post :generate_certificate
         end
         resources :training_contents, concerns: [:sortable] do
           resources :training_questions

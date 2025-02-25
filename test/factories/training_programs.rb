@@ -3,18 +3,18 @@ FactoryBot.define do
     team
     sequence(:name) { |n| "Training Program #{n}" }
     description { 'Test training program description' }
-    workflow_state { 'draft' }
+    state { 'draft' }
     passing_percentage { 70 }
     certificate_validity_period { 365 }
     certificate_template { 'default' }
     custom_certificate_fields { { company_name: 'Test Company' } }
 
     trait :published do
-      workflow_state { 'published' }
+      state { 'published' }
     end
 
     trait :archived do
-      workflow_state { 'archived' }
+      state { 'archived' }
     end
 
     trait :with_contents do

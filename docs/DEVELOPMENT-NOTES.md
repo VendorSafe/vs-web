@@ -411,3 +411,53 @@ As part of our alignment with Bullet Train conventions, the following documentat
    - Added last updated timestamps
    - Improved readability with consistent headings and lists
    - Removed redundant checkmarks and symbols in favor of clean text
+
+## Demo Script Implementation
+
+### Automated Demo Workflow
+
+To facilitate demonstrations and testing, an automated demo script has been implemented:
+
+1. **Puppeteer-Based Automation**:
+   - Created `bin/demo-script.js` for automated workflow demonstration
+   - Implemented browser automation with Puppeteer
+   - Added screenshot capture at key points
+   - Included detailed logging for each step
+   - Added database reset functionality with `--reset-db` option
+   - Implemented robust error handling for database operations
+   - Added interactive prompt to continue without database reset if it fails
+   - Added automatic handling of onboarding process after login
+   - Implemented resilient detection and completion of team creation forms
+   - Enhanced dashboard detection with multiple selector fallbacks
+   - Added comprehensive error handling for missing UI elements
+   - Implemented flexible form submission with fallback methods
+   - Improved seed data handling to manage duplicate records gracefully
+
+2. **Multiple Scenario Support**:
+   - Implemented basic scenario (default) - complete workflow from scratch
+   - Implemented advanced scenario with pre-seeded data
+   - Created seed data for advanced scenario in `db/seeds/advanced.rb`
+   - Added Rake task for loading advanced scenario seed data
+   - Fixed workflow state management in seed data to use proper model methods
+   - Added proper pricing model associations for training programs
+   - Improved error handling for seed data loading
+
+3. **Complete Workflow Demonstration**:
+   - Basic scenario:
+     - Admin adding a customer
+     - Customer creating a training program with video content and quiz
+     - Customer inviting vendors
+     - Vendor inviting employees
+     - Employee completing training and earning certificate
+   - Advanced scenario:
+     - Admin managing multiple customers
+     - Customer managing multiple training programs
+     - Customer managing multiple vendors
+     - Vendor managing multiple employees
+     - Employee completing multiple trainings
+
+4. **Documentation**:
+   - Created `docs/DEMO_SCRIPT.md` with comprehensive instructions
+   - Added quick reference guide in `bin/README-demo-script.md`
+   - Included command-line options documentation
+   - Added troubleshooting and customization guides

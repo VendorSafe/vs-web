@@ -52,3 +52,31 @@ document.addEventListener("DOMContentLoaded", () => {
     document.head.appendChild(mobileMetaTag);
   }
 });
+
+// Register service worker for offline support
+import { registerServiceWorker } from "./training-program-viewer/register-service-worker";
+
+// Register service worker if on a training program page
+document.addEventListener("turbo:load", () => {
+  if (document.querySelector('.training-program-viewer')) {
+    registerServiceWorker();
+  }
+});
+
+// Copy service worker to public directory
+if (process.env.NODE_ENV === 'production') {
+  const fs = require('fs');
+  const path = require('path');
+  
+  try {
+    const sourceFile = path.resolve(__dirname, 'training-program-viewer/service-worker.js');
+    const destFile = path.resolve(__dirname, '../../public/service-worker.js');
+    
+    if (fs.existsSync(sourceFile)) {
+      fs.copyFileSync(sourceFile, destFile);
+      console.log('Service worker copied to public directory');
+    }
+  } catch (error) {
+    console.error('Error copying service worker:', error);
+  }
+}
