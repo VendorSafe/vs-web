@@ -216,3 +216,99 @@ We'll address issues sequentially, running tests after each fix:
 
 ### 8. Refactor with Confidence
 
+Once the tests are passing, we'll refactor the code to improve its structure and maintainability:
+
+```ruby
+# Example of refactoring
+# Before
+def index
+  @training_questions = @training_content.training_questions
+  render json: { data: @training_questions }
+end
+
+# After
+def index
+  @training_questions = @training_content.training_questions
+  render json: { 
+    data: @training_questions,
+    meta: {
+      total: @training_questions.count,
+      page: params[:page] || 1
+    }
+  }
+end
+```
+
+**Action Items:**
+- Improve error handling
+- Add pagination
+- Enhance response metadata
+- Optimize queries
+- Ensure consistent response formats
+
+### 9. Document Findings
+
+We'll update documentation with insights from testing:
+
+```markdown
+# API Controller Fixes
+
+## Training Questions API Controller
+
+### Routing Issues
+- Fixed namespace routing for API controllers
+- Added proper versioning to API routes
+
+### Controller Implementation
+- Fixed controller actions to use consistent response formats
+- Added proper error handling for all endpoints
+
+### Serialization Issues
+- Implemented consistent serialization for all API resources
+- Added proper metadata to API responses
+```
+
+**Action Items:**
+- Update CHANGELOG.md
+- Update API documentation
+- Document common patterns and solutions
+- Update TEST_FAILURES.md with fixed issues
+
+### 10. Verify in Integration
+
+Finally, we'll ensure the fixes work in the broader system context:
+
+```bash
+# Run all API controller tests
+bin/rails test test/controllers/api/v1/training_questions_controller_test.rb
+
+# Run system tests that interact with the API
+bin/rails test:system
+
+# Run the full test suite
+bin/rails test
+```
+
+**Action Items:**
+- Run all API controller tests
+- Verify integration with frontend components
+- Check for regressions in other areas
+- Ensure consistent behavior across all API endpoints
+
+## Implementation Plan
+
+1. Start with creating the focused test file
+2. Implement tests for happy paths, edge cases, and error conditions
+3. Fix routing issues
+4. Fix controller implementation
+5. Refactor and improve the code
+6. Document findings
+7. Verify in integration
+
+## Expected Outcomes
+
+- All Training Questions API controller tests passing
+- Consistent API response format
+- Proper error handling
+- Improved API documentation
+- Better developer experience

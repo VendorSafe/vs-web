@@ -1,0 +1,4 @@
+- Created fixed versions of API routes and controllers:
+  - Added `config/routes/api/v1_questions_fixed.rb` with proper route definitions
+  - Added `app/controllers/api/v1/training_questions_controller_fixed.rb` with improved error handling
+  - Created `bin/apply-api-questions-fixes.sh` script to apply and test the fixes

@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Provides a methodical approach to fixing API controller test failures
   - Includes detailed implementation plan and expected outcomes
 
+- Created a 10-step process for addressing Training Questions API controller issues:
+  - Documented in COMPLETION_REPORT_2025-02-25-API-QUESTIONS-CONTROLLERS.md
+  - Follows the same systematic testing approach
+  - Focuses specifically on the Training Questions API endpoints
+  - Provides a detailed implementation plan for fixing the issues
+
 - Comprehensive test infrastructure:
   - System tests with headless/browser mode toggle
   - Factory definitions for all training models
@@ -159,8 +165,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implemented the `mark_complete_for` method in TrainingContent model to properly update completion percentage
   - Created focused tests for completion percentage calculation
   - Added a new golden rule about creating datetime-stamped completion reports
-- Created focused test file for API V1 Training Programs Controller:
-  - Implemented comprehensive test cases for all API endpoints
+- Created focused test files for API controllers:
+  - Implemented comprehensive test cases for TrainingPrograms API endpoints
+  - Implemented comprehensive test cases for TrainingQuestions API endpoints
   - Added tests for happy paths, edge cases, and error conditions
   - Included tests for authentication and authorization
   - Added tests for progress tracking and certificate generation

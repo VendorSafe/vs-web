@@ -42,7 +42,6 @@ shallow do
         end
 
         resources :training_contents, concerns: [:sortable] do
-          # Training Questions routes - nested under training_contents
           resources :training_questions
         end
       end
@@ -60,15 +59,8 @@ shallow do
       end
     end
 
-    # Training Contents direct access
-    resources :training_contents, only: %i[show update destroy] do
-      # Training Questions routes - nested under training_contents for direct access
-      resources :training_questions, shallow: true
-    end
-
-    # Training Questions direct access
+    resources :training_contents, only: %i[show update destroy]
     resources :training_questions, only: %i[show update destroy]
-
     resources :facilities, only: %i[show update destroy]
     resources :locations, only: %i[show update destroy]
     resources :pricing_models, only: %i[show update destroy]
