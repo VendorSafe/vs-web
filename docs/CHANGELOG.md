@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Created a new 10-step process for addressing API controller issues:
+  - Documented in COMPLETION_REPORT_2025-02-25-API-CONTROLLERS.md
+  - Follows the systematic testing approach from golden rules
+  - Provides a methodical approach to fixing API controller test failures
+  - Includes detailed implementation plan and expected outcomes
+
 - Comprehensive test infrastructure:
   - System tests with headless/browser mode toggle
   - Factory definitions for all training models
@@ -153,6 +159,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implemented the `mark_complete_for` method in TrainingContent model to properly update completion percentage
   - Created focused tests for completion percentage calculation
   - Added a new golden rule about creating datetime-stamped completion reports
+- Created focused test file for API V1 Training Programs Controller:
+  - Implemented comprehensive test cases for all API endpoints
+  - Added tests for happy paths, edge cases, and error conditions
+  - Included tests for authentication and authorization
+  - Added tests for progress tracking and certificate generation
+  - Created `bin/run-focused-api-tests.sh` script to run the focused tests
+  - Added `README-focused-api-tests.md` with documentation on the testing approach
 - Fixed training content validation issues in tests:
   - Updated training_player_test.rb to use proper factory traits (:video, :document, :quiz)
   - Ensured content_data includes required media URLs for video and document content
