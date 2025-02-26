@@ -15,7 +15,7 @@
             <%= render 'shared/attributes/text', attribute: :address %>
             <%= render 'shared/attributes/text', attribute: :location_type %>
             <%= render 'shared/attributes/belongs_to', attribute: :parent %>
-            <%= render 'shared/attributes/text', attribute: :geometry, partial: 'fields/geojson/display', locals: { record: @location, method: :geometry } %>
+            <%= render 'fields/geojson/field', record: @location, method: :geometry, options: { height: "400px" } %>
             <%# 🚅 super scaffolding will insert new fields above this line. %>
           <% end %>
         <% end %>
