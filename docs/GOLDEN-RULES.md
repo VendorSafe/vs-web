@@ -620,7 +620,55 @@ echo "RESULT: OPERATION_COMPLETED"
 - Creates bottlenecks in development processes
 - Interrupts AI-assisted development workflows
 
-### 2. Super-Scaffolding Best Practices
+### 2. Script Execution Verification
+
+**Rule**: Always execute scripts and verify their success before declaring a task complete.
+
+**Example**:
+```bash
+# INCORRECT APPROACH
+# Creating a script but not executing it
+echo "#!/bin/bash
+echo 'Performing operation...'
+# Do something
+echo 'Operation completed'" > perform_operation.sh
+chmod +x perform_operation.sh
+
+# Declaring task complete without running the script
+echo "Task complete! The script has been created."
+
+# CORRECT APPROACH
+# Creating a script
+echo "#!/bin/bash
+echo 'Performing operation...'
+# Do something
+echo 'Operation completed'" > perform_operation.sh
+chmod +x perform_operation.sh
+
+# Running the script and verifying its success
+./perform_operation.sh
+if [ $? -eq 0 ]; then
+  echo "Task complete! The script ran successfully."
+else
+  echo "Task failed. The script encountered an error."
+fi
+```
+
+**Why It's Good**:
+- Ensures the script actually works as intended
+- Provides immediate feedback on any issues
+- Completes the full cycle of development, from creation to execution
+- Builds confidence in the solution
+- Follows the principle of "test what you ship"
+
+**Why It's Bad When Violated**:
+- Creates a false sense of completion
+- Leaves potential issues undiscovered
+- Requires additional steps from the user
+- May lead to confusion if the script doesn't work as expected
+- Breaks the development workflow
+
+### 3. Super-Scaffolding Best Practices
 
 **Rule**: Use super-scaffolding at the beginning of model development, before making manual modifications to generated files.
 
@@ -669,7 +717,7 @@ def custom_method
 end
 ```
 
-### 3. Explicit Over Implicit
+### 4. Explicit Over Implicit
 
 **Rule**: Prefer explicit, clear code over clever, implicit code.
 
@@ -704,7 +752,7 @@ end
 - Increases the learning curve for new developers
 - Can lead to unexpected behavior
 
-### 4. Consistent Error Handling
+### 5. Consistent Error Handling
 
 **Rule**: Handle errors consistently throughout the application.
 

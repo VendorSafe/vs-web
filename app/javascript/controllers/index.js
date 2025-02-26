@@ -35,3 +35,27 @@ const controllers = Object.keys(controllersContext).map((filename) => ({
 application.load(controllers)
 
 CableReady.initialize({ consumer })
+
+// GeoJSON field controllers
+import MapInputController from './bullet_train/fields/geojson/map_input_controller'
+import MapDisplayController from './bullet_train/fields/geojson/map_display_controller'
+application.register('bullet-train--fields--geojson--map-input', MapInputController)
+application.register('bullet-train--fields--geojson--map-display', MapDisplayController)
+
+// GeoJSON field controllers
+import MapInputController from './bullet_train/fields/geojson/map_input_controller'
+import MapDisplayController from './bullet_train/fields/geojson/map_display_controller'
+application.register('bullet-train--fields--geojson--map-input', MapInputController)
+application.register('bullet-train--fields--geojson--map-display', MapDisplayController)
+
+// GeoJSON field controllers
+import MapInputController from './bullet_train/fields/geojson/map_input_controller'
+import MapDisplayController from './bullet_train/fields/geojson/map_display_controller'
+application.register('bullet-train--fields--geojson--map-input', MapInputController)
+application.register('bullet-train--fields--geojson--map-display', MapDisplayController)
+
+// GeoJSON field controllers
+import MapInputController from './bullet_train/fields/geojson/map_input_controller'
+import MapDisplayController from './bullet_train/fields/geojson/map_display_controller'
+application.register('bullet-train--fields--geojson--map-input', MapInputController)
+application.register('bullet-train--fields--geojson--map-display', MapDisplayController)

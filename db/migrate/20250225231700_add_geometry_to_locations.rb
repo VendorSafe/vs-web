@@ -1,8 +1,5 @@
 class AddGeometryToLocations < ActiveRecord::Migration[7.2]
   def up
-    # Enable PostGIS extension if not already enabled
-    enable_extension "postgis" unless extension_enabled?("postgis")
-    
     # Add geometry column as JSONB for storing GeoJSON
     add_column :locations, :geometry, :jsonb, default: {}, null: true
     
@@ -19,7 +16,5 @@ class AddGeometryToLocations < ActiveRecord::Migration[7.2]
     
     # Remove column
     remove_column :locations, :geometry
-    
-    # Note: We don't disable the PostGIS extension as it might be used by other tables
   end
 end

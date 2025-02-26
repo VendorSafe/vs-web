@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_25_061107) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_25_231800) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -93,8 +93,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_061107) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "membership_id"
+    t.bigint "migrated_to_location_id"
     t.index ["membership_id"], name: "index_facilities_on_membership_id"
+    t.index ["migrated_to_location_id"], name: "index_facilities_on_migrated_to_location_id"
     t.index ["team_id"], name: "index_facilities_on_team_id"
+  end
+
+  create_table "facility_location_mappings", force: :cascade do |t|
+    t.bigint "facility_id", null: false
+    t.bigint "location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["facility_id"], name: "index_facility_location_mappings_on_facility_id"
+    t.index ["location_id"], name: "index_facility_location_mappings_on_location_id"
   end
 
   create_table "integrations_stripe_installations", force: :cascade do |t|
@@ -128,6 +139,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_061107) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parent_id"
+    t.jsonb "geometry", default: {}, comment: "GeoJSON representation of the location boundaries"
+    t.index ["geometry"], name: "index_locations_on_geometry", using: :gin
     t.index ["parent_id"], name: "index_locations_on_parent_id"
     t.index ["team_id"], name: "index_locations_on_team_id"
   end
@@ -525,6 +538,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_25_061107) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "facilities", "memberships"
   add_foreign_key "facilities", "teams"
+  add_foreign_key "facility_location_mappings", "facilities"
+  add_foreign_key "facility_location_mappings", "locations"
   add_foreign_key "integrations_stripe_installations", "oauth_stripe_accounts"
   add_foreign_key "integrations_stripe_installations", "teams"
   add_foreign_key "invitations", "account_onboarding_invitation_lists", column: "invitation_list_id"

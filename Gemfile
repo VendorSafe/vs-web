@@ -239,3 +239,6 @@ gem "prawn", "~> 2.4"
 gem "prawn-table", "~> 0.2.2"
 
 # rubocop:enable Bundler/DuplicatedGroup
+
+# GeoJSON fields for Bullet Train
+gem 'bullet_train-fields-geojson', path: 'lib/bullet_train/fields/geojson'
