@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Facility to Location consolidation with GeoJSON support:
+  - Created a BulletTrain GeoJSON fields gem for handling geospatial data
+  - Added geometry column to Locations table for storing GeoJSON data
+  - Implemented Locations API with geospatial query capabilities
+  - Created data migration scripts to move Facilities data to Locations
+  - Established mapping between Facilities and Locations for backward compatibility
+  - Added comprehensive test coverage for the new API endpoints
+  - Created implementation scripts for automated deployment
+  - Documented in COMPLETION_REPORT_2025-02-25-FACILITY-TO-LOCATION.md
+  - Detailed next steps in NEXT-STEPS-FACILITY-TO-LOCATION.md
+  - Added support for hierarchical location relationships (parent/child)
+  - Implemented geospatial queries (near a point, by geometry type)
+  - Created a reusable GeoJSON field type for Bullet Train
+  - Added Mapbox integration for map visualization
+  - Created Stimulus controllers for map input and display
+  - Added field partials for forms and display
+  - Implemented a systematic 10-step process for the implementation
+
 - Created a new 10-step process for addressing API controller issues:
   - Documented in COMPLETION_REPORT_2025-02-25-API-CONTROLLERS.md
   - Follows the systematic testing approach from golden rules
