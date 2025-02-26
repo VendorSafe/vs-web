@@ -23,12 +23,14 @@ workflow_column :state  # Matches the actual database column name
 ```
 
 **Why It's Good**:
+
 - Prevents runtime errors when the model tries to access a non-existent column
 - Makes code more maintainable and easier to understand
 - Follows the principle of least surprise
 - Reduces debugging time for state-related issues
 
 **Why It's Bad When Violated**:
+
 - Causes cryptic errors like `undefined method 'workflow_state'`
 - Creates confusion between what's in the database vs. what's in the code
 - Makes tests fail in non-obvious ways
@@ -39,6 +41,7 @@ workflow_column :state  # Matches the actual database column name
 **Rule**: Use consistent naming conventions between frontend (Vue.js) and backend (Rails) components.
 
 **Example**:
+
 ```javascript
 // INCONSISTENT
 // Vue.js component property
@@ -58,12 +61,14 @@ data() {
 ```
 
 **Why It's Good**:
+
 - Reduces cognitive load when switching between frontend and backend code
 - Makes API integration more intuitive
 - Simplifies data mapping between frontend and backend
 - Easier for new developers to understand the system
 
 **Why It's Bad When Violated**:
+
 - Creates confusion about what properties map to what database columns
 - Increases the chance of mapping errors in API requests/responses
 - Makes the codebase harder to maintain
@@ -76,6 +81,7 @@ data() {
 **Rule**: Ensure factory definitions match the current database schema and model validations.
 
 **Example**:
+
 ```ruby
 # INCORRECT
 factory :training_program do
@@ -89,12 +95,14 @@ end
 ```
 
 **Why It's Good**:
+
 - Tests accurately reflect production behavior
 - Prevents false positives/negatives in tests
 - Makes test setup more reliable
 - Reduces debugging time for test failures
 
 **Why It's Bad When Violated**:
+
 - Tests may pass locally but fail in CI
 - Creates confusion about what's actually being tested
 - Makes it harder to diagnose test failures
@@ -105,6 +113,7 @@ end
 **Rule**: Ensure tests are isolated and don't depend on external state or other tests.
 
 **Example**:
+
 ```ruby
 # INCORRECT
 test "completing a module" do
@@ -121,12 +130,14 @@ end
 ```
 
 **Why It's Good**:
+
 - Tests can be run in any order
 - Test failures are easier to diagnose
 - Tests are more reliable and less flaky
 - Prevents cascading failures when one test breaks
 
 **Why It's Bad When Violated**:
+
 - Tests become interdependent
 - Test failures are harder to diagnose
 - Tests may be flaky or inconsistent
@@ -137,6 +148,7 @@ end
 **Rule**: Run specific, focused tests when debugging issues rather than the entire test suite.
 
 **Example**:
+
 ```bash
 # INEFFICIENT
 # Running the entire test suite when debugging a specific issue
@@ -154,6 +166,7 @@ bin/rails test test/models/training_program_test.rb -n test_state_transitions
 > **IMPORTANT**: Always use `bin/rails` instead of `rails` directly to ensure proper environment setup and gem loading.
 
 **Why It's Good**:
+
 - Saves time and computational resources
 - Maintains context by focusing on one problem at a time
 - Makes debugging more efficient
@@ -161,6 +174,7 @@ bin/rails test test/models/training_program_test.rb -n test_state_transitions
 - Preserves context in your development environment
 
 **Why It's Bad When Violated**:
+
 - Wastes time waiting for unrelated tests to run
 - Increases cognitive load with unrelated test failures
 - Makes it harder to focus on the specific issue at hand
@@ -172,6 +186,7 @@ bin/rails test test/models/training_program_test.rb -n test_state_transitions
 **Rule**: When fixing a bug, first write a test that reproduces the issue.
 
 **Example**:
+
 ```ruby
 # GOOD PRACTICE
 test "handles empty content_data gracefully" do
@@ -183,6 +198,7 @@ end
 ```
 
 **Why It's Good**:
+
 - Ensures the bug is well understood before fixing
 - Provides a clear way to verify the fix works
 - Prevents regression by catching the issue in future tests
@@ -190,6 +206,7 @@ end
 - Makes code reviews more effective
 
 **Why It's Bad When Violated**:
+
 - May fix symptoms without addressing root causes
 - Increases the chance of regression in the future
 - Makes it harder to verify the fix actually works
@@ -203,24 +220,28 @@ end
 **10-Step Testing Process**:
 
 1. **Identify the Scope**: Define exactly what feature or component you're testing.
+
    ```bash
    # Document the scope in a comment at the top of your test file
    # This test suite covers the TrainingProgram state transitions
    ```
 
 2. **Create a Focused Test File**: Create a dedicated test file for the specific feature.
+
    ```bash
    # Create a focused test file
    bin/rails generate test_unit:system feature_name
    ```
 
 3. **Isolate Dependencies**: Mock or stub external dependencies to focus on the component under test.
+
    ```ruby
    # Use stubs to isolate dependencies
    TrainingProgram.any_instance.stubs(:generate_certificate).returns(true)
    ```
 
 4. **Test Happy Path First**: Verify the feature works under normal conditions.
+
    ```ruby
    test "publishes a draft program successfully" do
      program = create(:training_program, state: 'draft')
@@ -230,6 +251,7 @@ end
    ```
 
 5. **Test Edge Cases**: Identify and test boundary conditions and edge cases.
+
    ```ruby
    test "handles empty content gracefully" do
      program = create(:training_program, state: 'draft')
@@ -240,6 +262,7 @@ end
    ```
 
 6. **Test Error Conditions**: Verify the system handles errors appropriately.
+
    ```ruby
    test "prevents invalid state transitions" do
      program = create(:training_program, state: 'draft')
@@ -250,12 +273,14 @@ end
    ```
 
 7. **Fix One Issue at a Time**: Address issues sequentially, running tests after each fix.
+
    ```bash
    # Fix one issue
    bin/rails test test/system/feature_test.rb -n test_specific_case
    ```
 
 8. **Refactor with Confidence**: Refactor code with the safety net of tests.
+
    ```ruby
    # Refactor with tests to ensure functionality is preserved
    def publish
@@ -264,8 +289,10 @@ end
    ```
 
 9. **Document Findings**: Update documentation with insights from testing.
+
    ```markdown
    # Add to CHANGELOG.md or documentation
+
    - Fixed issue with state transitions in TrainingProgram
    ```
 
@@ -276,6 +303,7 @@ end
     ```
 
 **Why It's Good**:
+
 - Provides a structured approach to testing
 - Ensures comprehensive test coverage
 - Makes complex issues more manageable
@@ -283,6 +311,7 @@ end
 - Builds confidence in the solution
 
 **Why It's Bad When Violated**:
+
 - Testing becomes ad-hoc and inconsistent
 - Important edge cases may be missed
 - Fixes may address symptoms rather than root causes
@@ -294,6 +323,7 @@ end
 **Rule**: Each step in the 10-step process should correspond to a focused test.
 
 **Example**:
+
 ```ruby
 # Step 1: Identify the Scope - Create a test file with clear scope
 # test/system/training_program_state_test.rb
@@ -318,6 +348,7 @@ end
 ```
 
 **Why It's Good**:
+
 - Creates a clear mapping between process steps and tests
 - Ensures each aspect of the feature is tested
 - Makes it easier to track progress
@@ -325,6 +356,7 @@ end
 - Improves test organization and readability
 
 **Why It's Bad When Violated**:
+
 - Tests may not cover all aspects of the feature
 - Process steps may be skipped or overlooked
 - Progress becomes harder to track
@@ -336,6 +368,7 @@ end
 **Rule**: When completing a significant task or fixing a complex issue, create a datetime-stamped completion report.
 
 **Example**:
+
 ```markdown
 # Completion Report: 10-Step Testing Process for TrainingProgram Completion Percentage
 
@@ -350,7 +383,7 @@ I've successfully applied the 10-step testing process to address the TrainingPro
 
 1. **Identified the Scope**: Focused on the TrainingProgram completion percentage calculation functionality.
 2. **Created a Focused Test File**: Created `training_program_completion_test.rb` to isolate and test the completion percentage functionality.
-...
+   ...
 
 ## Key Implementations
 
@@ -366,6 +399,7 @@ I've successfully applied the 10-step testing process to address the TrainingPro
 ```
 
 **Why It's Good**:
+
 - Creates a clear record of what was accomplished
 - Provides context for future developers
 - Documents the decision-making process
@@ -374,6 +408,7 @@ I've successfully applied the 10-step testing process to address the TrainingPro
 - Facilitates handoffs between different developers or teams
 
 **Why It's Bad When Violated**:
+
 - Knowledge about complex fixes may be lost over time
 - Future developers may not understand why certain decisions were made
 - Similar issues may be approached inconsistently
@@ -387,6 +422,7 @@ I've successfully applied the 10-step testing process to address the TrainingPro
 **Rule**: Use consistent response formats across all API endpoints.
 
 **Example**:
+
 ```ruby
 # INCONSISTENT
 # One endpoint returns direct object
@@ -411,12 +447,14 @@ end
 ```
 
 **Why It's Good**:
+
 - Frontend code can handle responses consistently
 - Reduces special case handling
 - Makes API documentation clearer
 - Easier to implement error handling
 
 **Why It's Bad When Violated**:
+
 - Frontend needs special case handling for different endpoints
 - Increases complexity in API integration
 - Makes the API harder to document
@@ -427,6 +465,7 @@ end
 **Rule**: Always version API endpoints to allow for future changes.
 
 **Example**:
+
 ```ruby
 # GOOD
 namespace :api do
@@ -437,12 +476,14 @@ end
 ```
 
 **Why It's Good**:
+
 - Allows for non-breaking changes to the API
 - Provides a clear migration path for clients
 - Makes API evolution more manageable
 - Prevents breaking existing integrations
 
 **Why It's Bad When Violated**:
+
 - Changes to the API can break existing clients
 - Makes it harder to evolve the API over time
 - Creates resistance to improving the API
@@ -455,6 +496,7 @@ end
 **Rule**: Use consistent caching strategies for similar types of resources.
 
 **Example**:
+
 ```javascript
 // INCONSISTENT
 // Images use cache-first
@@ -463,25 +505,31 @@ if (event.request.url.match(/\.(jpg|jpeg|png|gif)$/)) {
 }
 // But CSS uses network-first
 if (event.request.url.match(/\.css$/)) {
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+  event.respondWith(
+    fetch(event.request).catch(() => caches.match(event.request))
+  );
 }
 
 // CONSISTENT
 // All static assets use cache-first
 if (event.request.url.match(/\.(jpg|jpeg|png|gif|css|js)$/)) {
-  event.respondWith(caches.match(event.request).then(response => {
-    return response || fetch(event.request);
-  }));
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 }
 ```
 
 **Why It's Good**:
+
 - Creates predictable offline behavior
 - Simplifies service worker code
 - Makes debugging easier
 - Provides consistent user experience
 
 **Why It's Bad When Violated**:
+
 - Creates unpredictable offline behavior
 - Makes the service worker harder to maintain
 - Complicates debugging cache issues
@@ -492,29 +540,34 @@ if (event.request.url.match(/\.(jpg|jpeg|png|gif|css|js)$/)) {
 **Rule**: Always handle network errors and provide appropriate fallbacks.
 
 **Example**:
+
 ```javascript
 // INCORRECT
-fetch(url).then(response => {
+fetch(url).then((response) => {
   // No error handling
   return response;
 });
 
 // CORRECT
-fetch(url).then(response => {
-  return response;
-}).catch(error => {
-  console.error('Fetch error:', error);
-  return caches.match(url) || caches.match('/offline.html');
-});
+fetch(url)
+  .then((response) => {
+    return response;
+  })
+  .catch((error) => {
+    console.error("Fetch error:", error);
+    return caches.match(url) || caches.match("/offline.html");
+  });
 ```
 
 **Why It's Good**:
+
 - Provides graceful degradation when offline
 - Prevents uncaught exceptions
 - Improves user experience during network issues
 - Makes the application more resilient
 
 **Why It's Bad When Violated**:
+
 - Application may crash when offline
 - Creates poor user experience during network issues
 - Makes debugging harder
@@ -527,6 +580,7 @@ fetch(url).then(response => {
 **Rule**: Always validate component props with proper types and requirements.
 
 **Example**:
+
 ```javascript
 // INCORRECT
 props: ['programId', 'userName']
@@ -545,12 +599,14 @@ props: {
 ```
 
 **Why It's Good**:
+
 - Catches prop type errors early
 - Makes component API self-documenting
 - Provides clear expectations for component usage
 - Helps prevent runtime errors
 
 **Why It's Bad When Violated**:
+
 - Can lead to subtle bugs that are hard to track down
 - Makes component usage less clear
 - Reduces component reusability
@@ -561,6 +617,7 @@ props: {
 **Rule**: Each component should have a single responsibility.
 
 **Example**:
+
 ```javascript
 // INCORRECT
 // One component handling video, quiz, and certificate
@@ -574,12 +631,14 @@ props: {
 ```
 
 **Why It's Good**:
+
 - Makes components more reusable
 - Simplifies testing
 - Improves code organization
 - Makes maintenance easier
 
 **Why It's Bad When Violated**:
+
 - Creates complex, hard-to-maintain components
 - Makes testing more difficult
 - Reduces component reusability
@@ -592,6 +651,7 @@ props: {
 **Rule**: Scripts should output clear results without requiring user interaction.
 
 **Example**:
+
 ```bash
 # INTERACTIVE (BAD)
 echo "Do you want to continue? (y/n)"
@@ -608,6 +668,7 @@ echo "RESULT: OPERATION_COMPLETED"
 ```
 
 **Why It's Good**:
+
 - Prevents scripts from freezing while waiting for input
 - Allows scripts to be run in automated environments
 - Provides clear output that can be parsed by other tools
@@ -615,6 +676,7 @@ echo "RESULT: OPERATION_COMPLETED"
 - Enables AI-assisted development to proceed without interruption
 
 **Why It's Bad When Violated**:
+
 - Scripts may hang indefinitely waiting for input
 - Prevents automation of complex workflows
 - Creates bottlenecks in development processes
@@ -625,6 +687,7 @@ echo "RESULT: OPERATION_COMPLETED"
 **Rule**: Always execute scripts and verify their success before declaring a task complete.
 
 **Example**:
+
 ```bash
 # INCORRECT APPROACH
 # Creating a script but not executing it
@@ -655,6 +718,7 @@ fi
 ```
 
 **Why It's Good**:
+
 - Ensures the script actually works as intended
 - Provides immediate feedback on any issues
 - Completes the full cycle of development, from creation to execution
@@ -662,6 +726,7 @@ fi
 - Follows the principle of "test what you ship"
 
 **Why It's Bad When Violated**:
+
 - Creates a false sense of completion
 - Leaves potential issues undiscovered
 - Requires additional steps from the user
@@ -673,6 +738,7 @@ fi
 **Rule**: Use super-scaffolding at the beginning of model development, before making manual modifications to generated files.
 
 **Example**:
+
 ```bash
 # GOOD PRACTICE
 # 1. Create the model first
@@ -685,12 +751,14 @@ bin/super-scaffold field Location geometry:jsonb
 ```
 
 **Why It's Good**:
+
 - Ensures consistency across the application
 - Saves development time
 - Follows Bullet Train conventions
 - Generates tests and UI components automatically
 
 **When to Avoid**:
+
 - After making manual modifications to controllers, views, or tests
 - When you need custom behavior that deviates significantly from Bullet Train patterns
 - For temporary or experimental features
@@ -722,6 +790,7 @@ end
 **Rule**: Prefer explicit, clear code over clever, implicit code.
 
 **Example**:
+
 ```ruby
 # IMPLICIT
 def method_missing(method_name, *args)
@@ -741,12 +810,14 @@ end
 ```
 
 **Why It's Good**:
+
 - Makes code more readable and maintainable
 - Reduces the learning curve for new developers
 - Makes debugging easier
 - Improves IDE support (autocomplete, etc.)
 
 **Why It's Bad When Violated**:
+
 - Creates "magic" code that's hard to understand
 - Makes debugging more difficult
 - Increases the learning curve for new developers
@@ -757,6 +828,7 @@ end
 **Rule**: Handle errors consistently throughout the application.
 
 **Example**:
+
 ```ruby
 # INCONSISTENT
 # One method raises an exception
@@ -783,12 +855,14 @@ end
 ```
 
 **Why It's Good**:
+
 - Creates predictable error handling patterns
 - Makes error recovery more consistent
 - Improves logging and monitoring
 - Makes the application more robust
 
 **Why It's Bad When Violated**:
+
 - Creates unpredictable error behavior
 - Makes error handling more complex
 - Increases the chance of unhandled errors
