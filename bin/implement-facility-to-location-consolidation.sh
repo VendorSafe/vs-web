@@ -34,7 +34,6 @@ check_success
 
 # Step 2: Run the Database Migrations
 echo -e "${YELLOW}Step 2: Running Database Migrations...${NC}"
-# Skip ERD generation to avoid the Version constant issue
 DISABLE_ERD=true bin/rails db:migrate
 check_success
 

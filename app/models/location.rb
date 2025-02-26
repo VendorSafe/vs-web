@@ -1,5 +1,6 @@
 class Location < ApplicationRecord
   include Sortable
+  include BulletTrain::Fields::Geojson::HasGeojsonField
   # 🚅 add concerns above.
 
   # 🚅 add attribute accessors above.
@@ -25,6 +26,11 @@ class Location < ApplicationRecord
   # Find locations by type
   scope :of_type, ->(type) { where(location_type: type) }
 
+  # Find locations by geometry type
+  scope :with_geometry_type, lambda { |type|
+    where("geometry->>'type' = ?", type)
+  }
+
   # Find top-level locations (no parent)
   scope :top_level, -> { where(parent_id: nil) }
   # 🚅 add scopes above.
@@ -40,6 +46,15 @@ class Location < ApplicationRecord
   # Use the GeoJSON field from our gem
   has_geojson_field :geometry, validate_format: true
 
+  # Find locations near a point with a radius in kilometers
+  def self.near_geometry(lat, lng, radius_km = 10)
+    # This is a placeholder implementation until PostGIS is fully configured
+    # In a real implementation, we would use PostGIS to find locations within a radius
+    # For now, we'll return all locations as a fallback
+    all
+  end
+
+  # Collection method for Bullet Train
   def collection
     team.locations
   end
