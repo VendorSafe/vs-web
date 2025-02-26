@@ -8,6 +8,12 @@ class Account::LocationsController < Account::ApplicationController
     delegate_json_to_api
   end
 
+  # GET /account/teams/:team_id/locations/map
+  def map
+    @locations = @team.locations
+    @team = @location.team if @location.present?
+  end
+
   # GET /account/locations/:id
   # GET /account/locations/:id.json
   def show
@@ -27,7 +33,7 @@ class Account::LocationsController < Account::ApplicationController
   def create
     respond_to do |format|
       if @location.save
-        format.html { redirect_to [:account, @location], notice: I18n.t("locations.notifications.created") }
+        format.html { redirect_to [:account, @location], notice: I18n.t('locations.notifications.created') }
         format.json { render :show, status: :created, location: [:account, @location] }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,7 +47,7 @@ class Account::LocationsController < Account::ApplicationController
   def update
     respond_to do |format|
       if @location.update(location_params)
-        format.html { redirect_to [:account, @location], notice: I18n.t("locations.notifications.updated") }
+        format.html { redirect_to [:account, @location], notice: I18n.t('locations.notifications.updated') }
         format.json { render :show, status: :ok, location: [:account, @location] }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,16 +61,14 @@ class Account::LocationsController < Account::ApplicationController
   def destroy
     @location.destroy
     respond_to do |format|
-      format.html { redirect_to [:account, @team, :locations], notice: I18n.t("locations.notifications.destroyed") }
+      format.html { redirect_to [:account, @team, :locations], notice: I18n.t('locations.notifications.destroyed') }
       format.json { head :no_content }
     end
   end
 
   private
 
-  if defined?(Api::V1::ApplicationController)
-    include strong_parameters_from_api
-  end
+  include strong_parameters_from_api if defined?(Api::V1::ApplicationController)
 
   def process_params(strong_params)
     # 🚅 super scaffolding will insert processing for new fields above this line.

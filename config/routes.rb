@@ -86,7 +86,12 @@ Rails.application.routes.draw do
 
         resources :training_certificates, only: [:index]
 
-        resources :locations, concerns: [:sortable]
+        resources :locations, concerns: [:sortable] do
+          collection do
+            get :map
+          end
+        end
+
         resources :pricing_models
       end
     end

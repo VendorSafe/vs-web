@@ -10,6 +10,7 @@
       <%= render 'shared/fields/text_field', method: :location_type %>
       <%= render 'shared/fields/super_select', method: :parent_id, options: {}, html_options: {},
         choices: @location.valid_parents.map { |location| [location.label_string, location.id] } %>
+      <%= render 'fields/geojson/field', form: form, method: :geometry, options: { hint: "Click on the map to add a point, or use the drawing tools to create a polygon." } %>
       <%# 🚅 super scaffolding will insert new fields above this line. %>
     <% end %>
 
